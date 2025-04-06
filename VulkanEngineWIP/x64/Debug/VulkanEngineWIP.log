@@ -1,0 +1,41 @@
+﻿  debug_funcs.cpp
+  helperFuncs.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\optional(11): warning STL4038: The contents of <optional> are available only with C++17 or later.
+  main.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\optional(11): warning STL4038: The contents of <optional> are available only with C++17 or later.
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\main.cpp(60,33): warning C4101: 'e': unreferenced local variable
+  VulkanDevices.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\optional(11): warning STL4038: The contents of <optional> are available only with C++17 or later.
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(7,7): error C2039: 'optional': is not a member of 'std'
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(29,1):
+      see declaration of 'std'
+  
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(7,15): error C2143: syntax error: missing ';' before '<'
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(7,7): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(7,40): error C2238: unexpected token(s) preceding ';'
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(10,10): error C2065: 'graphicsFamily': undeclared identifier
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(30,12): error C2039: 'graphicsFamily': is not a member of 'QueueFamilyIndices'
+      C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(6,8):
+      see declaration of 'QueueFamilyIndices'
+  
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(97,45): error C2039: 'graphicsFamily': is not a member of 'QueueFamilyIndices'
+      C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(6,8):
+      see declaration of 'QueueFamilyIndices'
+  
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(129,35): error C2039: 'graphicsFamily': is not a member of 'QueueFamilyIndices'
+      C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(6,8):
+      see declaration of 'QueueFamilyIndices'
+  
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(129,2): error C2660: 'vkGetDeviceQueue': function does not take 3 arguments
+      C:\VulkanSDK\1.4.309.0\Include\vulkan\vulkan_core.h(4375,28):
+      see declaration of 'vkGetDeviceQueue'
+      C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanDevices.cpp(129,2):
+      while trying to match the argument list '(VkDevice, int, VkQueue *)'
+  
+  VulkanInstance.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\optional(11): warning STL4038: The contents of <optional> are available only with C++17 or later.
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanInstance.cpp(20,34): error C2065: 'validationLayers': undeclared identifier
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanInstance.cpp(20,32): error C2143: syntax error: missing ';' before ':'
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanInstance.cpp(20,50): error C2143: syntax error: missing ';' before ')'
+C:\Users\User\Desktop\c++projs\VULKAN_PROJECTS\vulkan_engine\VulkanInstance.cpp(139,55): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+  Generating Code...
