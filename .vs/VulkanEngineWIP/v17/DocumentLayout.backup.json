@@ -3,7 +3,36 @@
   "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|C:\\Users\\User\\Desktop\\c\u002B\u002Bprojs\\VULKAN_PROJECTS\\vulkan_engine\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|solutionrelative:src\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\GraphicsPipeline.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|solutionrelative:src\\GraphicsPipeline.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\GraphicsPipeline.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|solutionrelative:include\\GraphicsPipeline.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\VulkanDevices.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|solutionrelative:include\\VulkanDevices.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\VulkanDevices.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|solutionrelative:src\\VulkanDevices.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\cstm_types.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|solutionrelative:src\\cstm_types.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\cstm_types.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|solutionrelative:include\\cstm_types.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\config.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3985C026-214C-4431-AEBE-9A5F98B4BF3F}|VulkanEngineWIP.vcxproj|solutionrelative:include\\config.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -13,8 +42,49 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "cstm_types.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\cstm_types.h",
+              "RelativeDocumentMoniker": "include\\cstm_types.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\cstm_types.h",
+              "RelativeToolTip": "include\\cstm_types.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-04-15T06:09:36.238Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "config.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\config.h",
+              "RelativeDocumentMoniker": "include\\config.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\config.h",
+              "RelativeToolTip": "include\\config.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-04-15T06:40:31.356Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GraphicsPipeline.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\GraphicsPipeline.cpp",
+              "RelativeDocumentMoniker": "src\\GraphicsPipeline.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\GraphicsPipeline.cpp",
+              "RelativeToolTip": "src\\GraphicsPipeline.cpp",
+              "ViewState": "AgIAABkAAAAAAAAAAAAAACoAAABzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-04-16T00:04:28.842Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -23,13 +93,65 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\c\u002B\u002Bprojs\\VULKAN_PROJECTS\\vulkan_engine\\main.cpp",
-              "RelativeDocumentMoniker": "..\\c\u002B\u002Bprojs\\VULKAN_PROJECTS\\vulkan_engine\\main.cpp",
-              "ToolTip": "C:\\Users\\User\\Desktop\\c\u002B\u002Bprojs\\VULKAN_PROJECTS\\vulkan_engine\\main.cpp",
-              "RelativeToolTip": "..\\c\u002B\u002Bprojs\\VULKAN_PROJECTS\\vulkan_engine\\main.cpp",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAAABYAAAAQAAAAAAAAAA==",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\main.cpp",
+              "RelativeDocumentMoniker": "src\\main.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\main.cpp",
+              "RelativeToolTip": "src\\main.cpp",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAADAAAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-04-06T21:13:49.999Z",
+              "WhenOpened": "2025-04-07T04:00:54.065Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "VulkanDevices.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\VulkanDevices.cpp",
+              "RelativeDocumentMoniker": "src\\VulkanDevices.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\VulkanDevices.cpp",
+              "RelativeToolTip": "src\\VulkanDevices.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEsAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-04-15T20:27:07.11Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "cstm_types.cpp",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\cstm_types.cpp",
+              "RelativeDocumentMoniker": "src\\cstm_types.cpp",
+              "ToolTip": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\src\\cstm_types.cpp",
+              "RelativeToolTip": "src\\cstm_types.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD0AAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-04-15T20:37:06.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GraphicsPipeline.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\GraphicsPipeline.h",
+              "RelativeDocumentMoniker": "include\\GraphicsPipeline.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\GraphicsPipeline.h",
+              "RelativeToolTip": "include\\GraphicsPipeline.h",
+              "ViewState": "AgIAAAgAAAAAAQAAAAABwA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-04-15T19:25:56.016Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "VulkanDevices.h",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\VulkanDevices.h",
+              "RelativeDocumentMoniker": "include\\VulkanDevices.h",
+              "ToolTip": "C:\\Users\\User\\Desktop\\VulkanEngineWIP\\include\\VulkanDevices.h",
+              "RelativeToolTip": "include\\VulkanDevices.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-04-15T17:07:29.769Z",
               "EditorCaption": ""
             }
           ]
