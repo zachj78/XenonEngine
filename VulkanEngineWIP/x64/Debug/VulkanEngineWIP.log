@@ -1,5 +1,0 @@
-﻿  GraphicsPipeline.cpp
-  main.cpp
-C:\Users\User\Desktop\VulkanEngineWIP\src\main.cpp(73,31): warning C4101: 'e': unreferenced local variable
-  Generating Code...
-  VulkanEngineWIP.vcxproj -> C:\Users\User\Desktop\VulkanEngineWIP\x64\Debug\VulkanEngineWIP.exe
