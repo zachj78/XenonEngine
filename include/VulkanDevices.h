@@ -6,9 +6,6 @@
 
 class VulkanDevices {
 public: 
-	//Destructor
-	~VulkanDevices();
-
 	//Main functions
 	void pickPhysicalDevice(VkInstance &instance, VkSurfaceKHR &surface);
 	void createLogicalDevice(const std::vector<const char*> validationLayers, VkSurfaceKHR &surface);
@@ -16,6 +13,9 @@ public:
 	//Getter functions
 	VkPhysicalDevice getPhysicalDevice() { return physicalDevice; };
 	VkDevice getLogicalDevice() { return device; };
+
+	//cleanup function
+	void cleanup();
 
 	//Logger functions
 

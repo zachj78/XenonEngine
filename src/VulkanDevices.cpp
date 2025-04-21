@@ -169,7 +169,7 @@ void VulkanDevices::createLogicalDevice(const std::vector<const char*> validatio
 };
 
 //Destructor, destroys logical device
-VulkanDevices::~VulkanDevices() {
+void VulkanDevices::cleanup() {
 	//Destroy logical device
 	vkDestroyDevice(device, nullptr);
 };

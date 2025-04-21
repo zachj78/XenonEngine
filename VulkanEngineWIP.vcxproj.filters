@@ -33,6 +33,9 @@
     <ClCompile Include="src\cstm_types.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ShaderLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\config.h">
@@ -53,5 +56,24 @@
     <ClInclude Include="include\GraphicsPipeline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ShaderLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\shaders\test.frag">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="resources\shaders\test.vert">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\shaders\frag.spv">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\vert.spv">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

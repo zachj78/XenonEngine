@@ -102,7 +102,7 @@ VulkanInstance::VulkanInstance() {
 };
 
 //Destroy window and VkInstance on class cleanup
-VulkanInstance::~VulkanInstance() {
+void VulkanInstance::cleanup() {
     if (enableValidationLayers) {
         DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
     };

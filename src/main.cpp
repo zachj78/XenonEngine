@@ -30,27 +30,31 @@ private:
 	std::unique_ptr<GraphicsPipeline> graphicsPipeline;
 
 	void initVulkan() {
-		// Create VkInstance
-		instance = std::make_unique<VulkanInstance>();
-		instance->createInstance();
-		instance->setupDebugMessenger();
+		//Create window, instance and debug messenger
+ 		 instance = std::make_unique<VulkanInstance>();
+		 instance->createInstance();
+		 instance->setupDebugMessenger();
 
 		//Create VkSurface
-		graphicsPipeline = std::make_unique<GraphicsPipeline>(instance->instance, instance->window);
+		 graphicsPipeline = std::make_unique<GraphicsPipeline>(instance->instance, instance->window);
 
 		//Create physical and logical device
-		devices = std::make_unique<VulkanDevices>();
-		devices->pickPhysicalDevice(instance->instance, graphicsPipeline->surface);
-		devices->createLogicalDevice(instance->validationLayers, graphicsPipeline->surface);
+		 devices = std::make_unique<VulkanDevices>();
+		 devices->pickPhysicalDevice(instance->instance, graphicsPipeline->surface);
+		 devices->createLogicalDevice(instance->validationLayers, graphicsPipeline->surface);
 
 		//Create the components of the graphics pipeline
 		VkPhysicalDevice physicalDevice = devices->getPhysicalDevice();
 		VkDevice logicalDevice = devices->getLogicalDevice();
+		  
 		  //Create swapchain
 		  graphicsPipeline->createSwapchain(logicalDevice, physicalDevice, instance->window);
 		  //Create image views
 		  graphicsPipeline->createImageViews(logicalDevice);
-
+		  //Create actual pipeline
+		  graphicsPipeline->createGraphicsPipeline(logicalDevice);
+		  //Create render pass 
+		  graphicsPipeline->createRenderPass(logicalDevice);
 	};
 
 	void mainLoop() {
@@ -63,6 +67,10 @@ private:
 		VkDevice logicalDevice = devices->getLogicalDevice();
 		//Cleans up VkSurface
 		graphicsPipeline->cleanup(logicalDevice, instance->instance);
+		//cleans up VkDevice
+		devices->cleanup();
+		//cleans up Instance and debugger
+		instance->cleanup();
 	};
 };
 

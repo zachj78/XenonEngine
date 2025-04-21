@@ -16,7 +16,7 @@ public:
 
 	//Initialize GLFW window on instance construction
 	VulkanInstance();
-	~VulkanInstance();
+	void cleanup();
 
 	//Main functions
 	void createInstance();

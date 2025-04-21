@@ -2,6 +2,7 @@
 //FOR GLOBAL VARIABLES AND LIBRARIES
 #pragma once
 #include "config.h"
+#include <fstream>
 
 struct SwapchainSupportDetails {
 	VkSurfaceCapabilitiesKHR capabilities;

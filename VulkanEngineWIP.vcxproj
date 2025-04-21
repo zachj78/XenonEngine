@@ -23,6 +23,7 @@
     <ClCompile Include="src\GraphicsPipeline.cpp" />
     <ClCompile Include="src\helperFuncs.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ShaderLoader.cpp" />
     <ClCompile Include="src\VulkanDevices.cpp" />
     <ClCompile Include="src\VulkanInstance.cpp" />
   </ItemGroup>
@@ -31,8 +32,17 @@
     <ClInclude Include="include\cstm_types.h" />
     <ClInclude Include="include\GraphicsPipeline.h" />
     <ClInclude Include="include\helperFuncs.h" />
+    <ClInclude Include="include\ShaderLoader.h" />
     <ClInclude Include="include\VulkanDevices.h" />
     <ClInclude Include="include\VulkanInstance.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\shaders\test.frag" />
+    <Text Include="resources\shaders\test.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\shaders\frag.spv" />
+    <None Include="resources\shaders\vert.spv" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

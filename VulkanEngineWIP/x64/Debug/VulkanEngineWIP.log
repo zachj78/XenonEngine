@@ -1,0 +1,6 @@
+﻿  ShaderLoader.cpp
+C:\Users\User\Desktop\VulkanEngineWIP\src\ShaderLoader.cpp(29,54): warning C4474: 'printf' : too many arguments passed for format string
+      C:\Users\User\Desktop\VulkanEngineWIP\src\ShaderLoader.cpp(29,54):
+      placeholders and their parameters expect 0 variadic arguments, but 1 were provided
+  
+  VulkanEngineWIP.vcxproj -> C:\Users\User\Desktop\VulkanEngineWIP\x64\Debug\VulkanEngineWIP.exe
