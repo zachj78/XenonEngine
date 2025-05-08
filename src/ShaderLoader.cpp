@@ -1,7 +1,15 @@
 #include "../include/ShaderLoader.h"
 
 std::vector<char> ShaderLoader::readShaderFile(const std::string& filename) {
+	char cwd[1024];
+	if (getcwd(cwd, sizeof(cwd)) != nullptr) {
+		std::cout << "Current working directory: " << cwd << std::endl;
+	}
+
+	std::cout << "Opening shader file: " << filename << std::endl;
 	std::ifstream file(filename, std::ios::ate | std::ios::binary);
+
+
 
 	if (!file.is_open()) {
 		throw std::runtime_error("Failed to open .spv file");
@@ -26,7 +34,7 @@ VkShaderModule ShaderLoader::createShaderModule(VkDevice logicalDevice, const st
 	shaderInfo.codeSize = code.size();
 	shaderInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
 
-	printf("Creating shader module of size: ", code.size());
+	printf("Creating shader module of size: " + code.size());
 
 	VkShaderModule shaderModule; 
 	if (vkCreateShaderModule(logicalDevice, &shaderInfo, nullptr, &shaderModule) != VK_SUCCESS) {

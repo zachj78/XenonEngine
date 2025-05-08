@@ -6,6 +6,8 @@
 #define GLFW_INCLUDE_VULKAN
 #define GLFW_EXPLORE_NATIVE_WIN32
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
 #include <stdexcept>
@@ -17,9 +19,20 @@
 #include <limits>
 #include <optional>
 #include <set>
+#include <array>
+#include <string>
+#include <direct.h>
+#include <functional>
+#include <unordered_map>
+#include <utility>
+#include <chrono>
+
 
 #ifdef NDEBUG
 	constexpr bool enableValidationLayers = false;
 #else 
 	constexpr  bool enableValidationLayers = true;
+
+constexpr int MAX_FRAMES_IN_FLIGHT = 2;
+
 #endif

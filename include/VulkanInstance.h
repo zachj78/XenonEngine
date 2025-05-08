@@ -10,9 +10,7 @@
 
 class VulkanInstance {
 public: 
-	//Variables
-	GLFWwindow* window = VK_NULL_HANDLE;
-	VkInstance instance = VK_NULL_HANDLE; // Vulkan Instance
+	bool framebufferResized = false;
 
 	//Initialize GLFW window on instance construction
 	VulkanInstance();
@@ -21,8 +19,12 @@ public:
 	//Main functions
 	void createInstance();
 	void setupDebugMessenger();
+	void createSurface();
 
 	//Getter functions
+	GLFWwindow* getWindowPtr() const { return window; };
+	VkInstance getInstance() const { return instance; };
+	VkSurfaceKHR getSurface() const { return surface; };
 
 	//Structs
 	const std::vector<const char*> validationLayers = {
@@ -31,6 +33,10 @@ public:
 
 private: 
 	VkDebugUtilsMessengerEXT debugMessenger; //Vulkan Debug Messenger
+
+	GLFWwindow* window = VK_NULL_HANDLE;
+	VkInstance instance = VK_NULL_HANDLE; // Vulkan Instance
+	VkSurfaceKHR surface;
 };
 
 #endif

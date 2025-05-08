@@ -38,3 +38,10 @@
 *.user
 *.userosscache
 *.sln.docstates
+/x64/
+/MyVulkanEngine/x64/
+/*.obj
+/*.pdb
+*.exe
+*.log
+*.vcxproj.user

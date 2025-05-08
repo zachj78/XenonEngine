@@ -50,6 +50,12 @@ static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
     return VK_FALSE;
 };
 
+//Window resize callback
+static void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
+    auto app = reinterpret_cast<VulkanInstance*>(glfwGetWindowUserPointer(window));
+    app->framebufferResized = true;
+}
+
 //This function loads and executes the vkCreateDebugUtilsMessengerEXT function
 VkResult CreateDebugUtilsMessengerEXT(VkInstance instance,
     const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
@@ -94,15 +100,28 @@ VulkanInstance::VulkanInstance() {
     //Set window hints
     // def: glfwWindowHint(int hint, int value)
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API); // Tell GLFW not to create OpenGL context
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // Set the window to be non-resizable
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // Set the window to be non-resizable
 
     // Create actual window object
     // def: glfwCreateWindow(int width, int height, const char* title, GLFWmonitor* monitor, GlfWwindow* share)
-    window = glfwCreateWindow(WIDTH, HEIGHT, "Application Running...", nullptr, nullptr);
+    window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan Engine", nullptr, nullptr);
+
+    glfwSetWindowUserPointer(window, this);
+    glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
+};
+
+void VulkanInstance::createSurface() {
+    if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+        throw std::runtime_error("Failed to create a window surface");
+    } else {
+        std::cout << "Window surface created successfully" << std::endl;
+    };
 };
 
 //Destroy window and VkInstance on class cleanup
 void VulkanInstance::cleanup() {
+    vkDestroySurfaceKHR(instance, surface, nullptr);
+
     if (enableValidationLayers) {
         DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
     };

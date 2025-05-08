@@ -1,156 +1,106 @@
 #include "../include/GraphicsPipeline.h"
+#include "../include/BufferManager.h"
 
-// -- Logger functions -- 
-static void logSwapchain(uint32_t imageCount, VkExtent2D swapExtent, VkSurfaceFormatKHR surfaceFormat, VkPresentModeKHR presentMode, VkSwapchainCreateInfoKHR swapchainInfo) {
-	printf("Swapchain created successfully!\n");
-	printf("  Image count: %u\n", imageCount);
-	printf("  Resolution: %ux%u\n", swapExtent.width, swapExtent.height);
+void GraphicsPipeline::recordCommandBuffer(VkCommandBuffer commandBuffer,
+	uint32_t imageIndex,
+	BufferManager* bufferManager,
+	VkDescriptorSet descriptorSet
+) {
 
-	printf("  Format: %d\n", surfaceFormat.format);
-	printf("  Color space: %d\n", surfaceFormat.colorSpace);
+	std::vector<VkFramebuffer> swapchainFramebuffers = swapchain->getSwapchainFramebuffers();
+	VkExtent2D swapchainExtent = swapchain->getSwapchainExtent();
 
-	printf("  Present mode: ");
-	switch (presentMode) {
-	case VK_PRESENT_MODE_IMMEDIATE_KHR:     printf("Immediate\n"); break;
-	case VK_PRESENT_MODE_MAILBOX_KHR:       printf("Mailbox\n"); break;
-	case VK_PRESENT_MODE_FIFO_KHR:          printf("FIFO (V-Sync)\n"); break;
-	case VK_PRESENT_MODE_FIFO_RELAXED_KHR:  printf("FIFO Relaxed\n"); break;
-	default:                                 printf("Unknown (%d)\n", presentMode); break;
-	}
+	VkCommandBufferBeginInfo beginInfo{};
+	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	beginInfo.flags = 0;
+	beginInfo.pInheritanceInfo = nullptr;
 
-	printf("  Sharing mode: %s\n",
-		swapchainInfo.imageSharingMode == VK_SHARING_MODE_CONCURRENT
-		? "Concurrent"
-		: "Exclusive");
-}
-
-GraphicsPipeline::GraphicsPipeline(VkInstance &instance, GLFWwindow* window) {
-	if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
-		throw std::runtime_error("Failed to create a window surface");
+	if (vkBeginCommandBuffer(commandBuffer, &beginInfo) != VK_SUCCESS) {
+		throw std::runtime_error("Failed to begin recording command buffer");
 	};
+
+	VkRenderPassBeginInfo renderPassBeginInfo{};
+	renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	renderPassBeginInfo.renderPass = renderPass;
+	renderPassBeginInfo.framebuffer = swapchainFramebuffers[imageIndex];
+	renderPassBeginInfo.renderArea.offset = { 0, 0 };
+	renderPassBeginInfo.renderArea.extent = swapchainExtent;
+
+	VkClearValue clearColor = { {{1.0f, 0.0f, 1.0f, 1.0f}} }; // Just a black screen 
+	renderPassBeginInfo.clearValueCount = 1;
+	renderPassBeginInfo.pClearValues = &clearColor;
+
+	vkCmdBeginRenderPass(commandBuffer, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
+
+	//Get buffer handles and vertex data
+	Buffer* vbuf = bufferManager->getBuffer("Triangle");
+	Buffer* ibuf = bufferManager->getBuffer("index_Triangle");
+	VkBuffer vertexBuffer = vbuf->getHandle();
+	VkBuffer indexBuffer = ibuf->getHandle();
+	std::vector<Vertex> vertices = vbuf->getData<Vertex>();
+	std::vector<uint32_t> indices = ibuf->getData<uint32_t>();
+
+	std::cout << "Drawing data: v:[" << vertices.size() << "i:[" << indices.size() << std::endl;
+
+	VkBuffer vertexBuffers[] = { vertexBuffer };
+	VkDeviceSize offsets[] = { 0 };
+
+	vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
+
+	vkCmdBindIndexBuffer(commandBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+
+	VkViewport viewport{};
+	viewport.x = 0.0f;
+	viewport.y = 0.0f;
+	viewport.width = (float)swapchainExtent.width;
+	viewport.height = (float)swapchainExtent.height;
+	viewport.minDepth = 0.0f;
+	viewport.maxDepth = 1.0f;
+	vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
+
+	VkRect2D scissor{};
+	scissor.offset = { 0, 0 };
+	scissor.extent = swapchainExtent;
+	vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
+
+	//Bind descriptor sets to the pipeline
+	vkCmdBindDescriptorSets(commandBuffer,
+		VK_PIPELINE_BIND_POINT_GRAPHICS,
+		pipelineLayout,
+		0,
+		1, &descriptorSet,
+		0, nullptr
+	);
+
+	vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+
+	vkCmdEndRenderPass(commandBuffer);
+
+	if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS) {
+		throw std::runtime_error("Failed to record command buffer");
+	}
 };
 
-void GraphicsPipeline::cleanup(VkDevice logicalDevice, VkInstance &instance) {
-	for (auto framebuffer : swapchainFramebuffers) {
-		vkDestroyFramebuffer(logicalDevice, framebuffer, nullptr);
-	};
-	
+void GraphicsPipeline::cleanup(VkInstance &instance) {
+	VkDevice logicalDevice = devices->getLogicalDevice();
+
+	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+		vkDestroySemaphore(logicalDevice, imageAvailableSemaphores[i], nullptr);
+		vkDestroySemaphore(logicalDevice, renderFinishedSemaphores[i], nullptr);
+		vkDestroyFence(logicalDevice, inFlightFences[i], nullptr);
+	}
+	vkDestroyCommandPool(logicalDevice, commandPool, nullptr);
+
 	vkDestroyPipeline(logicalDevice, graphicsPipeline, nullptr);
 	vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
 	vkDestroyRenderPass(logicalDevice, renderPass, nullptr);
-	
-	for (const auto& swapchainImageView : swapchainImageViews) {
-		vkDestroyImageView(logicalDevice, swapchainImageView, nullptr);
-	};
-
-	vkDestroySwapchainKHR(logicalDevice, swapchain, nullptr);
-	
-	vkDestroySurfaceKHR(instance, surface, nullptr);
 };
 
-//These functions are responsible for creating the swapchain
-// -> note: before swapchain is created extension supported must be checked in VulkanDevices
-void GraphicsPipeline::createSwapchain(VkDevice logicalDevice, VkPhysicalDevice physicalDevice, GLFWwindow* window) {
-	SwapchainSupportDetails supportDetails = querySwapchainSupport(physicalDevice, surface);
-
-	VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(supportDetails.formats);
-	VkPresentModeKHR presentMode = chooseSwapPresentMode(supportDetails.presentModes);
-	VkExtent2D swapExtent = chooseSwapExtent(supportDetails.capabilities, window);
-	
-	//choose image count 
-	// we add +1 so that the swapchain does not have to wait on the last image to be rendered to begin a new one
-	uint32_t imageCount = supportDetails.capabilities.minImageCount + 1;
-
-	if (supportDetails.capabilities.maxImageCount > 0 && imageCount > supportDetails.capabilities.maxImageCount) {
-		imageCount = supportDetails.capabilities.maxImageCount;
-	};
-
-	VkSwapchainCreateInfoKHR swapchainInfo{};
-	swapchainInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-	swapchainInfo.surface = surface; 
-	swapchainInfo.minImageCount = imageCount; 
-	swapchainInfo.imageFormat = surfaceFormat.format;
-	swapchainInfo.imageExtent = swapExtent;
-	swapchainInfo.imageArrayLayers = 1;
-	swapchainInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-
-	QueueFamilyIndices indices = findQueueFamilies(physicalDevice, surface);
-	uint32_t queueFamilyIndices[] = { indices.graphicsFamily.value(), indices.presentFamily.value() };
-
-	if (indices.graphicsFamily != indices.presentFamily) {
-		swapchainInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
-		swapchainInfo.queueFamilyIndexCount = 2; 
-		swapchainInfo.pQueueFamilyIndices = queueFamilyIndices;
-	} else {
-		swapchainInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-		swapchainInfo.queueFamilyIndexCount = 0;
-		swapchainInfo.pQueueFamilyIndices = nullptr;
-	};
-
-	swapchainInfo.preTransform = supportDetails.capabilities.currentTransform; // No pre-transform
-	swapchainInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR; // ignore alpha channel -> no mixing
-	swapchainInfo.presentMode = presentMode;
-	swapchainInfo.clipped = VK_TRUE;
-
-	swapchainInfo.oldSwapchain = VK_NULL_HANDLE; // this will later be used to rebuild the swapchain in the event it becomes invalid
-
-	if (vkCreateSwapchainKHR(logicalDevice, &swapchainInfo, nullptr, &swapchain) != VK_SUCCESS) {
-		throw std::runtime_error("Failed to create the swapchain");
-	}
-	else {
-		logSwapchain(imageCount, swapExtent, surfaceFormat, presentMode, swapchainInfo);
-	}
-
-
-	// now we retreive the actual swapchain images
-	vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, nullptr);
-	swapchainImages.resize(imageCount);
-	vkGetSwapchainImagesKHR(logicalDevice, swapchain, &imageCount, swapchainImages.data());
-
-	swapchainImageFormat = surfaceFormat.format;
-	swapchainExtent = swapExtent;
-};
-VkSurfaceFormatKHR GraphicsPipeline::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) {
-	for (const auto& availableFormat : availableFormats) {
-		if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
-			return availableFormat;
-		}
-	};
-
-	return availableFormats[0];
-};
-VkPresentModeKHR GraphicsPipeline::chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) {
-	for (const auto& availablePresentMode : availablePresentModes) {
-		if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
-			return availablePresentMode;
-		}
-	};
-
-	// if triple buffering is not available then just use double buffering
-	return VK_PRESENT_MODE_FIFO_KHR;
-};
-VkExtent2D GraphicsPipeline::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities, GLFWwindow *window) {
-	if (capabilities.currentExtent.width != UINT32_MAX) {
-		return capabilities.currentExtent;
-	}
-	else {
-		int width, height;
-		glfwGetFramebufferSize(window, &width, &height);
-
-		VkExtent2D actualExtent = {
-			static_cast<uint32_t>(width),
-			static_cast<uint32_t>(height)
-		};
-
-		//actualExtent.width = std::clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
-		actualExtent.height = std::clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
-
-		return actualExtent;
-	}
-}
-
-void GraphicsPipeline::createRenderPass(VkDevice logicalDevice) {
-	std::cout << "Entering createRenderPass()" << std::endl;
+void GraphicsPipeline::createRenderPass() {
+	//Define variables to create render pass
+	VkDevice logicalDevice = devices->getLogicalDevice();
+	VkFormat swapchainImageFormat = swapchain->getSwapchainImageFormat();
 
 	VkAttachmentDescription colorAttachment{};
 	colorAttachment.format = swapchainImageFormat;
@@ -188,16 +138,19 @@ void GraphicsPipeline::createRenderPass(VkDevice logicalDevice) {
 	};
 };
 
-void GraphicsPipeline::createGraphicsPipeline(VkDevice logicalDevice) {
-	std::cout << "Entering createGraphicsPipeline()" << std::endl;
+void GraphicsPipeline::createGraphicsPipeline(std::shared_ptr<UniformBufferManager> uniformBufferManager) {
+	VkDevice logicalDevice = devices->getLogicalDevice();
 
     //Create a shader loader class to load vert and frag shader
-	shaderLoader = std::make_unique<ShaderLoader>();
+	shaderLoader = std::make_shared<ShaderLoader>();
 
-	auto vertShaderCode = shaderLoader->readShaderFile("shaders/vert.spv");
-	auto fragShaderCode = shaderLoader->readShaderFile("shaders/frag.spv");
+	auto vertShaderCode = shaderLoader->readShaderFile("resources/shaders/vert.spv");
+	auto fragShaderCode = shaderLoader->readShaderFile("resources/shaders/frag.spv");
 
-	VkShaderModule vertShaderModule = shaderLoader->createShaderModule(logicalDevice, vertShaderCode); 
+	std::cout << "Loaded vertex shader, size: " << vertShaderCode.size() << std::endl;
+	std::cout << "Loaded fragment shader, size: " << fragShaderCode.size() << std::endl;
+
+	VkShaderModule vertShaderModule = shaderLoader->createShaderModule(logicalDevice, vertShaderCode);
 	VkShaderModule fragShaderModule = shaderLoader->createShaderModule(logicalDevice, fragShaderCode);
 
 	//Now we assign the shaders to the pipeline using PipelineShaderStageCreateInfo
@@ -221,13 +174,17 @@ void GraphicsPipeline::createGraphicsPipeline(VkDevice logicalDevice) {
 	dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
 	dynamicState.pDynamicStates = dynamicStates.data();
 
+	//Get per-vertex binding and attribute descriptions
+	auto bindingDescription = Vertex::getBindingDescription();
+	auto attributeDescription = Vertex::getAttributeDescriptions();
+
 	//Specifies vertex data to be drawn
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	vertexInputInfo.vertexBindingDescriptionCount = 0;
-	vertexInputInfo.pVertexBindingDescriptions = nullptr; 
-	vertexInputInfo.vertexAttributeDescriptionCount = 0;
-	vertexInputInfo.pVertexAttributeDescriptions = nullptr; 
+	vertexInputInfo.vertexBindingDescriptionCount = 1;
+	vertexInputInfo.pVertexBindingDescriptions = &bindingDescription; 
+	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescription.size());
+	vertexInputInfo.pVertexAttributeDescriptions = attributeDescription.data(); 
 
 	//Specifies how input vertices should be assembled
 	VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
@@ -247,7 +204,7 @@ void GraphicsPipeline::createGraphicsPipeline(VkDevice logicalDevice) {
 	rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
 	rasterizer.lineWidth = 1.0f; 
 	rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-	rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
+	rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
 	rasterizer.depthBiasEnable = VK_FALSE;
 
 	//configues multi-sampling -> kept disabled for now
@@ -277,6 +234,12 @@ void GraphicsPipeline::createGraphicsPipeline(VkDevice logicalDevice) {
 	//finally create the pipeline layout 
 	VkPipelineLayoutCreateInfo layoutInfo{};
 	layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+	layoutInfo.setLayoutCount = 1;
+	VkDescriptorSetLayout descSetLayout = uniformBufferManager->getDescriptorSetLayout();
+	layoutInfo.pSetLayouts = &descSetLayout;
+
+	//VkDescriptorSetLayout setLayouts = uniformBufferManager->getDescriptorSetLayout();
+	//layoutInfo.pSetLayouts = &setLayouts;
 
 	if (vkCreatePipelineLayout(logicalDevice, &layoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create pipeline layout");
@@ -289,6 +252,7 @@ void GraphicsPipeline::createGraphicsPipeline(VkDevice logicalDevice) {
 	//reference all the stages of the pipeline
 	pipelineInfo.pVertexInputState = &vertexInputInfo; 
 	pipelineInfo.pInputAssemblyState = &inputAssembly;
+	pipelineInfo.pViewportState = &viewportState;
 	pipelineInfo.pRasterizationState = &rasterizer;
 	pipelineInfo.pMultisampleState = &multisampling;
 	pipelineInfo.pColorBlendState = &colorBlending; 
@@ -297,8 +261,13 @@ void GraphicsPipeline::createGraphicsPipeline(VkDevice logicalDevice) {
 	pipelineInfo.layout = pipelineLayout; 
 	pipelineInfo.renderPass = renderPass;
 	pipelineInfo.subpass = 0; //specify subpass index where pipeline will be used
+	pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
 	VkResult result = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline);
+
+	if (result != VK_SUCCESS) {
+		throw std::runtime_error("Failed to create graphics pipeline: error: " + std::to_string(result));
+	};
 
 	std::cout << "Finished creating graphics pipeline -> result : " << result << std::endl;
 
@@ -307,51 +276,149 @@ void GraphicsPipeline::createGraphicsPipeline(VkDevice logicalDevice) {
 	vkDestroyShaderModule(logicalDevice, vertShaderModule, nullptr);
 };
 
-void GraphicsPipeline::createImageViews(VkDevice logicalDevice) {
-	swapchainImageViews.resize(swapchainImages.size());
+//These will eventually be abstracted into their own class, they handle draw commands
+void GraphicsPipeline::createCommandPool() {
+	//Define variables used to create command pool
+	VkDevice logicalDevice = devices->getLogicalDevice();
+	VkPhysicalDevice physicalDevice = devices->getPhysicalDevice();
+	VkSurfaceKHR surface = instance->getSurface();
 
-	for (size_t i = 0; i < swapchainImages.size(); i++) {
-		VkImageViewCreateInfo viewCreateInfo{};
-		viewCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-		viewCreateInfo.image = swapchainImages[i];
-		viewCreateInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-		viewCreateInfo.format = swapchainImageFormat;
+	QueueFamilyIndices queueFamilyIndices = findQueueFamilies(physicalDevice, surface);
 
-		// -> subresourceRange field describes the image's purpose
-		// -> we specify we are using these images for color targets
-		viewCreateInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		viewCreateInfo.subresourceRange.baseMipLevel = 0;
-		viewCreateInfo.subresourceRange.levelCount = 1;
-		viewCreateInfo.subresourceRange.baseArrayLayer = 0;
-		viewCreateInfo.subresourceRange.layerCount = 1;
+	VkCommandPoolCreateInfo poolInfo{};
+	poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+	poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+	poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
+
+	if (vkCreateCommandPool(logicalDevice, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
+		throw std::runtime_error("Failed to create command pool");
+	};
+};
+void GraphicsPipeline::createCommandBuffer() {
+	std::cout << "creating command buffers" << std::endl;
+
+	VkDevice logicalDevice = devices->getLogicalDevice();
 	
-		if (vkCreateImageView(logicalDevice, &viewCreateInfo, nullptr, &swapchainImageViews[i]) != VK_SUCCESS) {
-			throw std::runtime_error("Failed to create image views");
-		};
+	//create a command buffer for each frame
+	commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+
+	VkCommandBufferAllocateInfo allocInfo{};
+	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	allocInfo.commandPool = commandPool; 
+	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	allocInfo.commandBufferCount = (uint32_t) commandBuffers.size();
+
+	if (vkAllocateCommandBuffers(logicalDevice, &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
+		throw std::runtime_error("Failed to allocate command buffers");
 	};
 }
 
-void GraphicsPipeline::createSwapFramebuffers(VkDevice logicalDevice) {
-	//Resize the framebuffers to hold each image view
-	swapchainFramebuffers.resize(swapchainImageViews.size());
+void GraphicsPipeline::createSyncObjects() {
+	VkDevice logicalDevice = devices->getLogicalDevice();
 
-	//now iterate through image views and create a framebuffer for each
-	for (size_t i = 0; i < swapchainImageViews.size(); i++) {
-		VkImageView attachments[] = {
-			swapchainImageViews[i]
-		};
+	imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
+	renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
+	inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
 
-		VkFramebufferCreateInfo framebufferInfo{};
-		framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-		framebufferInfo.renderPass = renderPass;
-		framebufferInfo.attachmentCount = 1;
-		framebufferInfo.pAttachments = attachments;
-		framebufferInfo.width = swapchainExtent.width;
-		framebufferInfo.height = swapchainExtent.height;
-		framebufferInfo.layers = 1;
+	VkSemaphoreCreateInfo semaphoreInfo{};
+	semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
 
-		if (vkCreateFramebuffer(logicalDevice, &framebufferInfo, nullptr, &swapchainFramebuffers[i]) != VK_SUCCESS) {
-			throw std::runtime_error("Failed to create framebuffer");
+	VkFenceCreateInfo fenceInfo{};
+	fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	//Signal fence immediately, otherwise first frame will never draw
+	fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+		if (vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
+			vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS ||
+			vkCreateFence(logicalDevice, &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS) {
+			throw std::runtime_error("Failed to create semaphores");
 		}
 	}
 }
+
+void GraphicsPipeline::drawFrame(GLFWwindow* window, bool framebufferResized, 
+	BufferManager* bufferManager, 
+	SwapchainRecreater* swapchainRecreater,
+	std::shared_ptr<UniformBufferManager> uniformBufferManager) {
+	VkDevice logicalDevice = devices->getLogicalDevice();
+	VkSwapchainKHR swapchain_handle = swapchain->getSwapchain();
+	std::vector<VkFramebuffer> swapchainFramebuffers = swapchain->getSwapchainFramebuffers();
+	VkExtent2D swapchainExtent = swapchain->getSwapchainExtent();
+	VkQueue graphicsQueue = devices->getGraphicsQueue();
+	VkQueue presentQueue = devices->getPresentQueue();
+	
+	//Update uniform buffer data
+	uniformBufferManager->updateUniformBuffer(currentFrame, swapchainExtent);
+
+	//Signal fences when a frame is finished
+	vkWaitForFences(logicalDevice, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
+
+	uint32_t imageIndex;
+	VkResult imageAcquisitionResult = vkAcquireNextImageKHR(logicalDevice, swapchain_handle, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
+
+	//check if swapchain is out of date
+	if (imageAcquisitionResult == VK_ERROR_OUT_OF_DATE_KHR) {
+		swapchainRecreater->recreateSwapchain(logicalDevice, window);
+		return;
+	} else if (imageAcquisitionResult != VK_SUCCESS && imageAcquisitionResult != VK_SUBOPTIMAL_KHR) {
+		throw std::runtime_error("Failed to acquire swap chain image");
+	}
+
+	//manually reset the fence to unsignaled
+	vkResetFences(logicalDevice, 1, &inFlightFences[currentFrame]);
+
+	//Ensure command buffer is ready to be recorded to
+	vkResetCommandBuffer(commandBuffers[currentFrame], 0);
+	std::vector<VkDescriptorSet> descriptorSets = uniformBufferManager->getDescriptorSets();
+
+	recordCommandBuffer(commandBuffers[currentFrame],
+		imageIndex, bufferManager, descriptorSets[currentFrame]
+	);
+
+	//Now to submit the command buffer to the graphics queue we create a submitInfo{} struct
+	VkSubmitInfo submitInfo{};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+	//specify wait semaphores as well as stages to wait on
+	VkSemaphore waitSemaphores[] = { imageAvailableSemaphores[currentFrame]};
+	VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+	submitInfo.waitSemaphoreCount = 1;
+	submitInfo.pWaitSemaphores = waitSemaphores;
+	submitInfo.pWaitDstStageMask = waitStages;
+
+	//Specify command buffer
+	submitInfo.commandBufferCount = 1; 
+	submitInfo.pCommandBuffers = &commandBuffers[currentFrame]; 
+
+	//Specifiy signal finished semaphore
+	VkSemaphore signalSemaphores[] = { renderFinishedSemaphores[currentFrame]};
+	submitInfo.signalSemaphoreCount = 1;
+	submitInfo.pSignalSemaphores = signalSemaphores;
+
+	if (vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
+		throw std::runtime_error("Failed to submit draw command buffer");
+	};
+
+	//Now we present it back to the swapchain- which will hand off to the present queue
+	VkPresentInfoKHR presentInfo{};
+	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+	presentInfo.waitSemaphoreCount = 1; 
+	presentInfo.pWaitSemaphores = signalSemaphores;
+	
+	VkSwapchainKHR swapchains[] = { swapchain_handle };
+	presentInfo.swapchainCount = 1; 
+	presentInfo.pSwapchains = swapchains;
+	presentInfo.pImageIndices = &imageIndex;
+
+	VkResult presentationResult = vkQueuePresentKHR(presentQueue, &presentInfo);
+
+	if (presentationResult == VK_ERROR_OUT_OF_DATE_KHR || presentationResult == VK_SUBOPTIMAL_KHR) {
+		swapchainRecreater->recreateSwapchain(logicalDevice, window);
+	}
+	else if (presentationResult != VK_SUCCESS) {
+		throw std::runtime_error("Failed to present swapchiain image");
+	};
+
+	currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT; // Will osicillate from 0-1
+};

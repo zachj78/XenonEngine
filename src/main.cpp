@@ -1,88 +1,273 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-
 #include <iostream>
 #include <stdexcept>
 #include <cstdlib>
 
-//Custom Classes
+//-- Main Classes --
 #include "../include/VulkanInstance.h"
 #include "../include/VulkanDevices.h"
 #include "../include/GraphicsPipeline.h"
+#include "../include/Swapchain.h"
 
+// -- Utility Classes (customized features or general helpers) --
+#include "../include/SwapchainRecreater.h"
+#include "../include/MeshManager.h"
+#include "../include/BufferManager.h"
+ #include "../include/UniformBufferManager.h"
+
+//Loader functions
+void loadMeshesToVertexBufferManager(const MeshManager& meshManager, BufferManager& bufferManager) {
+    for (const auto& meshPair : meshManager.getAllMeshes()) {
+        const auto& name = meshPair.first;
+        std::cout << "Loading mesh: " << static_cast <std::string> (name) << " to buffer manager : " << std::endl;
+
+        const auto& meshPtr = meshPair.second;
+        std::vector < Vertex > vertices = meshPtr->getVertices();
+        std::vector < uint32_t > indices = meshPtr->getIndices();
+        VkDeviceSize verticesSize = sizeof(vertices[0]) * vertices.size();
+        VkDeviceSize indicesSize = sizeof(indices[0]) * indices.size();
+
+        //Create host visible staging buffer 
+        bufferManager.createBuffer(
+            BufferType::VERTEX_STAGING,
+            "v_staging_" + name,
+            VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+            vertices
+        );
+
+        Buffer* vertexStagingBuffer = bufferManager.getBuffer("v_staging_" + name);
+
+        if (!vertexStagingBuffer) {
+            std::cerr << "Error: Staging buffer creation failed for mesh: " << name << std::endl;
+            continue; // Skip this mesh if the staging buffer creation failed
+        }
+
+        //Create actual vertex buffer -> runs on GPU
+        bufferManager.createBuffer(
+            BufferType::VERTEX,
+            name,
+            VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+            vertices
+        );
+
+        Buffer* vertexBuffer = bufferManager.getBuffer(name);
+
+        if (!vertexBuffer) {
+            std::cerr << "Error: Vertex buffer creation failed for mesh: " << name << std::endl;
+            continue; // Skip this mesh if the vertex buffer creation failed
+        }
+
+        //Check for errors
+        if (vertexStagingBuffer && vertexStagingBuffer->hasErrors()) {
+            vertexStagingBuffer->printErrors();
+        }
+
+        if (vertexBuffer && vertexBuffer->hasErrors()) {
+            vertexBuffer->printErrors();
+        }
+
+        //Copy data from staging buffer to vertex buffer
+        if (vertexStagingBuffer && vertexBuffer) {
+            bufferManager.copyBuffer(vertexStagingBuffer, vertexBuffer, verticesSize);
+        }
+
+        //Now we repeat the process to load mesh index data to a index buffer
+        bufferManager.createBuffer(
+            BufferType::INDEX_STAGING,
+            "i_staging_" + name,
+            VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+            std::nullopt,
+            indices
+        );
+
+        Buffer* indexStagingBuffer = bufferManager.getBuffer("i_staging_" + name);
+
+        bufferManager.createBuffer(
+            BufferType::INDEX,
+            "index_" + name,
+            VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
+            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+            std::nullopt,
+            indices
+        );
+
+        Buffer* indexBuffer = bufferManager.getBuffer("index_" + name);
+
+        //Check for errors
+        if (indexStagingBuffer && indexStagingBuffer->hasErrors()) {
+            indexStagingBuffer->printErrors();
+        }
+
+        if (indexBuffer && indexBuffer->hasErrors()) {
+            indexBuffer->printErrors();
+        }
+
+        //Copy data from staging buffer to vertex buffer
+        if (indexStagingBuffer && indexBuffer) {
+            bufferManager.copyBuffer(indexStagingBuffer, indexBuffer, indicesSize);
+        };
+    }
+};
 
 class Application {
-public:
-	void run() {
-		//Initialize Vulkan
-		initVulkan();
-		mainLoop();
-		cleanup();
-	};
+public: void run() {
+    //Initialize Vulkan
+    initVulkan();
+    mainLoop();
+    cleanup();
+};
 
 private:
-	// -- Initialize pointers to custom classes -- 
-	//Handles instance creation and validation layers
-	std::unique_ptr<VulkanInstance> instance;
-	//Handles physical, logical and graphicsQueue creation
-	std::unique_ptr<VulkanDevices> devices;
-	//Handles VkSurface and VkSwapchainKHR
-	std::unique_ptr<GraphicsPipeline> graphicsPipeline;
+    // -- PRIMARY CLASSES -- 
+    //Handles instance creation and validation layers
+    std::shared_ptr < VulkanInstance > instance;
+    //Handles physical, logical and graphicsQueue creation
+    std::shared_ptr < Devices > devices;
+    //Handles VkSurface and VkSwapchainKHR
+    std::shared_ptr < Swapchain > swapchain;
+    //Handles renderpass and pipeline/pipeline layout
+    std::shared_ptr < GraphicsPipeline > graphicsPipeline;
 
-	void initVulkan() {
-		//Create window, instance and debug messenger
- 		 instance = std::make_unique<VulkanInstance>();
-		 instance->createInstance();
-		 instance->setupDebugMessenger();
+    // -- UTILITY CLASSES --
+    //Creates the swapchain recreater 
+    std::shared_ptr < SwapchainRecreater > swapchainRecreater;
+    //Creates a mesh manager
+    std::shared_ptr < MeshManager > meshManager;
+    //Creates a buffer manager
+    std::shared_ptr < BufferManager > bufferManager;
+    //Creates a uniform buffer manager
+    std::shared_ptr < UniformBufferManager > uniformBufferManager;
 
-		//Create VkSurface
-		 graphicsPipeline = std::make_unique<GraphicsPipeline>(instance->instance, instance->window);
+    void initVulkan() {
+        //TODO: FIX CLEANUP -> ENSURE ALL FUNCTIONS ONLY CLEAN UP THEIR OWN RESOURCES
 
-		//Create physical and logical device
-		 devices = std::make_unique<VulkanDevices>();
-		 devices->pickPhysicalDevice(instance->instance, graphicsPipeline->surface);
-		 devices->createLogicalDevice(instance->validationLayers, graphicsPipeline->surface);
+        //Create window, instance and debug messenger
+        instance = std::make_shared <VulkanInstance>();
+        instance->createInstance();
+        instance->setupDebugMessenger();
+        instance->createSurface();
 
-		//Create the components of the graphics pipeline
-		VkPhysicalDevice physicalDevice = devices->getPhysicalDevice();
-		VkDevice logicalDevice = devices->getLogicalDevice();
-		  
-		  //Create swapchain
-		  graphicsPipeline->createSwapchain(logicalDevice, physicalDevice, instance->window);
-		  //Create image views
-		  graphicsPipeline->createImageViews(logicalDevice);
-		  //Create actual pipeline
-		  graphicsPipeline->createGraphicsPipeline(logicalDevice);
-		  //Create render pass 
-		  graphicsPipeline->createRenderPass(logicalDevice);
-	};
+        //Create physical and logical device
+        //properly refactored to take injected classes
+        devices = std::make_shared <Devices>(instance);
+        devices->pickPhysicalDevice();
+        devices->createLogicalDevice();
 
-	void mainLoop() {
-		while (!glfwWindowShouldClose(instance->window)) {
-			glfwPollEvents();
-		}
-	};
+        //Create the components of the graphics pipeline
+        VkPhysicalDevice physicalDevice = devices->getPhysicalDevice();
+        VkDevice logicalDevice = devices->getLogicalDevice();
 
-	void cleanup() {
-		VkDevice logicalDevice = devices->getLogicalDevice();
-		//Cleans up VkSurface
-		graphicsPipeline->cleanup(logicalDevice, instance->instance);
-		//cleans up VkDevice
-		devices->cleanup();
-		//cleans up Instance and debugger
-		instance->cleanup();
-	};
+        //Create external manager classes 
+        //uniformBufferManager = std::make_unique<UniformBufferManager>(logicalDevice, physicalDevice);
+        meshManager = std::make_shared<MeshManager>();
+
+        //Create VkSurface -> create surface in instance instead since its needed by swapchain and devices
+        swapchain = std::make_shared<Swapchain>(instance, devices);
+
+        //Create swapchain
+        swapchain->createSwapchain();
+        //Create image views
+        swapchain->createImageViews();
+
+        //Create uniform buffer manager
+        uniformBufferManager = std::make_shared<UniformBufferManager>(logicalDevice, physicalDevice);
+        uniformBufferManager->createDescriptorSetLayout();
+
+        graphicsPipeline = std::make_shared<GraphicsPipeline>(instance, devices, swapchain);
+
+        //Create render pass 
+        graphicsPipeline->createRenderPass();
+        VkRenderPass renderPass = graphicsPipeline->getRenderPass();
+
+        //Create actual pipeline
+        graphicsPipeline->createGraphicsPipeline(uniformBufferManager);
+
+        //Load all the swapchain recreate functions to the swapchain recreater
+        swapchainRecreater = std::make_shared < SwapchainRecreater >();
+        swapchainRecreater->setCallbacks(
+            std::bind(&Swapchain::cleanup, swapchain.get()),
+            std::bind(&Swapchain::createSwapchain, swapchain.get()),
+            std::bind(&Swapchain::createImageViews, swapchain.get()),
+            std::bind(&Swapchain::createSwapFramebuffers, swapchain.get(), renderPass)
+        );
+
+        swapchain->createSwapFramebuffers(renderPass);
+
+        //Create command pool and all buffers
+        graphicsPipeline->createCommandPool();
+
+        // -> the vertex manager parameter passes in a vertex manager class, which binds vertex data to pipeline
+        meshManager->addMesh(std::make_shared < TriangleMesh >());
+        bufferManager = std::make_shared < BufferManager >(logicalDevice, physicalDevice,
+            graphicsPipeline->getCommandPool(), devices->getGraphicsQueue());
+
+        loadMeshesToVertexBufferManager(*meshManager, *bufferManager);
+
+        uniformBufferManager->createUniformBuffers();
+        uniformBufferManager->createDescriptorPool();
+        uniformBufferManager->createDescriptorSet();
+
+        graphicsPipeline->createCommandBuffer();
+
+        //Create sync objects 
+        graphicsPipeline->createSyncObjects();
+    };
+
+    void mainLoop() {
+        GLFWwindow* window = instance->getWindowPtr();
+
+        while (!glfwWindowShouldClose(window)) {
+            glfwPollEvents();
+
+            //Draws a frame
+            graphicsPipeline->drawFrame(
+                window,
+                instance->framebufferResized,
+                bufferManager.get(),
+                swapchainRecreater.get(),
+                uniformBufferManager
+            );
+        }
+    };
+
+    void cleanup() {
+        vkDeviceWaitIdle(devices->getLogicalDevice());
+
+        VkInstance vulkanInstance = instance->getInstance();
+
+        // CLEANUP IN REVERSE ORDER OF CREATION
+        graphicsPipeline->cleanup(vulkanInstance);
+        graphicsPipeline.reset();
+
+        bufferManager.reset();
+        meshManager.reset();
+
+        swapchain->cleanup();
+        swapchain.reset();
+
+        swapchainRecreater.reset();
+
+        devices->cleanup();
+        devices.reset();
+
+        instance->cleanup();
+        instance.reset();
+    };
 };
 
 int main() {
-	Application app;
+    Application app;
 
-	try {
-		app.run();
-	}
-	catch (const std::exception& e) {
-		return EXIT_FAILURE;
-	}
+    try {
+        app.run();
+    }
+    catch (const std::exception& e) {
+        return EXIT_FAILURE;
+    }
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 };

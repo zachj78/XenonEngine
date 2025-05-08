@@ -1,67 +1,88 @@
 #ifndef GRAPHICS_PIPELINE_H
 #define GRAPHICS_PIPELINE_H
 
+//Config and main helpers/universal structs
 #include "config.h"
 #include "cstm_types.h"
+
+//Vulkan Components
+#include "Swapchain.h"
+#include "VulkanDevices.h"
+
+//These are utility classes used within this class
 #include "ShaderLoader.h"
+#include "SwapchainRecreater.h"
+#include "BufferManager.h"
+#include "MeshManager.h"
+#include "UniformBufferManager.h"
 
 class GraphicsPipeline {
-public: 
-	//Variables
-	VkSurfaceKHR surface; 
+public:
+	// Constructor
+	GraphicsPipeline(std::shared_ptr<VulkanInstance> instance, std::shared_ptr<Devices> devices, std::shared_ptr<Swapchain> swapchain)
+		: instance(instance), devices(devices), swapchain(swapchain) {
+	}
 
-	//Constructor - creates window surface
-	GraphicsPipeline(VkInstance &instance, GLFWwindow* window);
+	// Manually track whether window has been resized
+	bool framebufferResized = false;
 
-	//Create the swapchain and its components
-	void createSwapchain(VkDevice logicalDevice, VkPhysicalDevice physicalDevice, GLFWwindow* window);
-	 VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
-	 VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
-	 VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilties, GLFWwindow* window);
-	 void createImageViews(VkDevice logicalDevice);
+	// Pipeline setup
+	void createGraphicsPipeline(std::shared_ptr<UniformBufferManager> uniformBufferManager);
+	void createRenderPass();
+	void createCommandPool();
+	void createCommandBuffer();
+	void createSyncObjects();
 
-	// This functions sets up the main graphics pipeline
-	void createGraphicsPipeline(VkDevice logicalDevice);
+	// Main frame draw function
+	void drawFrame(GLFWwindow* window, bool framebufferResized, 
+		BufferManager* bufferManager, 
+		SwapchainRecreater* swapchainRecreater,
+		std::shared_ptr<UniformBufferManager> uniformBufferManager
+	);
 
-	//This function creates the render pass 
-	void createRenderPass(VkDevice logicalDevice);
+	void recordCommandBuffer(VkCommandBuffer commandBuffer,
+		uint32_t imageIndex,
+		BufferManager* bufferManager,
+		VkDescriptorSet descriptorSet);
 
-	//This function creates framebuffers
-	void createSwapFramebuffers(VkDevice logicalDevice);
+	// Cleanup
+	void cleanup(VkInstance& instance);
 
-	//This functions cleans up components fo the Graphics Pipeline:
-	// -> surface, swapchain
-	void cleanup(VkDevice logicalDevice, VkInstance &instance);
-
-	//Getter functions
-	//For the swapchain variables
-	VkSwapchainKHR getSwapchain() { return swapchain; };
-	std::vector<VkImage> getSwapchainImages() { return swapchainImages; };
-	VkFormat getSwapchainImageFormat() { return swapchainImageFormat; };
-	VkExtent2D getSwapchainExtent() { return swapchainExtent; };
+	// Getters
+	VkPipeline getGraphicsPipeline() { return graphicsPipeline; }
+	VkPipelineLayout getPipelineLayout() { return pipelineLayout; }
+	VkRenderPass getRenderPass() { return renderPass; }
+	std::vector<VkCommandBuffer> getCommandBuffers() { return commandBuffers; }
+	VkCommandPool getCommandPool() { return commandPool; }
 
 private:
-	//Swapchain variables
-	VkSwapchainKHR swapchain;
-	std::vector<VkImage> swapchainImages;
-	VkFormat swapchainImageFormat; 
-	VkExtent2D swapchainExtent; 
-	std::vector<VkImageView> swapchainImageViews;
-	std::vector<VkFramebuffer> swapchainFramebuffers; 
+	// Injected vulkan core component classes
+	std::shared_ptr<Devices> devices = nullptr;
+	std::shared_ptr<Swapchain> swapchain = nullptr;
+	std::shared_ptr<VulkanInstance> instance = nullptr; 
 
-	//Graphics Pipeline Variables
+	uint32_t currentFrame = 0;
+
+	// Graphics Pipeline
 	VkPipelineLayout pipelineLayout;
 	VkPipeline graphicsPipeline;
-	 //Loads shader from w/in graphics pipeline
-	 std::unique_ptr<ShaderLoader> shaderLoader;
-	 //dynamic states used w/in graphics pipeline
-	 std::vector<VkDynamicState> dynamicStates = {
+	std::shared_ptr<ShaderLoader> shaderLoader;
+	std::vector<VkDynamicState> dynamicStates = {
 		VK_DYNAMIC_STATE_VIEWPORT,
 		VK_DYNAMIC_STATE_SCISSOR
-	 };
+	};
 
-	//Render pass variables
+	// Render pass
 	VkRenderPass renderPass;
+
+	// Command system
+	VkCommandPool commandPool;
+	std::vector<VkCommandBuffer> commandBuffers;
+
+	// Sync objects
+	std::vector<VkSemaphore> imageAvailableSemaphores;
+	std::vector<VkSemaphore> renderFinishedSemaphores;
+	std::vector<VkFence> inFlightFences;
 };
 
 #endif

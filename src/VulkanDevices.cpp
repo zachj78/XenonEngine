@@ -1,82 +1,10 @@
 #include "../include/VulkanDevices.h"
 
-// -- Constant Declaration --
+// ==Main functions==
+void Devices::pickPhysicalDevice() {
+	VkInstance instance = dev_instance->getInstance();
+	VkSurfaceKHR surface = dev_instance->getSurface();
 
-//Checks device to ensure all specified extensions(VulkanDevices::deviceExtensions) are supported
-bool checkDeviceExtensionSupport(VkPhysicalDevice physicalDevice, const std::vector<const char*> deviceExtensions) {
-	//Get count of extensions supported by physical device
-	uint32_t extensionCount;
-	vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionCount, nullptr);
-
-	//Create an array of supported device extensions
-	std::vector<VkExtensionProperties> availableExtensions(extensionCount);
-	vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionCount, availableExtensions.data());
-
-	std::set<std::string> requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
-
-	for (const auto& extension : availableExtensions) {
-		requiredExtensions.erase(extension.extensionName);
-	};
-
-	return requiredExtensions.empty();
-
-}
-
-//This function checks if a given physical device is suitable
-bool isDeviceSuitable(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface, const std::vector<const char*> deviceExtensions) {
-	//Check that device extensions are supported
-	bool extensionsSupported = checkDeviceExtensionSupport(physicalDevice, deviceExtensions);
-
-	bool swapchainAdaquate = false; 
-	if (extensionsSupported) {
-		SwapchainSupportDetails swapchainSupport = querySwapchainSupport(physicalDevice, surface);
-		swapchainAdaquate = !swapchainSupport.formats.empty() && !swapchainSupport.presentModes.empty();
-	}
-
-	//Query for basic device properties(name, type, supported vulkan version)
-	VkPhysicalDeviceProperties deviceProperties;
-	vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
-
-	//Query for basic device features(texture compression, multiviewport rendering)
-	VkPhysicalDeviceFeatures deviceFeatures;
-	vkGetPhysicalDeviceFeatures(physicalDevice, &deviceFeatures);
-
-	//Query our queue familes, assign to QueueFamilyIndices
-	QueueFamilyIndices indices = findQueueFamilies(physicalDevice, surface);
-
-	// returns true for discrete gpus or integrated gpus with geometry shader capabilities
-	// also ensures we have found a indice for a graphics queue family
-	return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU || VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
-		&& deviceFeatures.geometryShader && indices.isComplete() && extensionsSupported && swapchainAdaquate;
-};
-
-// -- Logger functions -- 
-void logPhysicalDevice(VkPhysicalDevice physicalDevice) {
-	//log device properties and name
-	VkPhysicalDeviceProperties deviceProperties;
-	VkPhysicalDeviceFeatures deviceFeatures;
-
-	vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
-	vkGetPhysicalDeviceFeatures(physicalDevice, &deviceFeatures);
-
-	printf("Found Phyiscal Device: \n Name: ", deviceProperties.deviceName,
-		"Type: ", deviceProperties.deviceType);
-
-	printf("  API Version: %d.%d.%d\n",
-		VK_VERSION_MAJOR(deviceProperties.apiVersion),
-		VK_VERSION_MINOR(deviceProperties.apiVersion),
-		VK_VERSION_PATCH(deviceProperties.apiVersion));
-
-	printf("  Supports Geometry Shader: %s\n",
-		deviceFeatures.geometryShader ? "Yes" : "No");
-	printf("  Supports Tessellation Shader: %s\n",
-		deviceFeatures.tessellationShader ? "Yes" : "No");
-	printf("  Max Image Dimension 2D: %u\n",
-		deviceProperties.limits.maxImageDimension2D);
-};
-
-// -- Main functions -- 
-void VulkanDevices::pickPhysicalDevice(VkInstance &instance, VkSurfaceKHR &surface) {
 	// get count of total physical devices
 	uint32_t deviceCount = 0;
 	vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
@@ -91,7 +19,7 @@ void VulkanDevices::pickPhysicalDevice(VkInstance &instance, VkSurfaceKHR &surfa
 
 	//Ensure all devices are suitable
 	for (const auto& device : devices) {
-		if (isDeviceSuitable(device, surface, deviceExtensions)) {
+		if (isDeviceSuitable(device)) {
 			physicalDevice = device;
 			break;
 		}
@@ -100,11 +28,14 @@ void VulkanDevices::pickPhysicalDevice(VkInstance &instance, VkSurfaceKHR &surfa
 	if (physicalDevice == VK_NULL_HANDLE) {
 		throw std::runtime_error("Failed to find a suitable GPU");
 	} else {
-		logPhysicalDevice(physicalDevice); 
-	};;
+		logPhysicalDevice(); 
+	};
 };
 
-void VulkanDevices::createLogicalDevice(const std::vector<const char*> validationLayers, VkSurfaceKHR &surface) {
+void Devices::createLogicalDevice() {
+	const std::vector<const char*> validationLayers = dev_instance->validationLayers;
+	VkSurfaceKHR surface = dev_instance->getSurface();
+
 	//First we create struct VkDeviceQueueCreateInfo
 	// -> this struct specifies # of queues we want for a single queue family
 	QueueFamilyIndices indices = findQueueFamilies(physicalDevice, surface);
@@ -169,7 +100,84 @@ void VulkanDevices::createLogicalDevice(const std::vector<const char*> validatio
 };
 
 //Destructor, destroys logical device
-void VulkanDevices::cleanup() {
+void Devices::cleanup() {
 	//Destroy logical device
 	vkDestroyDevice(device, nullptr);
+};
+
+// ==HELPER FUNCTIONS==
+
+//Checks device to ensure all specified extensions(VulkanDevices::deviceExtensions) are supported
+const bool Devices::checkDeviceExtensionSupport(VkPhysicalDevice potentialDevice) {
+	//Get count of extensions supported by physical device
+	uint32_t extensionCount;
+	vkEnumerateDeviceExtensionProperties(potentialDevice, nullptr, &extensionCount, nullptr);
+
+	//Create an array of supported device extensions
+	std::vector<VkExtensionProperties> availableExtensions(extensionCount);
+	vkEnumerateDeviceExtensionProperties(potentialDevice, nullptr, &extensionCount, availableExtensions.data());
+
+	std::set<std::string> requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
+
+	for (const auto& extension : availableExtensions) {
+		requiredExtensions.erase(extension.extensionName);
+	};
+
+	return requiredExtensions.empty();
+
+}
+
+//This function checks if a given physical device is suitable
+const bool Devices::isDeviceSuitable(VkPhysicalDevice potentialDevice) {
+	VkSurfaceKHR surface = dev_instance->getSurface();
+
+	//Check that device extensions are supported
+	bool extensionsSupported = checkDeviceExtensionSupport(potentialDevice);
+
+	bool swapchainAdaquate = false; 
+	if (extensionsSupported) {
+		SwapchainSupportDetails swapchainSupport = querySwapchainSupport(potentialDevice, surface);
+		swapchainAdaquate = !swapchainSupport.formats.empty() && !swapchainSupport.presentModes.empty();
+	}
+
+	//Query for basic device properties(name, type, supported vulkan version)
+	VkPhysicalDeviceProperties deviceProperties;
+	vkGetPhysicalDeviceProperties(potentialDevice, &deviceProperties);
+
+	//Query for basic device features(texture compression, multiviewport rendering)
+	VkPhysicalDeviceFeatures deviceFeatures;
+	vkGetPhysicalDeviceFeatures(potentialDevice, &deviceFeatures);
+
+	//Query our queue familes, assign to QueueFamilyIndices
+	QueueFamilyIndices indices = findQueueFamilies(potentialDevice, surface);
+
+	// returns true for discrete gpus or integrated gpus with geometry shader capabilities
+	// also ensures we have found a indice for a graphics queue family
+	return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU || VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+		&& deviceFeatures.geometryShader && indices.isComplete() && extensionsSupported && swapchainAdaquate;
+};
+
+// -- Logger functions -- 
+void Devices::logPhysicalDevice() const {
+	//log device properties and name
+	VkPhysicalDeviceProperties deviceProperties;
+	VkPhysicalDeviceFeatures deviceFeatures;
+
+	vkGetPhysicalDeviceProperties(physicalDevice, &deviceProperties);
+	vkGetPhysicalDeviceFeatures(physicalDevice, &deviceFeatures);
+
+	printf("Found Phyiscal Device: \n Name: ", deviceProperties.deviceName,
+		"Type: ", deviceProperties.deviceType);
+
+	printf("  API Version: %d.%d.%d\n",
+		VK_VERSION_MAJOR(deviceProperties.apiVersion),
+		VK_VERSION_MINOR(deviceProperties.apiVersion),
+		VK_VERSION_PATCH(deviceProperties.apiVersion));
+
+	printf("  Supports Geometry Shader: %s\n",
+		deviceFeatures.geometryShader ? "Yes" : "No");
+	printf("  Supports Tessellation Shader: %s\n",
+		deviceFeatures.tessellationShader ? "Yes" : "No");
+	printf("  Max Image Dimension 2D: %u\n",
+		deviceProperties.limits.maxImageDimension2D);
 };
