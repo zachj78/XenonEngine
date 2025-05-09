@@ -34,8 +34,8 @@ void GraphicsPipeline::recordCommandBuffer(VkCommandBuffer commandBuffer,
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
 	//Get buffer handles and vertex data
-	Buffer* vbuf = bufferManager->getBuffer("Triangle");
-	Buffer* ibuf = bufferManager->getBuffer("index_Triangle");
+	std::shared_ptr<Buffer> vbuf = bufferManager->getBuffer("Triangle");
+	std::shared_ptr<Buffer> ibuf = bufferManager->getBuffer("index_Triangle");
 	VkBuffer vertexBuffer = vbuf->getHandle();
 	VkBuffer indexBuffer = ibuf->getHandle();
 	std::vector<Vertex> vertices = vbuf->getData<Vertex>();
@@ -95,6 +95,33 @@ void GraphicsPipeline::cleanup(VkInstance &instance) {
 	vkDestroyPipeline(logicalDevice, graphicsPipeline, nullptr);
 	vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
 	vkDestroyRenderPass(logicalDevice, renderPass, nullptr);
+	vkDestroyDescriptorSetLayout(logicalDevice, descriptorSetLayout, nullptr);
+};
+
+void GraphicsPipeline::createDescriptorSetLayout() {
+	std::cout << "Creating descriptor set layout" << std::endl;
+
+	VkDescriptorSetLayoutBinding uboLayoutBinding{};
+	uboLayoutBinding.binding = 0;
+	uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	uboLayoutBinding.descriptorCount = 1;
+
+	uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+	uboLayoutBinding.pImmutableSamplers = nullptr;
+
+	VkDescriptorSetLayoutCreateInfo layoutInfo{};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfo.bindingCount = 1;
+	layoutInfo.pBindings = &uboLayoutBinding;
+
+	VkResult result = vkCreateDescriptorSetLayout(devices->getLogicalDevice(), &layoutInfo, nullptr, &descriptorSetLayout);
+
+	if (result != VK_SUCCESS) {
+		throw std::runtime_error("Failed to create descriptor set layout");
+	}
+	else {
+		std::cout << "Created descriptor set layout successfully : [" << result << "]" << std::endl;
+	};
 };
 
 void GraphicsPipeline::createRenderPass() {
@@ -141,7 +168,7 @@ void GraphicsPipeline::createRenderPass() {
 void GraphicsPipeline::createGraphicsPipeline(std::shared_ptr<UniformBufferManager> uniformBufferManager) {
 	VkDevice logicalDevice = devices->getLogicalDevice();
 
-    //Create a shader loader class to load vert and frag shader
+	//Create a shader loader class to load vert and frag shader
 	shaderLoader = std::make_shared<ShaderLoader>();
 
 	auto vertShaderCode = shaderLoader->readShaderFile("resources/shaders/vert.spv");
@@ -154,16 +181,16 @@ void GraphicsPipeline::createGraphicsPipeline(std::shared_ptr<UniformBufferManag
 	VkShaderModule fragShaderModule = shaderLoader->createShaderModule(logicalDevice, fragShaderCode);
 
 	//Now we assign the shaders to the pipeline using PipelineShaderStageCreateInfo
-	VkPipelineShaderStageCreateInfo vertShaderStageInfo{}; 
+	VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
 	vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 	vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
-	vertShaderStageInfo.module = vertShaderModule; 
-	vertShaderStageInfo.pName = "main"; 
+	vertShaderStageInfo.module = vertShaderModule;
+	vertShaderStageInfo.pName = "main";
 
 	VkPipelineShaderStageCreateInfo fragShaderStageInfo{};
 	fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 	fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-	fragShaderStageInfo.module = fragShaderModule; 
+	fragShaderStageInfo.module = fragShaderModule;
 	fragShaderStageInfo.pName = "main";
 
 	VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo, fragShaderStageInfo };
@@ -182,27 +209,27 @@ void GraphicsPipeline::createGraphicsPipeline(std::shared_ptr<UniformBufferManag
 	VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
 	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
 	vertexInputInfo.vertexBindingDescriptionCount = 1;
-	vertexInputInfo.pVertexBindingDescriptions = &bindingDescription; 
+	vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
 	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescription.size());
-	vertexInputInfo.pVertexAttributeDescriptions = attributeDescription.data(); 
+	vertexInputInfo.pVertexAttributeDescriptions = attributeDescription.data();
 
 	//Specifies how input vertices should be assembled
 	VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
 	inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-	inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST; 
-	inputAssembly.primitiveRestartEnable = VK_FALSE; 
+	inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+	inputAssembly.primitiveRestartEnable = VK_FALSE;
 
 	VkPipelineViewportStateCreateInfo viewportState{};
 	viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-	viewportState.viewportCount = 1; 
+	viewportState.viewportCount = 1;
 	viewportState.scissorCount = 1;
 
 	//Specifies how rasterization will work
 	VkPipelineRasterizationStateCreateInfo rasterizer{};
 	rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-	rasterizer.rasterizerDiscardEnable = VK_FALSE; 
+	rasterizer.rasterizerDiscardEnable = VK_FALSE;
 	rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
-	rasterizer.lineWidth = 1.0f; 
+	rasterizer.lineWidth = 1.0f;
 	rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
 	rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
 	rasterizer.depthBiasEnable = VK_FALSE;
@@ -210,8 +237,8 @@ void GraphicsPipeline::createGraphicsPipeline(std::shared_ptr<UniformBufferManag
 	//configues multi-sampling -> kept disabled for now
 	VkPipelineMultisampleStateCreateInfo multisampling{};
 	multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-	multisampling.sampleShadingEnable = VK_FALSE; 
-	multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT; 
+	multisampling.sampleShadingEnable = VK_FALSE;
+	multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
 
 	//for 3d shit create a depth buffer and set it up here later
 
@@ -235,11 +262,9 @@ void GraphicsPipeline::createGraphicsPipeline(std::shared_ptr<UniformBufferManag
 	VkPipelineLayoutCreateInfo layoutInfo{};
 	layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 	layoutInfo.setLayoutCount = 1;
-	VkDescriptorSetLayout descSetLayout = uniformBufferManager->getDescriptorSetLayout();
-	layoutInfo.pSetLayouts = &descSetLayout;
+	std::vector<VkDescriptorSetLayout> descriptorSetLayouts = { descriptorSetLayout };
 
-	//VkDescriptorSetLayout setLayouts = uniformBufferManager->getDescriptorSetLayout();
-	//layoutInfo.pSetLayouts = &setLayouts;
+	layoutInfo.pSetLayouts = descriptorSetLayouts.data(); 
 
 	if (vkCreatePipelineLayout(logicalDevice, &layoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create pipeline layout");

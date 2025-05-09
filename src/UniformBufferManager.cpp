@@ -1,30 +1,5 @@
 #include "../include/UniformBufferManager.h"
 
-void UniformBufferManager::createDescriptorSetLayout() {
-	std::cout << "Creating descriptor set layout" << std::endl;
-
-	VkDescriptorSetLayoutBinding uboLayoutBinding{};
-	uboLayoutBinding.binding = 0;
-	uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-	uboLayoutBinding.descriptorCount = 1;
-
-	uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-	uboLayoutBinding.pImmutableSamplers = nullptr;
-
-	VkDescriptorSetLayoutCreateInfo layoutInfo{};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = 1;
-	layoutInfo.pBindings = &uboLayoutBinding;
-
-	VkResult result = vkCreateDescriptorSetLayout(descManager_logicalDevice, &layoutInfo, nullptr, &descriptorSetLayout);
-
-	if (result != VK_SUCCESS) {
-		throw std::runtime_error("Failed to create descriptor set layout");
-	} else {
-		std::cout << "Created descriptor set layout successfully : [" << result << "]" << std::endl;
-	};
-};
-
 void UniformBufferManager::createUniformBuffers() {
 	VkDeviceSize bufferSize = sizeof(UniformBufferObject);
 	std::cout << "Creating uniform buffers : [" << bufferSize << "]" << std::endl;
@@ -34,18 +9,18 @@ void UniformBufferManager::createUniformBuffers() {
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
 		std::string ubufName = "ubuf" + std::to_string(i);
 
-		std::shared_ptr<BaseBuffer> ubuf = BufferUtils::createUniformBuffer(
+		descManager_bufferManager->createBuffer(
 			BufferType::UNIFORM,
 			ubufName,
 			bufferSize,
 			VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-			descManager_logicalDevice, descManager_physicalDevice
+			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
 		);
 
-		std::cout << "Created ubuf :[" << ubuf->getHandle() << "] : [" << ubufName << "]" << std::endl;
+		//FIX VERTEX AND INDEX BUFFER SETUP FOR NEW BUFFER AND BUFFERMANAGER
+		std::shared_ptr<Buffer> ubuf = descManager_bufferManager->getBuffer(ubufName);
 
-		VkResult mapResult = vkMapMemory(descManager_logicalDevice, ubuf->buf_memory, 0, bufferSize, 0, &uniformBuffer_ptrs[i]);
+		VkResult mapResult = vkMapMemory(descManager_logicalDevice, ubuf->getMemory(), 0, bufferSize, 0, &uniformBuffer_ptrs[i]);
 		if (mapResult != VK_SUCCESS) {
 			throw std::runtime_error("Ubuf `vkMapMemory` operation failed");
 		} else {
@@ -96,7 +71,7 @@ void UniformBufferManager::createDescriptorPool() {
 	};
 };
 
-void UniformBufferManager::createDescriptorSet() {
+void UniformBufferManager::createDescriptorSets() {
 	std::cout << "Creating descriptor sets" << std::endl;
 
 	std::vector<VkDescriptorSetLayout> layouts(MAX_FRAMES_IN_FLIGHT, descriptorSetLayout);
@@ -113,19 +88,12 @@ void UniformBufferManager::createDescriptorSet() {
 
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
 		std::string ubufName = "ubuf" + std::to_string(i);
-		VkBuffer ubuf_handle = nullptr; 
 
-		auto it = uniformBuffers.find(ubufName);
-		if (it != uniformBuffers.end()) {
-			BaseBuffer* ubuf = it->second.get();
-			ubuf_handle = ubuf->getHandle();
-			std::cout << "Found uniform buffer [" << ubuf->getMemory() << "]: " << ubufName << std::endl;;
-		} else {
-			throw std::runtime_error("Failed write descriptor sets for each uniform buffer -> could not retreive [" + ubufName + "] successfully");
-		}
+		std::shared_ptr<Buffer> ubuf = descManager_bufferManager->getBuffer(ubufName);
+		VkBuffer ubufHandle = ubuf->getHandle();
 
 		VkDescriptorBufferInfo bufferInfo{};
-		bufferInfo.buffer = ubuf_handle;
+		bufferInfo.buffer = ubufHandle;
 		bufferInfo.offset = 0;
 		bufferInfo.range = sizeof(UniformBufferObject);
 
@@ -152,12 +120,12 @@ void UniformBufferManager::createDescriptorSet() {
 
 void UniformBufferManager::cleanup() {
 	for (const auto& pair : uniformBuffers) {
-		BaseBuffer* ubuf = pair.second.get();
+		std::string name = pair.first;
+		std::shared_ptr<Buffer> ubuf = pair.second;
 
 		vkDestroyBuffer(descManager_logicalDevice, ubuf->getHandle(), nullptr);
 		vkFreeMemory(descManager_logicalDevice, ubuf->getMemory(), nullptr);
 	};
 
 	vkDestroyDescriptorPool(descManager_logicalDevice, descriptorPool, nullptr);
-	vkDestroyDescriptorSetLayout(descManager_logicalDevice, descriptorSetLayout, nullptr);
 };

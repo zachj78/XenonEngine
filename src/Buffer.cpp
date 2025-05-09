@@ -1,6 +1,8 @@
 #include "../include/Buffer.h"
 
-uint32_t BaseBuffer::findMemoryType(VkPhysicalDevice physicalDevice, uint32_t typeFilter, VkMemoryPropertyFlags properties) {
+//THIS NEEDS TO BE MADE INTO SOME SORT OF HELPER FUNCTION
+// MAYBE MOVE TO BUFFERUTILS
+uint32_t Buffer::findMemoryType(VkPhysicalDevice physicalDevice, uint32_t typeFilter, VkMemoryPropertyFlags properties) {
 	VkPhysicalDeviceMemoryProperties memProperties;
 	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
 
@@ -24,27 +26,25 @@ void Buffer::createBuffer(
 };
 
 void Buffer::mapData(VkDevice logicalDevice, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties) {
+	if (buf_type == BufferType::UNIFORM) return;
+	if (buf_type == BufferType::GENERIC) return; 
+
+	if (buf_type == BufferType::INDEX || buf_type == BufferType::VERTEX) {
+		std::cout << "Successfully mapped data to buffer";
+		return;
+	};
+
+	void* data;
+	vkMapMemory(logicalDevice, buf_memory, 0, buf_size, 0, &data);
+		
 	//Map data to buffer depending on type: 
 	if (buf_type == BufferType::VERTEX_STAGING) {
-		std::cout << "Mapping vertex data to staging buffer " << std::endl;
-		void* data; 
-		vkMapMemory(logicalDevice, buf_memory, 0, buf_size, 0, &data);
 		memcpy(data, buf_vertices.value().data(), (size_t)buf_size);
-		vkUnmapMemory(logicalDevice, buf_memory);
 	} else if (buf_type == BufferType::INDEX_STAGING) {
-		std::cout << "Mapping index data to staging buffer " << std::endl;
-		std::cout << "Indices being mapped: ";
-		for (uint32_t i : buf_indices.value()) std::cout << i << " ";
-		std::cout << std::endl;
-		void* data;
-		vkMapMemory(logicalDevice, buf_memory, 0, buf_size, 0, &data);
 		memcpy(data, buf_indices.value().data(), (size_t)buf_size);
-		vkUnmapMemory(logicalDevice, buf_memory);
-	} else if(buf_type == BufferType::INDEX) {
-		std::cout << "Index buffer created sucessfully : [" << buf_name << "]" << std::endl;
-	} else if(buf_type == BufferType::VERTEX) {
-		std::cout << "Vertex buffer created sucessfully : [" << buf_name << "]" << std::endl;
 	}
+		
+	vkUnmapMemory(logicalDevice, buf_memory);
 };
 
 
@@ -73,7 +73,7 @@ std::vector<uint32_t> Buffer::getData<uint32_t>() const {
 }
 
 
-void BaseBuffer::printErrors() const {
+void Buffer::printErrors() const {
 	if (buf_errors == BUF_ERROR_NONE) {
 		std::cout << "[" << buf_name << "] No buffer errors detected." << std::endl;
 

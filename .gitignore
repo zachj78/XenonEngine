@@ -45,3 +45,6 @@
 *.exe
 *.log
 *.vcxproj.user
+
+#Ignore build
+/build/

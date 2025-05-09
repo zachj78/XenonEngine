@@ -16,6 +16,20 @@
 #include "../include/BufferManager.h"
  #include "../include/UniformBufferManager.h"
 
+// == Helper functions == 
+template <typename T>
+void cleanDeadBuffersVerbose(std::unordered_map<std::string, std::shared_ptr<T>>& map) {
+    for (auto it = map.begin(); it != map.end(); ) {
+        if (!it->second) {
+            std::cout << "Removing dead buffer: " << it->first << std::endl;
+            it = map.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
+}
+
 //Loader functions
 void loadMeshesToVertexBufferManager(const MeshManager& meshManager, BufferManager& bufferManager) {
     for (const auto& meshPair : meshManager.getAllMeshes()) {
@@ -32,12 +46,13 @@ void loadMeshesToVertexBufferManager(const MeshManager& meshManager, BufferManag
         bufferManager.createBuffer(
             BufferType::VERTEX_STAGING,
             "v_staging_" + name,
+            verticesSize, 
             VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
             vertices
         );
 
-        Buffer* vertexStagingBuffer = bufferManager.getBuffer("v_staging_" + name);
+        std::shared_ptr<Buffer> vertexStagingBuffer = bufferManager.getBuffer("v_staging_" + name);
 
         if (!vertexStagingBuffer) {
             std::cerr << "Error: Staging buffer creation failed for mesh: " << name << std::endl;
@@ -48,12 +63,13 @@ void loadMeshesToVertexBufferManager(const MeshManager& meshManager, BufferManag
         bufferManager.createBuffer(
             BufferType::VERTEX,
             name,
+            verticesSize,
             VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
             VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
             vertices
         );
 
-        Buffer* vertexBuffer = bufferManager.getBuffer(name);
+        std::shared_ptr<Buffer> vertexBuffer = bufferManager.getBuffer(name);
 
         if (!vertexBuffer) {
             std::cerr << "Error: Vertex buffer creation failed for mesh: " << name << std::endl;
@@ -72,30 +88,32 @@ void loadMeshesToVertexBufferManager(const MeshManager& meshManager, BufferManag
         //Copy data from staging buffer to vertex buffer
         if (vertexStagingBuffer && vertexBuffer) {
             bufferManager.copyBuffer(vertexStagingBuffer, vertexBuffer, verticesSize);
-        }
+        };
 
         //Now we repeat the process to load mesh index data to a index buffer
         bufferManager.createBuffer(
             BufferType::INDEX_STAGING,
             "i_staging_" + name,
+            indicesSize, 
             VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
             std::nullopt,
             indices
         );
 
-        Buffer* indexStagingBuffer = bufferManager.getBuffer("i_staging_" + name);
+        std::shared_ptr<Buffer> indexStagingBuffer = bufferManager.getBuffer("i_staging_" + name);
 
         bufferManager.createBuffer(
             BufferType::INDEX,
             "index_" + name,
+            indicesSize,
             VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
             VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
             std::nullopt,
             indices
         );
 
-        Buffer* indexBuffer = bufferManager.getBuffer("index_" + name);
+        std::shared_ptr<Buffer> indexBuffer = bufferManager.getBuffer("index_" + name);
 
         //Check for errors
         if (indexStagingBuffer && indexStagingBuffer->hasErrors()) {
@@ -122,7 +140,7 @@ public: void run() {
 };
 
 private:
-    // -- PRIMARY CLASSES -- 
+    // -- PRIMARY CLASSES (CORE VULKAN COMPONENTS) -- 
     //Handles instance creation and validation layers
     std::shared_ptr < VulkanInstance > instance;
     //Handles physical, logical and graphicsQueue creation
@@ -139,7 +157,7 @@ private:
     std::shared_ptr < MeshManager > meshManager;
     //Creates a buffer manager
     std::shared_ptr < BufferManager > bufferManager;
-    //Creates a uniform buffer manager
+    //Creates a uniform buffer manager (change to descriptor manager later)
     std::shared_ptr < UniformBufferManager > uniformBufferManager;
 
     void initVulkan() {
@@ -161,8 +179,6 @@ private:
         VkPhysicalDevice physicalDevice = devices->getPhysicalDevice();
         VkDevice logicalDevice = devices->getLogicalDevice();
 
-        //Create external manager classes 
-        //uniformBufferManager = std::make_unique<UniformBufferManager>(logicalDevice, physicalDevice);
         meshManager = std::make_shared<MeshManager>();
 
         //Create VkSurface -> create surface in instance instead since its needed by swapchain and devices
@@ -173,11 +189,10 @@ private:
         //Create image views
         swapchain->createImageViews();
 
-        //Create uniform buffer manager
-        uniformBufferManager = std::make_shared<UniformBufferManager>(logicalDevice, physicalDevice);
-        uniformBufferManager->createDescriptorSetLayout();
-
         graphicsPipeline = std::make_shared<GraphicsPipeline>(instance, devices, swapchain);
+        
+        //Create descriptor set layout
+        graphicsPipeline->createDescriptorSetLayout();
 
         //Create render pass 
         graphicsPipeline->createRenderPass();
@@ -204,12 +219,14 @@ private:
         meshManager->addMesh(std::make_shared < TriangleMesh >());
         bufferManager = std::make_shared < BufferManager >(logicalDevice, physicalDevice,
             graphicsPipeline->getCommandPool(), devices->getGraphicsQueue());
+        //Create uniform buffer manager
+        uniformBufferManager = std::make_shared<UniformBufferManager>(logicalDevice, physicalDevice, graphicsPipeline->getDescriptorSetLayout(), bufferManager);
 
         loadMeshesToVertexBufferManager(*meshManager, *bufferManager);
 
         uniformBufferManager->createUniformBuffers();
         uniformBufferManager->createDescriptorPool();
-        uniformBufferManager->createDescriptorSet();
+        uniformBufferManager->createDescriptorSets();
 
         graphicsPipeline->createCommandBuffer();
 

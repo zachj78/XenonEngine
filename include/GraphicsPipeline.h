@@ -28,6 +28,7 @@ public:
 
 	// Pipeline setup
 	void createGraphicsPipeline(std::shared_ptr<UniformBufferManager> uniformBufferManager);
+	void createDescriptorSetLayout();
 	void createRenderPass();
 	void createCommandPool();
 	void createCommandBuffer();
@@ -49,11 +50,12 @@ public:
 	void cleanup(VkInstance& instance);
 
 	// Getters
-	VkPipeline getGraphicsPipeline() { return graphicsPipeline; }
-	VkPipelineLayout getPipelineLayout() { return pipelineLayout; }
-	VkRenderPass getRenderPass() { return renderPass; }
-	std::vector<VkCommandBuffer> getCommandBuffers() { return commandBuffers; }
-	VkCommandPool getCommandPool() { return commandPool; }
+	VkPipeline getGraphicsPipeline() { return graphicsPipeline; };
+	VkPipelineLayout getPipelineLayout() { return pipelineLayout; };
+	VkDescriptorSetLayout getDescriptorSetLayout() const { return descriptorSetLayout; };
+	VkRenderPass getRenderPass() { return renderPass; };
+	std::vector<VkCommandBuffer> getCommandBuffers() { return commandBuffers; };
+	VkCommandPool getCommandPool() { return commandPool; };
 
 private:
 	// Injected vulkan core component classes
@@ -71,6 +73,9 @@ private:
 		VK_DYNAMIC_STATE_VIEWPORT,
 		VK_DYNAMIC_STATE_SCISSOR
 	};
+
+	//Descriptor layout
+	VkDescriptorSetLayout descriptorSetLayout;
 
 	// Render pass
 	VkRenderPass renderPass;
