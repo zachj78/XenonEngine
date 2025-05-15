@@ -3,19 +3,21 @@
 #define BUFFER_MANAGER_H
 
 #include "config.h"
-#include "MeshManager.h"
 #include "Buffer.h"
+#include "MeshManager.h"
+
+//Forward declarations
+class GraphicsPipeline; 
 
 class BufferManager {
 public:
 	BufferManager(
 		VkDevice logicalDevice,
 		VkPhysicalDevice physicalDevice,
-		VkCommandPool commandPool,
+		std::shared_ptr<GraphicsPipeline> graphicsPipeline,
 		VkQueue graphicsQueue
 	);
 
-	//CREATES VERTEX, INDEX AND STAGING BUFFERS
 	void createBuffer(
 		BufferType type,
 		const std::string& name,
@@ -26,16 +28,23 @@ public:
 		std::optional<std::vector<uint32_t>> indices = std::nullopt
 	);
 	
-	void BufferManager::copyBuffer(std::shared_ptr<Buffer> srcBuffer, std::shared_ptr<Buffer> dstBuffer, VkDeviceSize size);
-	
+	VkCommandBuffer beginOneTimeCommands();
+
+	void endOneTimeCommands(VkCommandBuffer commandBuffer);
+
+	void copyBuffer(std::shared_ptr<Buffer> srcBuffer, std::shared_ptr<Buffer> dstBuffer, VkDeviceSize size);
+
 	std::shared_ptr<Buffer> getBuffer(const std::string& name);
+	VkCommandPool getCommandPool();
+
+	void removeBufferByName(const std::string name);
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<Buffer>> buffers;
 
 	VkDevice bufferManager_logicalDevice;
 	VkPhysicalDevice bufferManager_physicalDevice;
-	VkCommandPool bufferManager_commandPool;
+	std::shared_ptr<GraphicsPipeline> bufferManager_graphicsPipeline;
 	VkQueue bufferManager_graphicsQueue;
 };
 

@@ -3,12 +3,26 @@
 #define UNIFORM_BUFFER_MANAGER_H
 
 #include "config.h"
-#include "BufferManager.h"
+
+//Forward declarations
+class BufferManager; 
+class Buffer;
 
 struct UniformBufferObject {
 	glm::mat4 model; 
 	glm::mat4 view;
 	glm::mat4 proj;
+};
+
+// ULTIMATELY THIS CLASS SHOULD HAVE A WAY TO ADD DESCRIPTORS OF ANY TYPE MODULARLY 
+// -> figure this shit out later tho
+
+struct DescriptorEntry {
+	uint32_t binding; 
+	VkDescriptorType type;
+	VkShaderStageFlags stage; 
+	void* data; 
+
 };
 
 class UniformBufferManager {
@@ -22,7 +36,7 @@ public:
 
 	void createDescriptorPool();
 
-	void createDescriptorSets();
+	void createDescriptorSets(VkImageView imageView, VkSampler sampler);
 
 	void cleanup();
 

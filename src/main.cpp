@@ -14,21 +14,10 @@
 #include "../include/SwapchainRecreater.h"
 #include "../include/MeshManager.h"
 #include "../include/BufferManager.h"
- #include "../include/UniformBufferManager.h"
+#include "../include/UniformBufferManager.h"
+#include "../include/ImageManager.h"
 
 // == Helper functions == 
-template <typename T>
-void cleanDeadBuffersVerbose(std::unordered_map<std::string, std::shared_ptr<T>>& map) {
-    for (auto it = map.begin(); it != map.end(); ) {
-        if (!it->second) {
-            std::cout << "Removing dead buffer: " << it->first << std::endl;
-            it = map.erase(it);
-        }
-        else {
-            ++it;
-        }
-    }
-}
 
 //Loader functions
 void loadMeshesToVertexBufferManager(const MeshManager& meshManager, BufferManager& bufferManager) {
@@ -90,6 +79,14 @@ void loadMeshesToVertexBufferManager(const MeshManager& meshManager, BufferManag
             bufferManager.copyBuffer(vertexStagingBuffer, vertexBuffer, verticesSize);
         };
 
+        //Now we delete the staging buffer
+        vertexStagingBuffer.reset();
+        if (vertexStagingBuffer == nullptr) {
+            bufferManager.removeBufferByName("v_staging" + name);
+        } else {
+            std::cout << "**UNABLE TO RESET VERTEX STAGING BUFFER POINTER" << std::endl;
+        };
+
         //Now we repeat the process to load mesh index data to a index buffer
         bufferManager.createBuffer(
             BufferType::INDEX_STAGING,
@@ -128,6 +125,14 @@ void loadMeshesToVertexBufferManager(const MeshManager& meshManager, BufferManag
         if (indexStagingBuffer && indexBuffer) {
             bufferManager.copyBuffer(indexStagingBuffer, indexBuffer, indicesSize);
         };
+
+        //Delete index staging buffer
+        indexStagingBuffer.reset();
+        if (indexStagingBuffer == nullptr) {
+            bufferManager.removeBufferByName("i_staging_" + name);
+        } else {
+            std::cout << "**UNABLE TO RESET INDEX STAGING BUFFER TO NULLPTR" << std::endl;
+        };
     }
 };
 
@@ -142,27 +147,26 @@ public: void run() {
 private:
     // -- PRIMARY CLASSES (CORE VULKAN COMPONENTS) -- 
     //Handles instance creation and validation layers
-    std::shared_ptr < VulkanInstance > instance;
+    std::shared_ptr <VulkanInstance> instance;
     //Handles physical, logical and graphicsQueue creation
-    std::shared_ptr < Devices > devices;
+    std::shared_ptr <Devices> devices;
     //Handles VkSurface and VkSwapchainKHR
-    std::shared_ptr < Swapchain > swapchain;
+    std::shared_ptr <Swapchain> swapchain;
     //Handles renderpass and pipeline/pipeline layout
-    std::shared_ptr < GraphicsPipeline > graphicsPipeline;
+    std::shared_ptr <GraphicsPipeline> graphicsPipeline;
 
     // -- UTILITY CLASSES --
     //Creates the swapchain recreater 
-    std::shared_ptr < SwapchainRecreater > swapchainRecreater;
+    std::shared_ptr <SwapchainRecreater> swapchainRecreater;
     //Creates a mesh manager
-    std::shared_ptr < MeshManager > meshManager;
+    std::shared_ptr <MeshManager> meshManager;
     //Creates a buffer manager
-    std::shared_ptr < BufferManager > bufferManager;
+    std::shared_ptr <BufferManager> bufferManager;
     //Creates a uniform buffer manager (change to descriptor manager later)
-    std::shared_ptr < UniformBufferManager > uniformBufferManager;
+    std::shared_ptr <UniformBufferManager> uniformBufferManager;
+    std::shared_ptr <ImageManager> imageManager;
 
     void initVulkan() {
-        //TODO: FIX CLEANUP -> ENSURE ALL FUNCTIONS ONLY CLEAN UP THEIR OWN RESOURCES
-
         //Create window, instance and debug messenger
         instance = std::make_shared <VulkanInstance>();
         instance->createInstance();
@@ -200,33 +204,41 @@ private:
 
         //Create actual pipeline
         graphicsPipeline->createGraphicsPipeline(uniformBufferManager);
+       
+        // -> the vertex manager parameter passes in a vertex manager class, which binds vertex data to pipeline
+        meshManager->addMesh(std::make_shared<TriangleMesh>());
+
+        bufferManager = std::make_shared<BufferManager>(logicalDevice, physicalDevice, graphicsPipeline, devices->getGraphicsQueue());
+        imageManager = std::make_shared<ImageManager>(logicalDevice, physicalDevice, swapchain, bufferManager);
+        uniformBufferManager = std::make_shared<UniformBufferManager>(logicalDevice, physicalDevice, graphicsPipeline->getDescriptorSetLayout(), bufferManager);
+
+        //Create depth image
+        imageManager->createDepthImage();
 
         //Load all the swapchain recreate functions to the swapchain recreater
-        swapchainRecreater = std::make_shared < SwapchainRecreater >();
+        swapchainRecreater = std::make_shared<SwapchainRecreater>();
         swapchainRecreater->setCallbacks(
             std::bind(&Swapchain::cleanup, swapchain.get()),
             std::bind(&Swapchain::createSwapchain, swapchain.get()),
             std::bind(&Swapchain::createImageViews, swapchain.get()),
-            std::bind(&Swapchain::createSwapFramebuffers, swapchain.get(), renderPass)
+            std::bind(&Swapchain::createSwapFramebuffers, swapchain.get(), renderPass, imageManager->getDepthImageView())
         );
 
-        swapchain->createSwapFramebuffers(renderPass);
+        swapchain->createSwapFramebuffers(renderPass, imageManager->getDepthImageView());
 
         //Create command pool and all buffers
         graphicsPipeline->createCommandPool();
 
-        // -> the vertex manager parameter passes in a vertex manager class, which binds vertex data to pipeline
-        meshManager->addMesh(std::make_shared < TriangleMesh >());
-        bufferManager = std::make_shared < BufferManager >(logicalDevice, physicalDevice,
-            graphicsPipeline->getCommandPool(), devices->getGraphicsQueue());
-        //Create uniform buffer manager
-        uniformBufferManager = std::make_shared<UniformBufferManager>(logicalDevice, physicalDevice, graphicsPipeline->getDescriptorSetLayout(), bufferManager);
-
         loadMeshesToVertexBufferManager(*meshManager, *bufferManager);
+
+        //Create a texture image to load into descriptor sets
+        imageManager->createTextureImage("tex1");
+        VkSampler sampler = imageManager->getSampler("tex1"); // Implement this next, then make sure the path to load the texture is correct
+        ImageDetails imageDetails = imageManager->getImageDetails("tex1");
 
         uniformBufferManager->createUniformBuffers();
         uniformBufferManager->createDescriptorPool();
-        uniformBufferManager->createDescriptorSets();
+        uniformBufferManager->createDescriptorSets(imageDetails.imageView, sampler);
 
         graphicsPipeline->createCommandBuffer();
 

@@ -1,8 +1,8 @@
-//GLOBAL CONFIG FILE
-//FOR GLOBAL VARIABLES AND LIBRARIES
 #pragma once
 #include "config.h"
 #include <fstream>
+
+//All this shit should be moved to be within swapchain
 
 struct SwapchainSupportDetails {
 	VkSurfaceCapabilitiesKHR capabilities;

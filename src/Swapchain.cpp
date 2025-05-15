@@ -172,7 +172,7 @@ void Swapchain::createImageViews() {
 	};
 }
 
-void Swapchain::createSwapFramebuffers(VkRenderPass renderPass) {
+void Swapchain::createSwapFramebuffers(VkRenderPass renderPass, VkImageView depthImageView) {
 	VkDevice logicalDevice = swpch_devices->getLogicalDevice();
 	
 	//Resize the framebuffers to hold each image view
@@ -180,15 +180,16 @@ void Swapchain::createSwapFramebuffers(VkRenderPass renderPass) {
 
 	//now iterate through image views and create a framebuffer for each
 	for (size_t i = 0; i < swapchainImageViews.size(); i++) {
-		VkImageView attachments[] = {
-			swapchainImageViews[i]
+		std::array<VkImageView, 2> attachments = {
+			swapchainImageViews[i],
+			depthImageView
 		};
 
 		VkFramebufferCreateInfo framebufferInfo{};
 		framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
 		framebufferInfo.renderPass = renderPass;
-		framebufferInfo.attachmentCount = 1;
-		framebufferInfo.pAttachments = attachments;
+		framebufferInfo.attachmentCount = static_cast<uint32_t>(attachments.size());
+		framebufferInfo.pAttachments = attachments.data();
 		framebufferInfo.width = swapchainExtent.width;
 		framebufferInfo.height = swapchainExtent.height;
 		framebufferInfo.layers = 1;

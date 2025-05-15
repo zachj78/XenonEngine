@@ -151,10 +151,18 @@ const bool Devices::isDeviceSuitable(VkPhysicalDevice potentialDevice) {
 	//Query our queue familes, assign to QueueFamilyIndices
 	QueueFamilyIndices indices = findQueueFamilies(potentialDevice, surface);
 
+	//Query for other supported features(anisotrophy, raytracing, etc)
+	VkPhysicalDeviceFeatures supportedFeatures;
+	vkGetPhysicalDeviceFeatures(potentialDevice, &supportedFeatures);
+
 	// returns true for discrete gpus or integrated gpus with geometry shader capabilities
 	// also ensures we have found a indice for a graphics queue family
-	return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU || VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
-		&& deviceFeatures.geometryShader && indices.isComplete() && extensionsSupported && swapchainAdaquate;
+	return (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU || VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU)
+		&& deviceFeatures.geometryShader 
+		&& indices.isComplete() 
+		&& extensionsSupported 
+		&& swapchainAdaquate 
+		&& supportedFeatures.samplerAnisotropy;
 };
 
 // -- Logger functions -- 

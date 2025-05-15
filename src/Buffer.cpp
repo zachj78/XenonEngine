@@ -1,19 +1,6 @@
 #include "../include/Buffer.h"
-
-//THIS NEEDS TO BE MADE INTO SOME SORT OF HELPER FUNCTION
-// MAYBE MOVE TO BUFFERUTILS
-uint32_t Buffer::findMemoryType(VkPhysicalDevice physicalDevice, uint32_t typeFilter, VkMemoryPropertyFlags properties) {
-	VkPhysicalDeviceMemoryProperties memProperties;
-	vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
-
-	for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
-		if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties)) {
-			return i;
-		}
-	};
-
-	throw std::runtime_error("Failed to find suitable buffer memory type");
-};
+#include "../include/Image.h"
+#include "../include/MemoryUtils.h"
 
 void Buffer::createBuffer(
 	VkDevice logicalDevice, VkPhysicalDevice physicalDevice,
@@ -21,9 +8,47 @@ void Buffer::createBuffer(
 	VkDeviceSize size
 ) {
 	allocateAndBindBuffer(logicalDevice, physicalDevice, size, usage, properties);
-	// MAKE SURE THIS WORKS!!!
 	mapData(logicalDevice, usage, properties);
 };
+
+void Buffer::allocateAndBindBuffer(
+	VkDevice device,
+	VkPhysicalDevice physicalDevice,
+	VkDeviceSize size,
+	VkBufferUsageFlags usage,
+	VkMemoryPropertyFlags properties
+) {
+	std::cout << "Allocating buffer of size : [" << size << "]" << std::endl;
+
+	// Create buffer
+	VkBufferCreateInfo bufferInfo{};
+	bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+	bufferInfo.size = size;
+	bufferInfo.usage = usage;
+	bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+	if (vkCreateBuffer(device, &bufferInfo, nullptr, &buf_handle) != VK_SUCCESS) {
+		buf_errors |= BUF_ERROR_CREATION;
+	};
+
+	VkMemoryRequirements memRequirements;
+	vkGetBufferMemoryRequirements(device, buf_handle, &memRequirements);
+
+	VkMemoryAllocateInfo allocInfo{};
+	allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+	allocInfo.allocationSize = memRequirements.size;
+	allocInfo.memoryTypeIndex = findMemoryType(physicalDevice, memRequirements.memoryTypeBits, properties);
+
+	if (vkAllocateMemory(device, &allocInfo, nullptr, &buf_memory) != VK_SUCCESS) {
+		buf_errors |= BUF_ERROR_ALLOCATION;
+	}
+
+	if (vkBindBufferMemory(device, buf_handle, buf_memory, 0) != VK_SUCCESS) {
+		buf_errors |= BUF_ERROR_BIND;
+	};
+
+	std::cout << "Allocated and binded buffer successfully" << std::endl;
+}
 
 void Buffer::mapData(VkDevice logicalDevice, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties) {
 	if (buf_type == BufferType::UNIFORM) return;
@@ -72,11 +97,9 @@ std::vector<uint32_t> Buffer::getData<uint32_t>() const {
 	throw std::runtime_error("No Vertex Data in " + buf_name);
 }
 
-
 void Buffer::printErrors() const {
 	if (buf_errors == BUF_ERROR_NONE) {
 		std::cout << "[" << buf_name << "] No buffer errors detected." << std::endl;
-
 		return;
 	}
 
@@ -93,6 +116,10 @@ void Buffer::printErrors() const {
 	}
 	if (buf_errors & BUF_ERROR_BIND) {
 		std::cout << "  - Failed to bind buffer memory." << std::endl;
+	}
+
+	if (buf_errors & BUF_ERROR_TYPE) {
+		std::cout << "  - Buffer Type and data does not match" << std::endl;
 	}
 };
 

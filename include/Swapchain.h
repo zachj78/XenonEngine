@@ -17,7 +17,7 @@ public:
 	//Create the swapchain and its components
 	void createSwapchain();
 	void createImageViews();
-	void createSwapFramebuffers(VkRenderPass renderpass);
+	void createSwapFramebuffers(VkRenderPass renderpass, VkImageView depthImageView);
 
 	//GET RID OF SURFACE CLEAN UP AND ADD TO INSTANCE <<<----
 	void cleanup();

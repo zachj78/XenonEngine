@@ -1,87 +1,89 @@
-//#pragma once 
-//#ifndef IMAGE_H
-//#define IMAGE_H
-//#include <config.h>
-//#include "BufferManager.h"
-//
-//#define STB_IMAGE_IMPLEMENTATION
-//#include <stb_image.h>
-//
-//class Image {
-//public:
-//	Image(VkDevice logicalDevice, std::shared_ptr<BufferManager> bufferManager)
-//		: imageLogicalDevice(logicalDevice), imageBufferManager(bufferManager) {
-//	};
-//
-//	//void createTextureImage() {
-//	//	int texWidth, texHeight, texChannels;
-//
-//	//	stbi_uc* pixels = stbi_load("textures/wall.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
-//	//	VkDeviceSize imageSize = texWidth * texHeight * 4;
-//
-//	//	if (!pixels) {
-//	//		throw std::runtime_error("Failed to load texture image!");
-//	//	};
-//
-//	//	imageBufferManager->createRawBuffer(
-//	//		BufferType::GENERIC_STAGING,
-//	//		"texImage_staging",
-//	//		imageSize,
-//	//		VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-//	//		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
-//	//	);
-//
-//	//	Buffer* stagingBuf = imageBufferManager->getBuffer("texImage_staging");
-//
-//	//	void* data;
-//	//	vkMapMemory(imageLogicalDevice, stagingBuf->buf_memory, 0, imageSize, 0, &data);
-//	//	memcpy(data, pixels, static_cast<size_t>(imageSize));
-//	//	vkUnmapMemory(imageLogicalDevice, stagingBuf->buf_memory);
-//
-//	//	VkImageCreateInfo imageInfo{};
-//	//	imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-//	//	imageInfo.imageType = VK_IMAGE_TYPE_2D;
-//	//	imageInfo.extent.width = static_cast<uint32_t>(texWidth);
-//	//	imageInfo.extent.height = static_cast<uint32_t>(texHeight);
-//	//	imageInfo.extent.depth = 1;
-//	//	imageInfo.mipLevels = 1;
-//	//	imageInfo.arrayLayers = 1;
-//
-//	//	imageInfo.format = VK_FORMAT_R8G8B8A8_SRGB;
-//	//	imageInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
-//
-//	//	imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-//	//	imageInfo.usage = VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT;
-//	//	imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-//	//	imageInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-//	//	imageInfo.flags = 0;
-//
-//	//	VkResult createTexImageResult = vkCreateImage(imageLogicalDevice, &imageInfo, nullptr, &textureImage);
-//
-//	//	if (createTexImageResult != VK_SUCCESS) {
-//	//		throw std::runtime_error("Failed to create texture image");
-//	//	} else {
-//	//		std::cout << "Texture image created -> size :[" << imageSize << "], result: [" << createTexImageResult << "]" << std::endl;
-//	//	};
-//
-//	//	//Allocate memory for image
-//	//	VkMemoryRequirements memRequirements; 
-//	//	vkGetImageMemoryRequirements(imageLogicalDevice, textureImage, &memRequirements);
-//
-//	//	VkMemoryAllocateInfo allocInfo{};
-//	//	allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-//	//	allocInfo.allocationSize = memRequirements.size;
-//	//	allocInfo.memoryTypeIndex = findMemoryType()
-//	//}
-//private:
-//	//Injected Vulkan Core components
-//	VkDevice imageLogicalDevice; 
-//	//Injected custom managers
-//	std::shared_ptr<BufferManager> imageBufferManager;
-//
-//	//Main variables
-//	VkImage textureImage; 
-//	VkDeviceMemory textureImageMemory; 
-//};
-//
-//#endif
+#pragma once 
+#ifndef IMAGE_H
+#define IMAGE_H
+
+#include "config.h"
+
+//Forward declarations
+class BufferManager;
+class Swapchain;
+
+//Holds image metadata
+struct ImageDetails {
+	VkImageView imageView;
+	VkFormat imageFormat;
+	VkImageLayout currentLayout;
+	uint32_t imageWidth;
+	uint32_t imageHeight;
+	VkImageAspectFlags imageAspectFlags; 
+};
+
+enum ImageErrors : unsigned short {
+	IMG_ERROR_NONE = 0,
+	IMG_ERROR_CREATION = 0b0000000000000001,
+	IMG_ERROR_ALLOCATION = 0b0000000000000010,
+	IMG_ERROR_COPY = 0b0000000000000100,
+	IMG_ERROR_BIND = 0b0000000000001000,
+	IMG_ERROR_TYPE = 0b0000000000010000, // this can be used later when certain formats and layouts are expected for different types of images
+	IMG_ERROR_LOAD = 0b0000000000100000,
+	IMG_ERROR_VIEW_CREATION = 0b0000000001000000, 
+	IMG_ERROR_SAMPLER_CREATION = 0b0000000010000000
+};
+
+class Image {
+public:
+	Image(VkDevice logicalDevice, VkPhysicalDevice physicalDevice, std::shared_ptr<Swapchain> swapchain, std::shared_ptr<BufferManager> bufferManager);
+
+	~Image() {
+		vkDestroySampler(imageLogicalDevice, imageSampler, nullptr);
+		vkDestroyImageView(imageLogicalDevice, imageDetails.imageView, nullptr);
+		vkDestroyImage(imageLogicalDevice, image, nullptr);
+		vkFreeMemory(imageLogicalDevice, imageMemory, nullptr);
+	};
+
+	//This function will fully create a texture image from the main script
+	void createTextureImage();
+
+	//This functions will full create a depth image from the main script
+	void createDepthImage();
+
+	void createImage(uint32_t width, uint32_t height,
+		VkImageTiling imageTiling,
+		VkImageUsageFlags usage,
+		VkMemoryPropertyFlags properties
+	);
+	void transitionImageLayout(VkImageLayout newLayout);
+	void copyBufferToImage(VkBuffer buffer);
+	void createImageView();
+
+	//Specific texture image util functions
+
+	void createTextureSampler();
+
+	//Specific depth image util functions
+
+	void Image::printErrors() const;
+
+	//Getter functions (these are called from imageManager- which should be exposed to the main script)
+	VkSampler getSampler() { return imageSampler; };
+	VkImage getImage() { return image; };
+	ImageDetails getImageDetails() { return imageDetails; };
+
+private:
+	//Injected Vulkan Core components
+	VkDevice imageLogicalDevice; 
+	VkPhysicalDevice imagePhysicalDevice; 
+	std::shared_ptr<Swapchain> imageSwapchain; 
+	//Injected custom managers
+	std::shared_ptr<BufferManager> imageBufferManager;
+
+	//Main variables
+	VkImage image; 
+	VkDeviceMemory imageMemory; 
+	ImageDetails imageDetails; 
+
+	VkSampler imageSampler;
+	unsigned short imageErrors = IMG_ERROR_NONE; 
+};
+
+#endif
