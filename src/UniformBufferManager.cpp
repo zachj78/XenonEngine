@@ -1,9 +1,40 @@
 #include "../include/UniformBufferManager.h"
 #include "../include/BufferManager.h"
 #include "../include/Buffer.h"
+#include "../include/Camera.h"
 
-void UniformBufferManager::createUniformBuffers() {
-	VkDeviceSize bufferSize = sizeof(UniformBufferObject);
+
+void DescriptorManager::createPerFrameDescriptorSetLayout(){
+	std::cout << "Creating per frame descriptor set layout" << std::endl;
+
+	//Define descriptors to be used in this set
+	VkDescriptorSetLayoutBinding uboLayoutBinding{};
+	uboLayoutBinding.binding = 0;
+	uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	uboLayoutBinding.descriptorCount = 1;
+
+	uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+	uboLayoutBinding.pImmutableSamplers = nullptr;
+
+
+	VkDescriptorSetLayoutCreateInfo layoutInfo{};
+	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+	layoutInfo.bindingCount = 1;
+	layoutInfo.pBindings = &uboLayoutBinding;
+
+	VkResult result = vkCreateDescriptorSetLayout(descManager_logicalDevice, &layoutInfo, nullptr, &descriptorSetLayout);
+
+	if (result != VK_SUCCESS) {
+		throw std::runtime_error("Failed to create descriptor set layout");
+	}
+	else {
+		std::cout << "Created descriptor set layout successfully : [" << result << "]" << std::endl;
+	};
+}
+
+//EACH MESH SHOULD CREATE ITS OWN UNIFORM BUFFER
+void DescriptorManager::createUniformBuffers() {
+	VkDeviceSize bufferSize = sizeof(UBO);
 	std::cout << "Creating uniform buffers : [" << bufferSize << "]" << std::endl;
 
 	uniformBuffer_ptrs.resize(MAX_FRAMES_IN_FLIGHT);
@@ -16,7 +47,9 @@ void UniformBufferManager::createUniformBuffers() {
 			ubufName,
 			bufferSize,
 			VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
+			VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+			std::nullopt,
+			std::nullopt
 		);
 
 		//FIX VERTEX AND INDEX BUFFER SETUP FOR NEW BUFFER AND BUFFERMANAGER
@@ -36,46 +69,63 @@ void UniformBufferManager::createUniformBuffers() {
 }
 
 //HAS BEEN DEBUGGED AND WORKS
-void UniformBufferManager::updateUniformBuffer(uint32_t currentImage, VkExtent2D swapchainExtent) {
+//THIS SHOULD BE UPDATECAMERA, AND ONLY UPDATE VIEW AND PROJECTION MATRICES, WHILE EACH MESH SHOULD GET ITS OWN MODEL MATRIX AND UPDATE IT THROUGH ITS OWN MODEL MATRIX
+void DescriptorManager::updateUniformBuffer(uint32_t currentImage, VkExtent2D swapchainExtent) {
 	static auto startTime = std::chrono::high_resolution_clock::now();
-
 	auto currentTime = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
-	UniformBufferObject ubo{};
-	ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	ubo.proj = glm::perspective(glm::radians(45.0f), swapchainExtent.width / (float)swapchainExtent.height, 0.1f, 10.0f);
+	float aspectRatio = (float)swapchainExtent.width / (float)swapchainExtent.height; 
+
+	UBO ubo{};
+	//Apply transformations to MVP matrix: 
+	ubo.view = descManager_camera->getViewMatrix();
+	ubo.proj = descManager_camera->getProjectionMatrix(aspectRatio);
+
+	//Apply lighting
+	ubo.lightPos = glm::vec3(0.0f, 1.0f, 5.0f);
+	ubo.lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	ubo.cameraPos = descManager_camera->getPosition();
+
 	ubo.proj[1][1] *= -1;
 
-	std::cout << "UBO time: " << time << "\nModel[0][0]: " << ubo.model[0][0] << std::endl;
-	std::cout << "Mapped ptr for frame [" << currentImage << "] is: " << uniformBuffer_ptrs[currentImage] << std::endl;
+	/*std::cout << "Camera Pos: " << descManager_camera->position.x << ", "
+		<< descManager_camera->position.y << ", "
+		<< descManager_camera->position.z << std::endl;
+
+	std::cout << "Front Dir: " << descManager_camera->front.x << ", "
+		<< descManager_camera->front.y << ", "
+		<< descManager_camera->front.z << std::endl;
+
+	std::cout << "Model[3]: " << ubo.model[3][0] << ", " << ubo.model[3][1] << ", " << ubo.model[3][2] << std::endl;*/
 
 	//ptrs should be map, perhaps even grouped into a struct `UBOInfo` *** 
 	memcpy(uniformBuffer_ptrs[currentImage], &ubo, sizeof(ubo));
 };
 
-void UniformBufferManager::createDescriptorPool() {
+void DescriptorManager::createDescriptorPool(int meshCount, int materialCount) {
 	std::cout << "Creating descriptor pool" << std::endl;
 
-	std::array<VkDescriptorPoolSize, 2> poolSizes{};
-	poolSizes[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-	poolSizes[0].descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
-	poolSizes[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	poolSizes[1].descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+	uint32_t totalSets = MAX_FRAMES_IN_FLIGHT + meshCount * MAX_FRAMES_IN_FLIGHT + materialCount;
+
+	std::vector<VkDescriptorPoolSize> poolSizes = {
+		{VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT)},
+		{VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, static_cast<uint32_t>(meshCount * MAX_FRAMES_IN_FLIGHT)},
+		{VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, static_cast<uint32_t>(materialCount)}
+	};
 
 	VkDescriptorPoolCreateInfo poolInfo{};
 	poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
 	poolInfo.pPoolSizes = poolSizes.data();
-	poolInfo.maxSets = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+	poolInfo.maxSets = totalSets;
 
 	if (vkCreateDescriptorPool(descManager_logicalDevice, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create descriptor pool");
-	};
-};
+	}
+}
 
-void UniformBufferManager::createDescriptorSets(VkImageView imageView, VkSampler sampler) {
+void DescriptorManager::createPerFrameDescriptorSet() {
 	std::cout << "Creating descriptor sets" << std::endl;
 
 	std::vector<VkDescriptorSetLayout> layouts(MAX_FRAMES_IN_FLIGHT, descriptorSetLayout);
@@ -99,18 +149,13 @@ void UniformBufferManager::createDescriptorSets(VkImageView imageView, VkSampler
 		VkDescriptorBufferInfo bufferInfo{};
 		bufferInfo.buffer = ubufHandle;
 		bufferInfo.offset = 0;
-		bufferInfo.range = sizeof(UniformBufferObject);
-
-		VkDescriptorImageInfo imageInfo{};
-		imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-		imageInfo.imageView = imageView;
-		imageInfo.sampler = sampler;
+		bufferInfo.range = sizeof(UBO);
 
 		std::cout << "Writing descriptor for set[" << i << "] buffer: " << bufferInfo.buffer << ", range: " << bufferInfo.range << std::endl;
 
 		//Write the descriptor info to the buffer
 
-		std::array<VkWriteDescriptorSet, 2> descriptorWrites{};
+		std::array<VkWriteDescriptorSet, 1> descriptorWrites{};
 
 		descriptorWrites[0].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
 		descriptorWrites[0].dstSet = descriptorSets[i];
@@ -120,26 +165,17 @@ void UniformBufferManager::createDescriptorSets(VkImageView imageView, VkSampler
 		descriptorWrites[0].descriptorCount = 1;
 		descriptorWrites[0].pBufferInfo = &bufferInfo;
 
-		descriptorWrites[1].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-		descriptorWrites[1].dstSet = descriptorSets[i];
-		descriptorWrites[1].dstBinding = 1;
-		descriptorWrites[1].dstArrayElement = 0;
-		descriptorWrites[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-		descriptorWrites[1].descriptorCount = 1;
-		descriptorWrites[1].pImageInfo = &imageInfo;
-
 		vkUpdateDescriptorSets(descManager_logicalDevice, static_cast<uint32_t>(descriptorWrites.size()), descriptorWrites.data(), 0, nullptr);
 	};
 };
 
-void UniformBufferManager::cleanup() {
-	for (const auto& pair : uniformBuffers) {
-		std::string name = pair.first;
-		std::shared_ptr<Buffer> ubuf = pair.second;
+void DescriptorManager::cleanup() {
+	std::cout << "    Destroying `UniformBufferManager` " << std::endl;
+	
+	if (descriptorPool != VK_NULL_HANDLE) {
+		vkDestroyDescriptorPool(descManager_logicalDevice, descriptorPool, nullptr);
+		descriptorPool = VK_NULL_HANDLE;
+	}
 
-		vkDestroyBuffer(descManager_logicalDevice, ubuf->getHandle(), nullptr);
-		vkFreeMemory(descManager_logicalDevice, ubuf->getMemory(), nullptr);
-	};
-
-	vkDestroyDescriptorPool(descManager_logicalDevice, descriptorPool, nullptr);
+	vkDestroyDescriptorSetLayout(descManager_logicalDevice, descriptorSetLayout, nullptr);
 };

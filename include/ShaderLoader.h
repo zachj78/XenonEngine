@@ -9,7 +9,7 @@ public:
 	//Main functions
 	std::vector<char> readShaderFile(const std::string& filename);
 	VkShaderModule createShaderModule(VkDevice logicalDevice, const std::vector<char>& code);
-
+	
 	//Getter functions
 
 	//Logger functions

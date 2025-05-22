@@ -1,11 +1,15 @@
 #include "../include/GraphicsPipeline.h"
 #include "../include/BufferManager.h"
+#include "../include/Buffer.h"
 #include "../include/MemoryUtils.h"
+#include "../include/UniformBufferManager.h"
+#include "../include/MeshManager.h"
 
 void GraphicsPipeline::recordCommandBuffer(VkCommandBuffer commandBuffer,
 	uint32_t imageIndex,
-	BufferManager* bufferManager,
-	VkDescriptorSet descriptorSet
+	std::shared_ptr<DescriptorManager> descriptorManager,
+	std::shared_ptr<BufferManager> bufferManager,
+	std::shared_ptr<MeshManager> meshManager
 ) {
 	std::vector<VkFramebuffer> swapchainFramebuffers = swapchain->getSwapchainFramebuffers();
 	VkExtent2D swapchainExtent = swapchain->getSwapchainExtent();
@@ -36,23 +40,6 @@ void GraphicsPipeline::recordCommandBuffer(VkCommandBuffer commandBuffer,
 	vkCmdBeginRenderPass(commandBuffer, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
-	//Get buffer handles and vertex data
-	std::shared_ptr<Buffer> vbuf = bufferManager->getBuffer("Triangle");
-	std::shared_ptr<Buffer> ibuf = bufferManager->getBuffer("index_Triangle");
-	VkBuffer vertexBuffer = vbuf->getHandle();
-	VkBuffer indexBuffer = ibuf->getHandle();
-	std::vector<Vertex> vertices = vbuf->getData<Vertex>();
-	std::vector<uint32_t> indices = ibuf->getData<uint32_t>();
-
-	std::cout << "Drawing data: v:[" << vertices.size() << "i:[" << indices.size() << std::endl;
-
-	VkBuffer vertexBuffers[] = { vertexBuffer };
-	VkDeviceSize offsets[] = { 0 };
-
-	vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
-
-	vkCmdBindIndexBuffer(commandBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT32);
-
 	VkViewport viewport{};
 	viewport.x = 0.0f;
 	viewport.y = 0.0f;
@@ -68,15 +55,85 @@ void GraphicsPipeline::recordCommandBuffer(VkCommandBuffer commandBuffer,
 	vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
 	//Bind descriptor sets to the pipeline
+
+	//Per frame
+	VkDescriptorSet perFrameDescriptorSet = descriptorManager->getDescriptorSets()[currentFrame];
+
 	vkCmdBindDescriptorSets(commandBuffer,
 		VK_PIPELINE_BIND_POINT_GRAPHICS,
 		pipelineLayout,
 		0,
-		1, &descriptorSet,
+		1, &perFrameDescriptorSet,
 		0, nullptr
 	);
 
-	vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+	//SSBO(one for all meshes)
+	VkDescriptorSet meshSet = meshManager->getSSBODescriptorSets()[currentFrame];
+
+	vkCmdBindDescriptorSets(commandBuffer,
+		VK_PIPELINE_BIND_POINT_GRAPHICS,
+		pipelineLayout,
+		1,
+		1, &meshSet,
+		0, nullptr
+	);
+
+	// Loop through all materials and draw grouped meshes
+	for (const auto& matMesh : meshManager->getMeshesByMaterial()) {
+		std::string materialName = matMesh.first;
+
+		std::shared_ptr<Material> material = meshManager->getMaterial(materialName);
+		std::vector<std::shared_ptr<Mesh>> groupedMeshes = matMesh.second; 
+
+		VkDescriptorSet materialSet = material->getDescriptorSet();
+
+		//Apply material set
+		vkCmdBindDescriptorSets(commandBuffer,
+			VK_PIPELINE_BIND_POINT_GRAPHICS,
+			pipelineLayout,
+			2,
+			1, &materialSet,
+			0, nullptr
+		);
+
+		//Loop through meshes and draw
+		for (auto& mesh : groupedMeshes) {
+			std::string meshName = mesh->getName();
+
+			std::shared_ptr<Buffer> vbuf = bufferManager->getBuffer(meshName);
+			std::shared_ptr<Buffer> ibuf = bufferManager->getBuffer("index_" + meshName);
+
+			if (!vbuf || !ibuf) {
+				std::cerr << "Missing buffers for mesh: " << meshName << std::endl;
+				continue;
+			}
+
+			VkBuffer vertexBuffer = vbuf->getHandle();
+			VkBuffer indexBuffer = ibuf->getHandle();
+			auto indices = ibuf->getData<uint32_t>();
+
+			VkBuffer vertexBuffers[] = { vertexBuffer };
+			VkDeviceSize offsets[] = { 0 };
+
+			//Pass in mesh index - needed to index per mesh ssbo
+			int meshIndex = mesh->getMeshIndex();
+
+			vkCmdPushConstants(
+				commandBuffer,
+				pipelineLayout,
+				VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+				0,
+				sizeof(int),
+				&meshIndex
+			);
+
+			vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
+			vkCmdBindIndexBuffer(commandBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+
+			vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+		}
+
+	}
 
 	vkCmdEndRenderPass(commandBuffer);
 
@@ -85,7 +142,9 @@ void GraphicsPipeline::recordCommandBuffer(VkCommandBuffer commandBuffer,
 	}
 };
 
-void GraphicsPipeline::cleanup(VkInstance &instance) {
+void GraphicsPipeline::cleanup() {
+	std::cout << "    Destroying `GraphicsPipeline` " << std::endl;
+
 	VkDevice logicalDevice = devices->getLogicalDevice();
 
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
@@ -98,42 +157,6 @@ void GraphicsPipeline::cleanup(VkInstance &instance) {
 	vkDestroyPipeline(logicalDevice, graphicsPipeline, nullptr);
 	vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
 	vkDestroyRenderPass(logicalDevice, renderPass, nullptr);
-	vkDestroyDescriptorSetLayout(logicalDevice, descriptorSetLayout, nullptr);
-};
-
-void GraphicsPipeline::createDescriptorSetLayout() {
-	std::cout << "Creating descriptor set layout" << std::endl;
-
-	//Define descriptors to be used in this set
-	VkDescriptorSetLayoutBinding uboLayoutBinding{};
-	uboLayoutBinding.binding = 0;
-	uboLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-	uboLayoutBinding.descriptorCount = 1;
-
-	uboLayoutBinding.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-	uboLayoutBinding.pImmutableSamplers = nullptr;
-
-	VkDescriptorSetLayoutBinding samplerLayoutBinding{};
-	samplerLayoutBinding.binding = 1; 
-	samplerLayoutBinding.descriptorCount = 1; 
-	samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-	samplerLayoutBinding.pImmutableSamplers = nullptr; 
-	samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
-
-	std::array<VkDescriptorSetLayoutBinding, 2> bindings = { uboLayoutBinding, samplerLayoutBinding };
-	VkDescriptorSetLayoutCreateInfo layoutInfo{};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-	layoutInfo.bindingCount = static_cast<uint32_t>(bindings.size());
-	layoutInfo.pBindings = bindings.data();
-
-	VkResult result = vkCreateDescriptorSetLayout(devices->getLogicalDevice(), &layoutInfo, nullptr, &descriptorSetLayout);
-
-	if (result != VK_SUCCESS) {
-		throw std::runtime_error("Failed to create descriptor set layout");
-	}
-	else {
-		std::cout << "Created descriptor set layout successfully : [" << result << "]" << std::endl;
-	};
 };
 
 void GraphicsPipeline::createRenderPass() {
@@ -206,7 +229,7 @@ void GraphicsPipeline::createRenderPass() {
 	};
 };
 
-void GraphicsPipeline::createGraphicsPipeline(std::shared_ptr<UniformBufferManager> uniformBufferManager) {
+void GraphicsPipeline::createGraphicsPipeline(std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts) {
 	VkDevice logicalDevice = devices->getLogicalDevice();
 
 	//Create a shader loader class to load vert and frag shader
@@ -305,13 +328,20 @@ void GraphicsPipeline::createGraphicsPipeline(std::shared_ptr<UniformBufferManag
 	colorBlending.blendConstants[2] = 0.0f;
 	colorBlending.blendConstants[3] = 0.0f;
 
+	//Specify per-mesh index passed as push constant
+	VkPushConstantRange pushConstantRange{};
+	pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+	pushConstantRange.offset = 0;
+	pushConstantRange.size = sizeof(int);
+
 	//finally create the pipeline layout 
 	VkPipelineLayoutCreateInfo layoutInfo{};
 	layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	layoutInfo.setLayoutCount = 1;
-	std::vector<VkDescriptorSetLayout> descriptorSetLayouts = { descriptorSetLayout };
-
+	layoutInfo.setLayoutCount = static_cast<uint32_t>(descriptorSetLayouts.size());
 	layoutInfo.pSetLayouts = descriptorSetLayouts.data(); 
+
+	layoutInfo.pushConstantRangeCount = 1;
+	layoutInfo.pPushConstantRanges = &pushConstantRange;
 
 	if (vkCreatePipelineLayout(logicalDevice, &layoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create pipeline layout");
@@ -366,6 +396,7 @@ void GraphicsPipeline::createCommandPool() {
 		throw std::runtime_error("Failed to create command pool");
 	};
 };
+
 void GraphicsPipeline::createCommandBuffer() {
 	std::cout << "creating command buffers" << std::endl;
 
@@ -410,9 +441,11 @@ void GraphicsPipeline::createSyncObjects() {
 }
 
 void GraphicsPipeline::drawFrame(GLFWwindow* window, bool framebufferResized, 
-	BufferManager* bufferManager, 
-	SwapchainRecreater* swapchainRecreater,
-	std::shared_ptr<UniformBufferManager> uniformBufferManager) {
+	std::shared_ptr<DescriptorManager> descriptorManager,
+	std::shared_ptr<BufferManager> bufferManager, 
+	std::shared_ptr<MeshManager> meshManager, 
+	std::shared_ptr<SwapchainRecreater> swapchainRecreater
+) {
 	VkDevice logicalDevice = devices->getLogicalDevice();
 	VkSwapchainKHR swapchain_handle = swapchain->getSwapchain();
 	std::vector<VkFramebuffer> swapchainFramebuffers = swapchain->getSwapchainFramebuffers();
@@ -421,7 +454,7 @@ void GraphicsPipeline::drawFrame(GLFWwindow* window, bool framebufferResized,
 	VkQueue presentQueue = devices->getPresentQueue();
 	
 	//Update uniform buffer data
-	uniformBufferManager->updateUniformBuffer(currentFrame, swapchainExtent);
+	descriptorManager->updateUniformBuffer(currentFrame, swapchainExtent);
 
 	//Signal fences when a frame is finished
 	vkWaitForFences(logicalDevice, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
@@ -442,10 +475,9 @@ void GraphicsPipeline::drawFrame(GLFWwindow* window, bool framebufferResized,
 
 	//Ensure command buffer is ready to be recorded to
 	vkResetCommandBuffer(commandBuffers[currentFrame], 0);
-	std::vector<VkDescriptorSet> descriptorSets = uniformBufferManager->getDescriptorSets();
 
 	recordCommandBuffer(commandBuffers[currentFrame],
-		imageIndex, bufferManager, descriptorSets[currentFrame]
+		imageIndex, descriptorManager, bufferManager, meshManager
 	);
 
 	//Now to submit the command buffer to the graphics queue we create a submitInfo{} struct

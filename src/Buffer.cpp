@@ -1,6 +1,36 @@
 #include "../include/Buffer.h"
 #include "../include/Image.h"
 #include "../include/MemoryUtils.h"
+#include "../include/MeshManager.h"
+
+Buffer::Buffer(BufferType type,
+	const std::string& name,
+	VkDeviceSize size,
+	VkDevice logicalDevice,
+	VkPhysicalDevice physicalDevice,
+	std::optional<std::vector<Vertex>> vertices,
+	std::optional<std::vector<uint32_t>> indices) : buf_type(type), buf_name(name), buf_size(size), buf_logicalDevice(logicalDevice), buf_physicalDevice(physicalDevice)
+{
+	if ((type == BufferType::VERTEX || type == BufferType::VERTEX_STAGING) && vertices.has_value()) {
+		buf_vertices = vertices;
+	}
+	else if (type == BufferType::VERTEX || type == BufferType::VERTEX_STAGING && (vertices.has_value() == false)) {
+		buf_errors |= BUF_ERROR_TYPE;
+	}
+	else {
+		buf_vertices = std::nullopt;
+	}
+
+	if ((type == BufferType::INDEX || type == BufferType::INDEX_STAGING) && indices.has_value()) {
+		buf_indices = indices;
+	}
+	else if (type == BufferType::INDEX || type == BufferType::INDEX_STAGING && (indices.has_value() == false)) {
+		buf_errors |= BUF_ERROR_TYPE;
+	}
+	else {
+		buf_indices = std::nullopt;
+	}
+};
 
 void Buffer::createBuffer(
 	VkDevice logicalDevice, VkPhysicalDevice physicalDevice,

@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include "helperFuncs.h"
+#include "DebugManager.h"
 
 #include <vector>
 #include <optional>
@@ -13,12 +14,11 @@ public:
 	bool framebufferResized = false;
 
 	//Initialize GLFW window on instance construction
-	VulkanInstance();
+	VulkanInstance(std::shared_ptr<DebugManager> debugManager);
 	void cleanup();
 
 	//Main functions
 	void createInstance();
-	void setupDebugMessenger();
 	void createSurface();
 
 	//Getter functions
@@ -26,13 +26,10 @@ public:
 	VkInstance getInstance() const { return instance; };
 	VkSurfaceKHR getSurface() const { return surface; };
 
-	//Structs
-	const std::vector<const char*> validationLayers = {
-		"VK_LAYER_KHRONOS_validation"
-	};
+
 
 private: 
-	VkDebugUtilsMessengerEXT debugMessenger; //Vulkan Debug Messenger
+	std::shared_ptr<DebugManager> instance_debugManager;
 
 	GLFWwindow* window = VK_NULL_HANDLE;
 	VkInstance instance = VK_NULL_HANDLE; // Vulkan Instance

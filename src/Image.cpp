@@ -2,6 +2,7 @@
 #include "../include/BufferManager.h"
 #include "../include/Swapchain.h"
 #include "../include/MemoryUtils.h"
+#include "../include/Buffer.h"
 
 #include "../include/stb_image.h"
 
@@ -20,14 +21,14 @@ Image::Image(
 		std::cout << "Constructed image" << std::endl;
 };
 
-void Image::createTextureImage() {
+void Image::createTextureImage(std::string texturePath) {
 	int texWidth, texHeight, texChannels;
 
 	//Create an image view for the texture image
 	imageDetails.imageFormat = VK_FORMAT_R8G8B8A8_SRGB;
 	imageDetails.imageAspectFlags = VK_IMAGE_ASPECT_COLOR_BIT;
 
-	stbi_uc* pixels = stbi_load("resources/textures/wall.jpg", &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
+	stbi_uc* pixels = stbi_load(texturePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 	VkDeviceSize imageSize = texWidth * texHeight * 4;
 
 	if (!pixels) {
@@ -35,9 +36,11 @@ void Image::createTextureImage() {
 		throw std::runtime_error("Failed to load texture image!");
 	};
 
+	std::string texImageStagingName = "texImage_staging";
+
 	imageBufferManager->createBuffer(
 		BufferType::GENERIC_STAGING,
-		"texImage_staging",
+		texImageStagingName,
 		imageSize,
 		VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
 		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
@@ -60,8 +63,8 @@ void Image::createTextureImage() {
 	transitionImageLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 
 	//Destroy staging buffer
-	stagingBuf.reset();
-	if (stagingBuf == nullptr) {
+	stagingBuf->cleanup();
+	if (stagingBuf->getHandle() == VK_NULL_HANDLE) {
 		imageBufferManager->removeBufferByName("texImage_staging");
 		std::cout << "Successfully cleaned up texture image staging buffer" << std::endl;
 	} else {

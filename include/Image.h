@@ -10,12 +10,12 @@ class Swapchain;
 
 //Holds image metadata
 struct ImageDetails {
-	VkImageView imageView;
-	VkFormat imageFormat;
-	VkImageLayout currentLayout;
-	uint32_t imageWidth;
-	uint32_t imageHeight;
-	VkImageAspectFlags imageAspectFlags; 
+	VkImageView imageView = VK_NULL_HANDLE;
+	VkFormat imageFormat = VK_FORMAT_UNDEFINED;
+	VkImageLayout currentLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	uint32_t imageWidth = 0;
+	uint32_t imageHeight = 0;
+	VkImageAspectFlags imageAspectFlags = 0;
 };
 
 enum ImageErrors : unsigned short {
@@ -34,15 +34,33 @@ class Image {
 public:
 	Image(VkDevice logicalDevice, VkPhysicalDevice physicalDevice, std::shared_ptr<Swapchain> swapchain, std::shared_ptr<BufferManager> bufferManager);
 
-	~Image() {
-		vkDestroySampler(imageLogicalDevice, imageSampler, nullptr);
-		vkDestroyImageView(imageLogicalDevice, imageDetails.imageView, nullptr);
-		vkDestroyImage(imageLogicalDevice, image, nullptr);
-		vkFreeMemory(imageLogicalDevice, imageMemory, nullptr);
-	};
+	void cleanup() {
+		std::cout << "Cleaned up image: " << image << " successfully" << std::endl;
+
+		if (imageSampler != VK_NULL_HANDLE) {
+			vkDestroySampler(imageLogicalDevice, imageSampler, nullptr);
+			imageSampler = VK_NULL_HANDLE;
+		}
+
+		if (imageDetails.imageView != VK_NULL_HANDLE) {
+			vkDestroyImageView(imageLogicalDevice, imageDetails.imageView, nullptr);
+			imageDetails.imageView = VK_NULL_HANDLE;
+		}
+
+		if (image != VK_NULL_HANDLE) {
+			vkDestroyImage(imageLogicalDevice, image, nullptr);
+			image = VK_NULL_HANDLE;
+		}
+
+		if (imageMemory != VK_NULL_HANDLE) {
+			vkFreeMemory(imageLogicalDevice, imageMemory, nullptr);
+			imageMemory = VK_NULL_HANDLE;
+		}
+	}
+
 
 	//This function will fully create a texture image from the main script
-	void createTextureImage();
+	void createTextureImage(std::string texturePath);
 
 	//This functions will full create a depth image from the main script
 	void createDepthImage();
@@ -62,7 +80,7 @@ public:
 
 	//Specific depth image util functions
 
-	void Image::printErrors() const;
+	void printErrors() const;
 
 	//Getter functions (these are called from imageManager- which should be exposed to the main script)
 	VkSampler getSampler() { return imageSampler; };
@@ -82,7 +100,7 @@ private:
 	VkDeviceMemory imageMemory; 
 	ImageDetails imageDetails; 
 
-	VkSampler imageSampler;
+	VkSampler imageSampler = VK_NULL_HANDLE;
 	unsigned short imageErrors = IMG_ERROR_NONE; 
 };
 

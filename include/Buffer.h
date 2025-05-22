@@ -3,7 +3,10 @@
 #define BUFFER_H
 
 #include "config.h"
-#include "MeshManager.h"
+#include "Vertex.h"
+
+//Forward declarations
+class Vertex;
 
 enum BufferErrors : unsigned short {
 	BUF_ERROR_NONE = 0,
@@ -21,7 +24,8 @@ enum class BufferType {
 	INDEX_STAGING,
 	UNIFORM,
 	GENERIC,
-	GENERIC_STAGING
+	GENERIC_STAGING,
+	STORAGE
 };
 
 /**
@@ -45,42 +49,28 @@ enum class BufferType {
 class Buffer {
 
 public: 
-	Buffer(BufferType type, 
+	Buffer(BufferType type,
 		const std::string& name,
 		VkDeviceSize size,
 		VkDevice logicalDevice,
-		VkPhysicalDevice physicalDevice, 
+		VkPhysicalDevice physicalDevice,
 		std::optional<std::vector<Vertex>> vertices,
-		std::optional<std::vector<uint32_t>> indices) 
-		: buf_type(type), buf_name(name), buf_size(size), buf_logicalDevice(logicalDevice), buf_physicalDevice(physicalDevice)
-	{
-		if ((type == BufferType::VERTEX || type == BufferType::VERTEX_STAGING) && vertices.has_value()) {
-			buf_vertices = vertices;
-		} else if (type == BufferType::VERTEX || type == BufferType::VERTEX_STAGING && (vertices.has_value() == false)) {
-			buf_errors |= BUF_ERROR_TYPE;
-		} else {
-			buf_vertices = std::nullopt;
-		}
+		std::optional<std::vector<uint32_t>> indices);
 
-		if ((type == BufferType::INDEX || type == BufferType::INDEX_STAGING) && indices.has_value()) {
-			buf_indices = indices;
-		} else if(type == BufferType::INDEX || type == BufferType::INDEX_STAGING && (indices.has_value() == false)) {
-			buf_errors |= BUF_ERROR_TYPE;
-		} else {
-			buf_indices = std::nullopt; 
-		}
-	};
+	void cleanup() {
+		std::cout << "Calling Buffer::cleanup() for handle: " << buf_handle << std::endl;
 
-	~Buffer() {
 		// Clean up buffer memory if allocated
 		if (buf_memory != VK_NULL_HANDLE) {
 			vkFreeMemory(buf_logicalDevice, buf_memory, nullptr);
+			buf_memory = VK_NULL_HANDLE;
 			std::cout << "Buffer memory freed" << std::endl;
 		}
 
 		// Destroy the buffer if it's created
 		if (buf_handle != VK_NULL_HANDLE) {
 			vkDestroyBuffer(buf_logicalDevice, buf_handle, nullptr);
+			buf_handle = VK_NULL_HANDLE;
 			std::cout << "Buffer destroyed" << std::endl;
 		}
 	}
@@ -93,7 +83,7 @@ public:
 		VkMemoryPropertyFlags properties
 	);
 	
-	void Buffer::createBuffer(
+	void createBuffer(
 		VkDevice logicalDevice, VkPhysicalDevice physicalDevice,
 		VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,
 		VkDeviceSize size

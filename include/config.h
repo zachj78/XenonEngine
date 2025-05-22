@@ -2,6 +2,7 @@
 //FOR GLOBAL VARIABLES AND LIBRARIES
 
 #pragma once
+
 #define VK_USE_PLATFORM_WIN32_KHR
 #define GLFW_INCLUDE_VULKAN
 #define GLFW_EXPLORE_NATIVE_WIN32
@@ -12,6 +13,12 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+
+#include <thread>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <atomic>
 #include <iostream>
 #include <stdexcept>
 #include <algorithm>

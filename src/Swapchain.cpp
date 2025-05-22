@@ -25,6 +25,8 @@ static void logSwapchain(uint32_t imageCount, VkExtent2D swapExtent, VkSurfaceFo
 };
 
 void Swapchain::cleanup() {
+	std::cout << "    Destroying `Swapchain` " << std::endl;
+
 	VkDevice logicalDevice = swpch_devices->getLogicalDevice();
 	VkInstance instance = swpch_instance->getInstance();
 	VkSurfaceKHR surface = swpch_instance->getSurface();

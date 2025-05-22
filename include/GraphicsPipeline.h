@@ -12,14 +12,21 @@
 //These are utility classes used within this class
 #include "ShaderLoader.h"
 #include "SwapchainRecreater.h"
-#include "BufferManager.h"
-#include "MeshManager.h"
-#include "UniformBufferManager.h"
+
+//Forward declarations
+class DescriptorManager; 
+class MeshManager; 
+class DescriptorManaager; 
+class BufferManager; 
+class Buffer;
 
 class GraphicsPipeline {
 public:
 	// Constructor
-	GraphicsPipeline(std::shared_ptr<VulkanInstance> instance, std::shared_ptr<Devices> devices, std::shared_ptr<Swapchain> swapchain)
+	GraphicsPipeline(std::shared_ptr<VulkanInstance> instance, 
+		std::shared_ptr<Devices> devices, 
+		std::shared_ptr<Swapchain> swapchain
+	)
 		: instance(instance), devices(devices), swapchain(swapchain) {
 	}
 
@@ -27,41 +34,47 @@ public:
 	bool framebufferResized = false;
 
 	// Pipeline setup
-	void createGraphicsPipeline(std::shared_ptr<UniformBufferManager> uniformBufferManager);
-	void createDescriptorSetLayout();
+	void createGraphicsPipeline(std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts);
 	void createRenderPass();
 	void createCommandPool();
 	void createCommandBuffer();
 	void createSyncObjects();
 
 	// Main frame draw function
-	void drawFrame(GLFWwindow* window, bool framebufferResized, 
-		BufferManager* bufferManager, 
-		SwapchainRecreater* swapchainRecreater,
-		std::shared_ptr<UniformBufferManager> uniformBufferManager
+	void drawFrame(GLFWwindow* window, bool framebufferResized,
+		std::shared_ptr<DescriptorManager> descriptorManager,
+		std::shared_ptr<BufferManager> bufferManager,
+		std::shared_ptr<MeshManager> meshManager,
+		std::shared_ptr<SwapchainRecreater> swapchainRecreater
 	);
 
 	void recordCommandBuffer(VkCommandBuffer commandBuffer,
 		uint32_t imageIndex,
-		BufferManager* bufferManager,
-		VkDescriptorSet descriptorSet);
+		std::shared_ptr<DescriptorManager> descriptorManager,
+		std::shared_ptr<BufferManager> bufferManager,
+		std::shared_ptr<MeshManager> meshManager
+	);
 
 	// Cleanup
-	void cleanup(VkInstance& instance);
+	void cleanup();
 
 	// Getters
 	VkPipeline getGraphicsPipeline() { return graphicsPipeline; };
 	VkPipelineLayout getPipelineLayout() { return pipelineLayout; };
-	VkDescriptorSetLayout getDescriptorSetLayout() const { return descriptorSetLayout; };
 	VkRenderPass getRenderPass() { return renderPass; };
 	std::vector<VkCommandBuffer> getCommandBuffers() { return commandBuffers; };
 	VkCommandPool getCommandPool() { return commandPool; };
+
+	uint32_t getCurrentFrame() { return currentFrame; };
 
 private:
 	// Injected vulkan core component classes
 	std::shared_ptr<Devices> devices = nullptr;
 	std::shared_ptr<Swapchain> swapchain = nullptr;
 	std::shared_ptr<VulkanInstance> instance = nullptr; 
+
+	//Injected resource managers
+	std::shared_ptr<DescriptorManager> descriptorManager;
 
 	uint32_t currentFrame = 0;
 
@@ -73,9 +86,6 @@ private:
 		VK_DYNAMIC_STATE_VIEWPORT,
 		VK_DYNAMIC_STATE_SCISSOR
 	};
-
-	//Descriptor layout
-	VkDescriptorSetLayout descriptorSetLayout;
 
 	// Render pass
 	VkRenderPass renderPass;

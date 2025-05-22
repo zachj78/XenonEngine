@@ -2,6 +2,8 @@
 
 // ==Main functions==
 void Devices::pickPhysicalDevice() {
+	std::cout << "Picking physical device" << std::endl;
+
 	VkInstance instance = dev_instance->getInstance();
 	VkSurfaceKHR surface = dev_instance->getSurface();
 
@@ -19,7 +21,9 @@ void Devices::pickPhysicalDevice() {
 
 	//Ensure all devices are suitable
 	for (const auto& device : devices) {
+		std::cout << "checking device: " << device << " -> " << isDeviceSuitable(device) << std::endl;
 		if (isDeviceSuitable(device)) {
+			std::cout << "Found device" << std::endl;
 			physicalDevice = device;
 			break;
 		}
@@ -33,7 +37,9 @@ void Devices::pickPhysicalDevice() {
 };
 
 void Devices::createLogicalDevice() {
-	const std::vector<const char*> validationLayers = dev_instance->validationLayers;
+	std::cout << "Creating logical device" << std::endl;
+
+	const auto& validationLayers = dev_debugManager->getValidationLayers();
 	VkSurfaceKHR surface = dev_instance->getSurface();
 
 	//First we create struct VkDeviceQueueCreateInfo
@@ -101,7 +107,7 @@ void Devices::createLogicalDevice() {
 
 //Destructor, destroys logical device
 void Devices::cleanup() {
-	//Destroy logical device
+	std::cout << "    Destroying `Devices` " << std::endl;
 	vkDestroyDevice(device, nullptr);
 };
 
@@ -155,9 +161,19 @@ const bool Devices::isDeviceSuitable(VkPhysicalDevice potentialDevice) {
 	VkPhysicalDeviceFeatures supportedFeatures;
 	vkGetPhysicalDeviceFeatures(potentialDevice, &supportedFeatures);
 
+	std::cout << "\nEvaluating Device Suitability:" << std::endl;
+	std::cout << "  Device Type: " << deviceProperties.deviceType << std::endl;
+	std::cout << "  Geometry Shader: " << deviceFeatures.geometryShader << std::endl;
+	std::cout << "  Extensions Supported: " << extensionsSupported << std::endl;
+	std::cout << "  Swapchain Adequate: " << swapchainAdaquate << std::endl;
+	std::cout << "  Indices Complete: " << indices.isComplete() << std::endl;
+	std::cout << "  Sampler Anisotropy: " << supportedFeatures.samplerAnisotropy << std::endl;
+
+
 	// returns true for discrete gpus or integrated gpus with geometry shader capabilities
 	// also ensures we have found a indice for a graphics queue family
-	return (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU || VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU)
+	return (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU ||
+		deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU)
 		&& deviceFeatures.geometryShader 
 		&& indices.isComplete() 
 		&& extensionsSupported 

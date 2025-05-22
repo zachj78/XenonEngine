@@ -111,4 +111,16 @@ std::shared_ptr<Buffer> BufferManager::getBuffer(const std::string& name) {
 	return it->second;
 };
 
-VkCommandPool BufferManager::getCommandPool() { return bufferManager_graphicsPipeline->getCommandPool(); };
+VkCommandPool BufferManager::getCommandPool() { return bufferManager_graphicsPipeline->getCommandPool(); }
+
+// == Cleanup functions == 
+void BufferManager::cleanup() {
+	std::cout << "    Destroying `BufferManager` " << std::endl;
+	//Destroy all managed buffers - do the same for image manager and add .reset call to renderer cleanup
+	for (auto& pair : buffers) {
+		std::cout << "Cleaning buffer with key: " << pair.first << std::endl;
+		pair.second->cleanup();
+	}
+
+	buffers.clear();
+}

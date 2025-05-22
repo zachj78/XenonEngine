@@ -4,10 +4,12 @@
 
 #include "config.h"
 #include "Buffer.h"
-#include "MeshManager.h"
+#include "Vertex.h"
 
 //Forward declarations
 class GraphicsPipeline; 
+class Buffer; 
+class Vertex; 
 
 class BufferManager {
 public:
@@ -17,6 +19,8 @@ public:
 		std::shared_ptr<GraphicsPipeline> graphicsPipeline,
 		VkQueue graphicsQueue
 	);
+
+	void cleanup();
 
 	void createBuffer(
 		BufferType type,

@@ -8,7 +8,8 @@
 
 class Devices {
 public: 
-	Devices(std::shared_ptr<VulkanInstance> instance) : dev_instance(instance) {
+	Devices(std::shared_ptr<VulkanInstance> instance, std::shared_ptr<DebugManager> debugManager)
+		: dev_instance(instance), dev_debugManager(debugManager) {
 		std::cout << "Constructed `Devices`" << std::endl;
 	};
 
@@ -33,9 +34,10 @@ public:
 		VK_KHR_SWAPCHAIN_EXTENSION_NAME
 	};
 
-private: 
+private:
 	//Injected Vulkan Core Components
 	std::shared_ptr<VulkanInstance> dev_instance;
+	std::shared_ptr<DebugManager> dev_debugManager;
 
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 	VkDevice device = VK_NULL_HANDLE;

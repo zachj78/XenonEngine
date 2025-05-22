@@ -14,18 +14,22 @@ class ImageManager {
 	public: 
 		ImageManager(VkDevice logicalDevice, VkPhysicalDevice physicalDevice, std::shared_ptr<Swapchain> swapchain, std::shared_ptr<BufferManager>);
 
-		void createTextureImage(std::string name);
+		void createTextureImage(std::string name, std::string texturePath);
 		void createDepthImage();
 
 		// == Deletion function == 
 		void removeImage(std::string name);
 
 		// == Retreival functions == 
+		std::shared_ptr<Image> getImage(std::string name);
 		VkSampler getSampler(std::string name);
-		VkImage getImage(std::string name);
+		VkImage getImageHandle(std::string name);
 		ImageDetails getImageDetails(std::string name);
 		
 		VkImageView getDepthImageView() { return depthImages[0]->getImageDetails().imageView; }
+
+		void cleanup();
+		void cleanupDepthResources();
 
 	private: 
 		std::unordered_map<std::string, std::shared_ptr<Image>> images; 

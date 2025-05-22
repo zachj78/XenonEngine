@@ -1,14 +1,19 @@
 #include "../include/SwapchainRecreater.h"
 
-void SwapchainRecreater::setCallbacks(std::function<void()> cleanupFunc,
-	std::function<void()> recreateSwapchain,
-	std::function<void()> recreateImageViews,
-	std::function<void()> recreateFramebuffers) {
-
-	cleanupCallback = cleanupFunc;
+void SwapchainRecreater::setCallbacks(
+    std::function<void()> cleanupSwapchain,
+    std::function<void()> recreateSwapchain,
+    std::function<void()> recreateImageViews,
+    std::function<void()> recreateFramebuffers,
+	std::function<void()> cleanupDepthResources,
+	std::function<void()> recreateDepthResources
+) {
+    cleanupSwapchainCallback = cleanupSwapchain;
 	recreateSwapchainCallback = recreateSwapchain;
-	recreateImageViewsCallback = recreateImageViews;
-	recreateFramebuffersCallback = recreateFramebuffers;
+    recreateImageViewsCallback = recreateImageViews;
+    recreateFramebuffersCallback = recreateFramebuffers;
+	cleanupDepthResourcesCallback = cleanupDepthResources;
+	recreateDepthResourcesCallback = recreateDepthResources;
 }
 
 void SwapchainRecreater::recreateSwapchain(VkDevice logicalDevice, GLFWwindow* window) {
@@ -24,8 +29,10 @@ void SwapchainRecreater::recreateSwapchain(VkDevice logicalDevice, GLFWwindow* w
 
 	vkDeviceWaitIdle(logicalDevice);
 
-	cleanupCallback();
+	cleanupSwapchainCallback();
+	cleanupDepthResourcesCallback();
 	recreateSwapchainCallback();
 	recreateImageViewsCallback();
+	recreateDepthResourcesCallback();
 	recreateFramebuffersCallback();
 }

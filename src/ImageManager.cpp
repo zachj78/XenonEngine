@@ -12,9 +12,11 @@ ImageManager::ImageManager(
 	std::cout << "Successfully constructed ImageManager" << std::endl;
 }
 
-void ImageManager::createTextureImage(std::string name) {
+void ImageManager::createTextureImage(std::string name, std::string texturePath) {
+	std::cout << "ImageManager::createTextureImage entered" << std::endl;
+
 	std::shared_ptr<Image> image = std::make_shared<Image>(imageManager_logicalDevice, imageManager_physicalDevice, imageManagerSwapchain, imageManager_bufferManager);
-	image->createTextureImage();
+	image->createTextureImage(texturePath);
 
 	images[name] = std::move(image);
 }
@@ -49,7 +51,7 @@ VkSampler ImageManager::getSampler(std::string name) {
 	}
 }
 
-VkImage ImageManager::getImage(std::string name) {
+VkImage ImageManager::getImageHandle(std::string name) {
 	auto it = images.find(name);
 	if (it != images.end()) {
 		return it->second->getImage();
@@ -57,6 +59,48 @@ VkImage ImageManager::getImage(std::string name) {
 	else {
 		std::cout << "Image [" << name << "] not found for retreival" << std::endl;
 	};
+};
+
+std::shared_ptr<Image> ImageManager::getImage(std::string name) {
+	auto it = images.find(name);
+	if (it != images.end()) {
+		return it->second;
+	}
+	else {
+		std::cout << "Image [" << name << "] not found for retreival" << std::endl;
+	};
+}
+
+void ImageManager::cleanup() {
+	std::cout << "    Destroying `ImageManager` " << std::endl;
+	for (auto& pair : images) {
+		if (pair.second) {
+			std::cout << "Calling cleanup on image handle: " << pair.first << std::endl;
+			pair.second->cleanup();
+		}
+	}
+
+	images.clear();
+
+	for (auto& depthImage : depthImages) {
+		if (depthImage) {
+			std::cout << "Calling cleanup on depth image handle: " << depthImage->getImage() << std::endl;
+			depthImage->cleanup();
+		}
+	}
+
+	depthImages.clear();
+};
+
+void ImageManager::cleanupDepthResources() {
+	for (auto& depthImage : depthImages) {
+		if (depthImage) {
+			std::cout << "Cleaning depth image" << std::endl;
+			depthImage->cleanup();
+		}
+	}
+
+	depthImages.clear();
 };
 
 ImageDetails ImageManager::getImageDetails(std::string name) {
