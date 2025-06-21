@@ -15,17 +15,32 @@ add_executable(MyVulkanEngine ${SOURCES} ${HEADERS})
 # Include directories
 target_include_directories(MyVulkanEngine PRIVATE src include)
 
-#GLM 
-target_include_directories(MyVulkanEngine PRIVATE "C:/c++_libs/glm-master")
+if(WIN32)
+    # TODO FIX STATIC LINKING, SHITS STUPID
+    #GLM
+    target_include_directories(MyVulkanEngine PRIVATE "C:/c++_libs/glm-master")
 
-# Vulkan
-find_package(Vulkan REQUIRED)
-target_link_libraries(MyVulkanEngine PRIVATE Vulkan::Vulkan)
+    # Vulkan
+    find_package(Vulkan REQUIRED)
+    target_link_libraries(MyVulkanEngine PRIVATE Vulkan::Vulkan)
 
-# GLFW
-set(glfw3_DIR "C:/c++_libs/glfw-3.4/glfw-install/lib/cmake/glfw3")
-find_package(glfw3 REQUIRED)
-target_link_libraries(MyVulkanEngine PRIVATE glfw)
+    # GLFW
+    set(glfw3_DIR "C:/c++_libs/glfw-3.4/glfw-install/lib/cmake/glfw3")
+    find_package(glfw3 REQUIRED)
+    target_link_libraries(MyVulkanEngine PRIVATE glfw)
+elseif (UNIX)
+    # Find the GLFW package
+    find_package(GLFW3 REQUIRED)
+
+    # Find Vulkan (assuming Vulkan SDK is installed and set up)
+    find_package(Vulkan REQUIRED)
+
+    # Include GLM headers (no need to link)
+    include_directories(/usr/include)  # Adjust path if necessary
+
+    # Link GLFW and Vulkan to your project
+    target_link_libraries(MyVulkanEngine PRIVATE glfw Vulkan::Vulkan)
+endif()
 
 # IDE folder structure: Group sources/headers by subdirectory
 foreach(source_file ${SOURCES} ${HEADERS})
