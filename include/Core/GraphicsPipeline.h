@@ -20,7 +20,7 @@ class DescriptorManaager;
 class BufferManager; 
 class Buffer;
 class GUI; 
-class Mesh; 
+class Mesh;
 
 class GraphicsPipeline {
 public:
@@ -39,7 +39,32 @@ public:
 	void createCommandBuffer();
 	void createSyncObjects();
 
-	// Main frame draw function
+	// === Main frame draw functions ===
+	//Drawing w/ Swapchain
+	void drawSwapchain(
+		GLFWwindow* window,
+		bool framebufferResized,
+		const std::shared_ptr<DescriptorManager>& descriptorManager,
+		const std::shared_ptr<BufferManager>& bufferManager,
+		const std::shared_ptr<MeshManager>& meshManager,
+		const std::shared_ptr<SwapchainRecreater>& swapchainRecreater,
+		const std::shared_ptr<GUI>& gui,
+		const std::shared_ptr<RenderTargeter>& renderTargeter
+	);
+	//Drawing w/ full offscreen target set up
+	void drawOffscreen(
+		GLFWwindow* window,
+		bool framebufferResized,
+		const std::shared_ptr<DescriptorManager>& descriptorManager,
+		const std::shared_ptr<BufferManager>& bufferManager,
+		const std::shared_ptr<MeshManager>& meshManager,
+		const std::shared_ptr<SwapchainRecreater>& swapchainRecreater,
+		const std::shared_ptr<GUI>& gui,
+		const std::shared_ptr<RenderTargeter>& renderTargeter
+	);
+
+	// REFACTOR THIS FUNCTION INTO THE ABOVE FUNCTIONS,
+	// [NOTE]: DRAW OFFSCREEN WILL BE LARGELY INCOMPLETE FOR NOW
 	void drawFrame(GLFWwindow* window, bool framebufferResized,
 		std::shared_ptr<DescriptorManager> descriptorManager,
 		std::shared_ptr<BufferManager> bufferManager,
@@ -50,13 +75,15 @@ public:
 	);
 
 	//Draw with ONLY swapchain
-	void recordFullDraw(VkCommandBuffer commandBuffer,
+	void recordFullDraw(
+		VkCommandBuffer commandBuffer,
 		uint32_t imageIndex,
-		std::shared_ptr<DescriptorManager> descriptorManager,
-		std::shared_ptr<BufferManager> bufferManager,
-		std::shared_ptr<MeshManager> meshManager,
-		std::shared_ptr<GUI> gui,
-		std::shared_ptr<RenderTargeter> renderTargeter);
+		const std::shared_ptr<DescriptorManager>& descriptorManager,
+		const std::shared_ptr<BufferManager>& bufferManager,
+		const std::shared_ptr<MeshManager>& meshManager,
+		const std::shared_ptr<GUI>& gui,
+		const std::shared_ptr<RenderTargeter>& renderTargeter
+	);
 
 	//Draw with offscreen target
 	void recordOffscreenDraw(VkCommandBuffer commandBuffer,

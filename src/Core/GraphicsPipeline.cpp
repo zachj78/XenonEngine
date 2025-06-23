@@ -257,12 +257,12 @@ void GraphicsPipeline::drawFrame(
 	RenderTarget& renderTarget = renderTargeter->getRenderTarget();
 	bool isSwapchain = renderTarget.isSwapchain;
 	VkExtent2D extent = renderTarget.extent;
-	
+
 	// [DEBUG] FRAMEBUFFER AND IMAGE INFO UPON DRAW
 	//std::cout << "::DEBUG:: Render Target Dump @ draw time: \n" <<
 	//	"isSwapchain: " << renderTarget.isSwapchain << "\n" <<
 	//	"main framebuffer size: " << renderTarget.mainFramebuffers.size() << std::endl;
-	
+
 	// [DEBUG] CHECK LAYOUTS AND OFFSCREEN FRAMEBUFFERS IF DOING OFFSCREEN DRAW
 	//if (!isSwapchain) {
 	//		std::cout << "offscreen framebuffer size: " << renderTarget.offscreenFramebuffers.size() << "\n" <<
@@ -270,7 +270,7 @@ void GraphicsPipeline::drawFrame(
 	//}
 
 	//std::cout << "[Sync] Waiting on inFlightFence[" << currentFrame << "]" << std::endl;
-	
+
 	// Wait for frame fence
 	vkWaitForFences(logicalDevice, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
 
@@ -299,27 +299,27 @@ void GraphicsPipeline::drawFrame(
 		else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
 			throw std::runtime_error("Failed to acquire swap chain image");
 		}
-	} 
-
-	if (!isSwapchain) {
-		static int frameCounter = 0;
-		//std::cout << "Frame: " << frameCounter++ << ", currentFrame: " << currentFrame << std::endl;
-		//std::cout << "RenderTarget address: " << &renderTarget << std::endl;
-
-		if (renderTarget.images.size() == 0) {
-			std::cout << "[Warning] renderTarget.images.size() is 0!" << std::endl;
-		}
-		else {
-			imageIndex = renderTarget.imageIndex;
-			renderTarget.imageIndex = (renderTarget.imageIndex + 1) % renderTarget.images.size();
-
-			// std::cout << "[Offscreen] Image cycling: current=" << imageIndex
-				// << " next=" << renderTarget.imageIndex << std::endl;
-		}
 	}
 
+	// if (!isSwapchain) {
+	// 	static int frameCounter = 0;
+	// 	//std::cout << "Frame: " << frameCounter++ << ", currentFrame: " << currentFrame << std::endl;
+	// 	//std::cout << "RenderTarget address: " << &renderTarget << std::endl;
+	//
+	// 	if (renderTarget.images.size() == 0) {
+	// 		std::cout << "[Warning] renderTarget.images.size() is 0!" << std::endl;
+	// 	}
+	// 	else {
+	// 		imageIndex = renderTarget.imageIndex;
+	// 		renderTarget.imageIndex = (renderTarget.imageIndex + 1) % renderTarget.images.size();
+	//
+	// 		// std::cout << "[Offscreen] Image cycling: current=" << imageIndex
+	// 			// << " next=" << renderTarget.imageIndex << std::endl;
+	// 	}
+	// }
+
 	// std::cout << "[Sync] Reset inFlightFence[" << currentFrame << "]" << std::endl;
-	
+
 	// Reset fence & command buffer
 	vkResetFences(logicalDevice, 1, &inFlightFences[currentFrame]);
 	vkResetCommandBuffer(commandBuffers[currentFrame], 0);
@@ -328,8 +328,8 @@ void GraphicsPipeline::drawFrame(
 	if (renderTarget.isSwapchain) {
 		//std::cout << "RECORDING TO ENTIRE SCREEN" << std::endl;
 		recordFullDraw(commandBuffers[currentFrame], imageIndex, descriptorManager, bufferManager, meshManager, gui, renderTargeter);
-	}
-	else {
+	} else { // TODO: MAKE THIS COMPLETELY SEPERATE BRANCH, SHOULD BE DRAWSWAPCHAIN->RECORD SWAPCHAIN
+		// AND THEN DRAWOFFSCREEN->RECORDOFFSCREEN
 		// std::cout << "RECORDING OFFSCREEN" << std::endl;
 		recordOffscreenDraw(commandBuffers[currentFrame], imageIndex, descriptorManager, bufferManager, meshManager, gui, renderTargeter);
 	};
@@ -339,31 +339,19 @@ void GraphicsPipeline::drawFrame(
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 
 	VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-	if (isSwapchain) {
-		// std::cout << "[Sync] Waiting on imageAvailableSemaphores[" << currentFrame << "]" << std::endl;
-		VkSemaphore waitSemaphores[] = { imageAvailableSemaphores[currentFrame] };
-		submitInfo.waitSemaphoreCount = 1;
-		submitInfo.pWaitSemaphores = waitSemaphores;
-		submitInfo.pWaitDstStageMask = waitStages;
-	}
-	else {
-		submitInfo.waitSemaphoreCount = 0;
-		submitInfo.pWaitSemaphores = nullptr;
-		submitInfo.pWaitDstStageMask = nullptr;
-	}
+
+	// std::cout << "[Sync] Waiting on imageAvailableSemaphores[" << currentFrame << "]" << std::endl;
+	VkSemaphore waitSemaphores[] = { imageAvailableSemaphores[currentFrame] };
+	submitInfo.waitSemaphoreCount = 1;
+	submitInfo.pWaitSemaphores = waitSemaphores;
+	submitInfo.pWaitDstStageMask = waitStages;
 
 	submitInfo.commandBufferCount = 1;
 	submitInfo.pCommandBuffers = &commandBuffers[currentFrame];
 
-	if (isSwapchain) {
-		VkSemaphore signalSemaphores[] = { renderFinishedSemaphores[currentFrame] };
-		submitInfo.signalSemaphoreCount = 1;
-		submitInfo.pSignalSemaphores = signalSemaphores;
-	}
-	else {
-		submitInfo.signalSemaphoreCount = 0;
-		submitInfo.pSignalSemaphores = nullptr;
-	}
+	VkSemaphore signalSemaphores[] = { renderFinishedSemaphores[currentFrame] };
+	submitInfo.signalSemaphoreCount = 1;
+	submitInfo.pSignalSemaphores = signalSemaphores;
 
 	if (vkQueueSubmit(devices->getGraphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to submit draw command buffer");
@@ -393,18 +381,127 @@ void GraphicsPipeline::drawFrame(
 
 	currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 
-	// std::cout << "=== END FRAME " << currentFrame << " ===\n" << std::endl;
+	std::cout << "=== END FRAME " << currentFrame << " ===\n" << std::endl;
 }
 
+void GraphicsPipeline::drawSwapchain(GLFWwindow* window,
+	bool framebufferResized,
+	const std::shared_ptr<DescriptorManager>& descriptorManager,
+	const std::shared_ptr<BufferManager>& bufferManager,
+	const std::shared_ptr<MeshManager>& meshManager,
+	const std::shared_ptr<SwapchainRecreater>& swapchainRecreater,
+	const std::shared_ptr<GUI>& gui,
+	const std::shared_ptr<RenderTargeter>& renderTargeter) {
 
+	std::cout << "[GraphicsPipeline::drawSwapchain] entered" << std::endl;
+
+	VkDevice logicalDevice = devices->getLogicalDevice();
+
+	//Render Target info
+	RenderTarget& renderTarget = renderTargeter->getRenderTarget();
+	VkExtent2D extent = renderTarget.extent;
+
+	// Wait for frame fence
+	std::cout << "[GraphicsPipeline::drawSwapchain] -fr{"<<  currentFrame << "} Waiting on in-flight fence" << std::endl;
+	vkWaitForFences(logicalDevice, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
+
+	//Aquire next image
+	uint32_t imageIndex = 0;
+
+	VkResult result = vkAcquireNextImageKHR(
+		logicalDevice,
+		renderTargeter->getSwapchain(),
+		UINT64_MAX,
+		imageAvailableSemaphores[currentFrame],
+		VK_NULL_HANDLE,
+		&imageIndex
+	);
+
+	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+		swapchainRecreater->recreateSwapchain(logicalDevice, window);
+		return;
+	} else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+		throw std::runtime_error("Failed to acquire swap chain image");
+	}
+
+	// Reset fence & command buffer
+	std::cout << "[GraphicsPipeline::drawSwaphchain] Reset inFlightFence -fr:{" << currentFrame << "}" << std::endl;
+	vkResetFences(logicalDevice, 1, &inFlightFences[currentFrame]);
+	vkResetCommandBuffer(commandBuffers[currentFrame], 0);
+
+	//Record TODO: REPLACE THIS WITH SOMETHING LIKE RECORDSWAPCHAIN
+	// this seperation will hopefully make it easier to draw offscreen in the future,
+	// will be entirely controlled by inGame boolean ----> LEAVE OFF POINT
+	recordFullDraw(commandBuffers[currentFrame], imageIndex, descriptorManager, bufferManager, meshManager, gui, renderTargeter);
+
+	// Submit commands
+	VkSubmitInfo submitInfo{};
+	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+	VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+
+	// std::cout << "[Sync] Waiting on imageAvailableSemaphores[" << currentFrame << "]" << std::endl;
+	VkSemaphore waitSemaphores[] = { imageAvailableSemaphores[currentFrame] };
+	submitInfo.waitSemaphoreCount = 1;
+	submitInfo.pWaitSemaphores = waitSemaphores;
+	submitInfo.pWaitDstStageMask = waitStages;
+
+	submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &commandBuffers[currentFrame];
+
+	VkSemaphore signalSemaphores[] = { renderFinishedSemaphores[currentFrame] };
+	submitInfo.signalSemaphoreCount = 1;
+	submitInfo.pSignalSemaphores = signalSemaphores;
+
+	if (vkQueueSubmit(devices->getGraphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
+		throw std::runtime_error("Failed to submit draw command buffer");
+	}
+
+	// Present Image
+
+	VkPresentInfoKHR presentInfo{};
+	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+	presentInfo.waitSemaphoreCount = 1;
+	presentInfo.pWaitSemaphores = &renderFinishedSemaphores[currentFrame];
+	VkSwapchainKHR swapchains[] = { renderTargeter->getSwapchain() };
+	presentInfo.swapchainCount = 1;
+	presentInfo.pSwapchains = swapchains;
+	presentInfo.pImageIndices = &imageIndex;
+
+	VkResult presentResult = vkQueuePresentKHR(devices->getPresentQueue(), &presentInfo);
+
+	if (presentResult == VK_ERROR_OUT_OF_DATE_KHR || presentResult == VK_SUBOPTIMAL_KHR) {
+		swapchainRecreater->recreateSwapchain(logicalDevice, window);
+	}
+	else if (presentResult != VK_SUCCESS) {
+		throw std::runtime_error("Failed to present swapchain image");
+	}
+
+	currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+
+	std::cout << "=== END FRAME " << currentFrame << " ===\n" << std::endl;
+}
+
+void GraphicsPipeline::drawOffscreen(GLFWwindow* window,
+	bool framebufferResized,
+	const std::shared_ptr<DescriptorManager>& descriptorManager,
+	const std::shared_ptr<BufferManager>& bufferManager,
+	const std::shared_ptr<MeshManager>& meshManager,
+	const std::shared_ptr<SwapchainRecreater>& swapchainRecreater,
+	const std::shared_ptr<GUI>& gui,
+	const std::shared_ptr<RenderTargeter>& renderTargeter) {
+	std::cout << "Drawing Offscreen" << std::endl;
+}
+
+//For in game
 void GraphicsPipeline::recordFullDraw(
 	VkCommandBuffer commandBuffer,
 	uint32_t imageIndex,
-	std::shared_ptr<DescriptorManager> descriptorManager,
-	std::shared_ptr<BufferManager> bufferManager,
-	std::shared_ptr<MeshManager> meshManager,
-	std::shared_ptr<GUI> gui,
-	std::shared_ptr<RenderTargeter> renderTargeter
+	const std::shared_ptr<DescriptorManager>& descriptorManager,
+	const std::shared_ptr<BufferManager>& bufferManager,
+	const std::shared_ptr<MeshManager>& meshManager,
+	const std::shared_ptr<GUI>& gui,
+	const std::shared_ptr<RenderTargeter>& renderTargeter
 ) {
 	// std::cout << "[CmdBuf] Recording 'full-draw' commandBuffer for imageIndex: " << imageIndex << std::endl;
 
@@ -498,6 +595,7 @@ void GraphicsPipeline::recordFullDraw(
 	}
 }
 
+//For offscreen editor view
 void GraphicsPipeline::recordOffscreenDraw(VkCommandBuffer commandBuffer,
 	uint32_t imageIndex,
 	std::shared_ptr<DescriptorManager> descriptorManager,

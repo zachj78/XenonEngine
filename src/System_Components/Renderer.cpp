@@ -72,6 +72,21 @@ void Renderer::draw() {
         //Apply object transformations
         uint32_t currentFrame = graphicsPipeline->getCurrentFrame();
 
+        if (inGame) {
+            graphicsPipeline->drawSwapchain(
+                window,
+                instance->framebufferResized,
+                descriptorManager,
+                bufferManager,
+                meshManager,
+                swapchainRecreater,
+                gui,
+                renderTargeter
+            );
+        } else {
+            graphicsPipeline->drawOffscreen();
+        }
+
         graphicsPipeline->drawFrame(
             window,
             instance->framebufferResized,
@@ -191,7 +206,6 @@ void Renderer::initFramebuffers() {
         );
     }
 
-    //[TODO] GET RID OF DEPTH CLEAN UP CALL -> ITS BEEN REFACTORED INTO RENDERTARGET CLEANUP
     swapchainRecreater->setCallbacks(
         std::bind(&RenderTargeter::cleanup, renderTargeter, false),
         std::bind(&RenderTargeter::getFramebufferDetails, renderTargeter),
@@ -238,7 +252,7 @@ void Renderer::linkImGui() {
 
     gui = std::make_shared<GUI>();
 
-    //FIX GUI, IF USING A SWAPCHAIN DONT RENDER A SEPERATE MIDDLE PANEL
+    //[TESTING: THIS SHOULD BE SET FALSE, GUI WILL OVERLAY OTHERWISE]
     if (inGame) {
         gui->linkToApp(
             inGame,
@@ -253,22 +267,7 @@ void Renderer::linkImGui() {
             renderTargeter->getRenderTarget().imageViews,
             renderTargeter->getMainPass() // USE MAIN PASS
         );
-    } else {
-        gui->linkToApp(
-            inGame, 
-            instance->getWindowPtr(),
-            instance->getInstance(),
-            devices->getLogicalDevice(),
-            devices->getPhysicalDevice(),
-            devices->getQueueFamilies().graphicsFamily.value(),
-            devices->getGraphicsQueue(),
-            renderTargeter->getRenderTarget().images.size(),
-            renderTargeter->getRenderTarget().images.size(),
-            renderTargeter->getRenderTarget().imageViews,
-            renderTargeter->getOffscreenPass(),
-            renderTargeter->getOffscreenSampler()
-        );
-    }
+    };
 };
 
 void Renderer::initCommandBuffers() {

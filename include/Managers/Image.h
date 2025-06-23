@@ -7,7 +7,7 @@
 
 //Forward declarations
 class BufferManager;
-class Swapchain;
+class RenderTargeter;
 class Buffer;
 
 //Holds image metadata
@@ -100,8 +100,11 @@ public:
 private:
 	//Injected Vulkan Core components
 	VkDevice imageLogicalDevice; 
-	VkPhysicalDevice imagePhysicalDevice; 
-	std::shared_ptr<Swapchain> imageSwapchain; 
+	VkPhysicalDevice imagePhysicalDevice;
+	//TODO -> FIX THE SWAPCHAIN FORWARD DECLARATIONS
+	// CLASS IS CALLED "RENDERTARGETER" NOW **
+	// and remember to add resources to build folder, or figure out whats up with that
+	std::shared_ptr<RenderTargeter> imageSwapchain;
 	//Injected custom managers
 	std::shared_ptr<BufferManager> imageBufferManager;
 

@@ -3,11 +3,11 @@
 #define IMAGE_MANAGER_H
 
 #include "Utils/config.h"
-#include "Managers/image.h"
+#include "Managers/Image.h"
 
 //Forward declarations
 class BufferManager; 
-class Swapchain;
+class RenderTargeter;
 
 
 class ImageManager {
@@ -19,7 +19,7 @@ class ImageManager {
 		// == Deletion function == 
 		void removeImage(std::string name);
 
-		// == Retreival functions == 
+		// == Retrieval functions ==
 		std::shared_ptr<Image> getImage(std::string name);
 		VkSampler getSampler(std::string name);
 		VkImage getImageHandle(std::string name);
@@ -32,7 +32,7 @@ class ImageManager {
 
 		VkDevice imageManager_logicalDevice;
 		VkPhysicalDevice imageManager_physicalDevice;
-		std::shared_ptr<Swapchain> imageManagerSwapchain;
+		std::shared_ptr<RenderTargeter> imageManagerSwapchain;
 		std::shared_ptr<BufferManager> imageManager_bufferManager;
 };
 

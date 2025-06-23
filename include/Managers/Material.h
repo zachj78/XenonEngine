@@ -2,7 +2,7 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include "Utils/Config.h"
+#include "Utils/config.h"
 #include "Builders/DescriptorBuilder.h"
 
 class Material {

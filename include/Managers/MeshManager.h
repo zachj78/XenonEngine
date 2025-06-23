@@ -2,7 +2,7 @@
 #ifndef MESH_MANAGER_H
 #define MESH_MANAGER_H
 
-#include "Utils/Config.h"
+#include "Utils/config.h"
 
 #include "Core/VulkanDevices.h"
 
