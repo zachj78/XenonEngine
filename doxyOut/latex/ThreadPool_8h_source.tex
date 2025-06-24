@@ -1,0 +1,47 @@
+\doxysection{Thread\+Pool.\+h}
+\hypertarget{ThreadPool_8h_source}{}\label{ThreadPool_8h_source}\index{ThreadPool.h@{ThreadPool.h}}
+\mbox{\hyperlink{ThreadPool_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ THREAD\_POOL\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ THREAD\_POOL\_H}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{Utils/config.h}}"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classThreadPool_aa4de326369a57575951b94dfd15b76af}{ThreadPool}}\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00009\ \ \ \ \ \mbox{\hyperlink{classThreadPool_aa4de326369a57575951b94dfd15b76af}{ThreadPool}}(\textcolor{keywordtype}{size\_t}\ numThreads\ =\ std::thread::hardware\_concurrency());}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \ \ \ \ \mbox{\hyperlink{classThreadPool_a44d3d2ab618970605e684efc216655eb}{\string~ThreadPool}}();}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Func,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classThreadPool_a9a9999c74cf82967c75ea34c94d81ce5}{submit}}(Func\&\&\ f,\ Args\&\&...\ args)\ -\/>\ std::future<\textcolor{keyword}{decltype}(f(args...))>\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }ReturnType\ =\ \textcolor{keyword}{decltype}(f(args...));}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ task\ =\ std::make\_shared<std::packaged\_task<ReturnType()>>(}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \ \ \ \ std::bind(std::forward<Func>(f),\ std::forward<Args>(args)...)}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ std::future<ReturnType>\ future\ =\ task-\/>get\_future();}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ std::lock\_guard<std::mutex>\ lock(queueMutex);}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ tasks.emplace([task]()\ \{\ (*task)();\ \});}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ condition.notify\_one();}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ future;}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00033\ \ \ \ \ std::vector<std::thread>\ workers;}
+\DoxyCodeLine{00034\ \ \ \ \ std::queue<std::function<void()>>\ tasks;}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ std::mutex\ queueMutex;}
+\DoxyCodeLine{00037\ \ \ \ \ std::condition\_variable\ condition;}
+\DoxyCodeLine{00038\ \ \ \ \ std::atomic<bool>\ running;}
+\DoxyCodeLine{00039\ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

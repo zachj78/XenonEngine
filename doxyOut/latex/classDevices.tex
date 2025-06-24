@@ -1,0 +1,121 @@
+\doxysection{Devices Class Reference}
+\hypertarget{classDevices}{}\label{classDevices}\index{Devices@{Devices}}
+
+
+{\ttfamily \#include $<$Vulkan\+Devices.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classDevices_afee94b5434d736505a54365afb3aa508}{Devices}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classVulkanInstance}{Vulkan\+Instance}} $>$ instance, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDebugManager}{Debug\+Manager}} $>$ debug\+Manager)
+\item 
+void \mbox{\hyperlink{classDevices_a7d26fb74255cb8ef24ab483605757c96}{pick\+Physical\+Device}} ()
+\item 
+void \mbox{\hyperlink{classDevices_a3fc93d6f5f5f0236439bcc73a6c00ad0}{create\+Logical\+Device}} ()
+\item 
+Vk\+Physical\+Device \mbox{\hyperlink{classDevices_a9a9e90841a5598de3be5c25ec8d77fc8}{get\+Physical\+Device}} ()
+\item 
+Vk\+Device \mbox{\hyperlink{classDevices_a02fd252ce5cebfdab41dea0a89839bd3}{get\+Logical\+Device}} ()
+\item 
+Vk\+Queue \mbox{\hyperlink{classDevices_a4b03b539053bc8dd87336f5f731e57ef}{get\+Graphics\+Queue}} ()
+\item 
+Vk\+Queue \mbox{\hyperlink{classDevices_af60563364f102b23d83451bb15a6b8cc}{get\+Present\+Queue}} ()
+\item 
+\mbox{\hyperlink{structCapabilities}{Capabilities}} \mbox{\hyperlink{classDevices_ab7351866b9872e2e3453b09f0a30b8dd}{get\+Device\+Caps}} ()
+\item 
+\mbox{\hyperlink{structQueueFamilyIndices}{Queue\+Family\+Indices}} \mbox{\hyperlink{classDevices_a794f1e925de6b3f9cf31a1ea3875049f}{get\+Queue\+Families}} () const
+\item 
+void \mbox{\hyperlink{classDevices_a612ff3e8276145a5f35735cf9cc3fea5}{cleanup}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ const char \texorpdfstring{$\ast$}{*} $>$ \mbox{\hyperlink{classDevices_aa24ed3a996368623ec2d541af6ca6305}{device\+Extensions}} = \{\}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classDevices_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classDevices_afee94b5434d736505a54365afb3aa508}\index{Devices@{Devices}!Devices@{Devices}}
+\index{Devices@{Devices}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{Devices()}{Devices()}}
+{\footnotesize\ttfamily \label{classDevices_afee94b5434d736505a54365afb3aa508} 
+Devices\+::\+Devices (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classVulkanInstance}{Vulkan\+Instance}} $>$}]{instance}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDebugManager}{Debug\+Manager}} $>$}]{debug\+Manager}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classDevices_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDevices_a612ff3e8276145a5f35735cf9cc3fea5}\index{Devices@{Devices}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{classDevices_a612ff3e8276145a5f35735cf9cc3fea5} 
+void Devices\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classDevices_a3fc93d6f5f5f0236439bcc73a6c00ad0}\index{Devices@{Devices}!createLogicalDevice@{createLogicalDevice}}
+\index{createLogicalDevice@{createLogicalDevice}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{createLogicalDevice()}{createLogicalDevice()}}
+{\footnotesize\ttfamily \label{classDevices_a3fc93d6f5f5f0236439bcc73a6c00ad0} 
+void Devices\+::create\+Logical\+Device (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classDevices_ab7351866b9872e2e3453b09f0a30b8dd}\index{Devices@{Devices}!getDeviceCaps@{getDeviceCaps}}
+\index{getDeviceCaps@{getDeviceCaps}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{getDeviceCaps()}{getDeviceCaps()}}
+{\footnotesize\ttfamily \label{classDevices_ab7351866b9872e2e3453b09f0a30b8dd} 
+\mbox{\hyperlink{structCapabilities}{Capabilities}} Devices\+::get\+Device\+Caps (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classDevices_a4b03b539053bc8dd87336f5f731e57ef}\index{Devices@{Devices}!getGraphicsQueue@{getGraphicsQueue}}
+\index{getGraphicsQueue@{getGraphicsQueue}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{getGraphicsQueue()}{getGraphicsQueue()}}
+{\footnotesize\ttfamily \label{classDevices_a4b03b539053bc8dd87336f5f731e57ef} 
+Vk\+Queue Devices\+::get\+Graphics\+Queue (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classDevices_a02fd252ce5cebfdab41dea0a89839bd3}\index{Devices@{Devices}!getLogicalDevice@{getLogicalDevice}}
+\index{getLogicalDevice@{getLogicalDevice}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{getLogicalDevice()}{getLogicalDevice()}}
+{\footnotesize\ttfamily \label{classDevices_a02fd252ce5cebfdab41dea0a89839bd3} 
+Vk\+Device Devices\+::get\+Logical\+Device (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classDevices_a9a9e90841a5598de3be5c25ec8d77fc8}\index{Devices@{Devices}!getPhysicalDevice@{getPhysicalDevice}}
+\index{getPhysicalDevice@{getPhysicalDevice}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{getPhysicalDevice()}{getPhysicalDevice()}}
+{\footnotesize\ttfamily \label{classDevices_a9a9e90841a5598de3be5c25ec8d77fc8} 
+Vk\+Physical\+Device Devices\+::get\+Physical\+Device (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classDevices_af60563364f102b23d83451bb15a6b8cc}\index{Devices@{Devices}!getPresentQueue@{getPresentQueue}}
+\index{getPresentQueue@{getPresentQueue}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{getPresentQueue()}{getPresentQueue()}}
+{\footnotesize\ttfamily \label{classDevices_af60563364f102b23d83451bb15a6b8cc} 
+Vk\+Queue Devices\+::get\+Present\+Queue (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classDevices_a794f1e925de6b3f9cf31a1ea3875049f}\index{Devices@{Devices}!getQueueFamilies@{getQueueFamilies}}
+\index{getQueueFamilies@{getQueueFamilies}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{getQueueFamilies()}{getQueueFamilies()}}
+{\footnotesize\ttfamily \label{classDevices_a794f1e925de6b3f9cf31a1ea3875049f} 
+\mbox{\hyperlink{structQueueFamilyIndices}{Queue\+Family\+Indices}} Devices\+::get\+Queue\+Families (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classDevices_a7d26fb74255cb8ef24ab483605757c96}\index{Devices@{Devices}!pickPhysicalDevice@{pickPhysicalDevice}}
+\index{pickPhysicalDevice@{pickPhysicalDevice}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{pickPhysicalDevice()}{pickPhysicalDevice()}}
+{\footnotesize\ttfamily \label{classDevices_a7d26fb74255cb8ef24ab483605757c96} 
+void Devices\+::pick\+Physical\+Device (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classDevices_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classDevices_aa24ed3a996368623ec2d541af6ca6305}\index{Devices@{Devices}!deviceExtensions@{deviceExtensions}}
+\index{deviceExtensions@{deviceExtensions}!Devices@{Devices}}
+\doxysubsubsection{\texorpdfstring{deviceExtensions}{deviceExtensions}}
+{\footnotesize\ttfamily \label{classDevices_aa24ed3a996368623ec2d541af6ca6305} 
+std\+::vector$<$const char\texorpdfstring{$\ast$}{*}$>$ Devices\+::device\+Extensions = \{\}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{VulkanDevices_8h}{Vulkan\+Devices.\+h}}\item 
+\mbox{\hyperlink{VulkanDevices_8cpp}{Vulkan\+Devices.\+cpp}}\end{DoxyCompactItemize}

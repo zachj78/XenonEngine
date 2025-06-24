@@ -1,0 +1,177 @@
+\doxysection{Graphics\+Pipeline Class Reference}
+\hypertarget{classGraphicsPipeline}{}\label{classGraphicsPipeline}\index{GraphicsPipeline@{GraphicsPipeline}}
+
+
+{\ttfamily \#include $<$Graphics\+Pipeline.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGraphicsPipeline_ad0b25e77cd9fbb627ec5b4c060b2cc63}{Graphics\+Pipeline}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classVulkanInstance}{Vulkan\+Instance}} $>$ instance, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDevices}{Devices}} $>$ devices)
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_afd54d09a056a62fe6fbeda996ca5892d}{create\+Graphics\+Pipeline}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$ render\+Targeter, std\+::array$<$ Vk\+Descriptor\+Set\+Layout, 3 $>$ descriptor\+Set\+Layouts)
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_ae0010f99bef827812628784c69ec23c4}{create\+Command\+Pool}} ()
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_a50491dc07e838c5f8101912156f78226}{create\+Command\+Buffer}} ()
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_a4a8d11e10d4a1dc89b7562d5e3ac1e44}{create\+Sync\+Objects}} ()
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_a9006c46bad7130488561e79132f995cc}{draw\+Swapchain}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, bool \mbox{\hyperlink{classGraphicsPipeline_afd423fe832373306f783bf2952d941de}{framebuffer\+Resized}}, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$ \&descriptor\+Manager, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ \&buffer\+Manager, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$ \&mesh\+Manager, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classSwapchainRecreater}{Swapchain\+Recreater}} $>$ \&swapchain\+Recreater, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$ \&gui, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$ \&render\+Targeter)
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_a4ea9059102b872806b1cca00a560651c}{draw\+Offscreen}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, bool \mbox{\hyperlink{classGraphicsPipeline_afd423fe832373306f783bf2952d941de}{framebuffer\+Resized}}, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$ \&descriptor\+Manager, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ \&buffer\+Manager, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$ \&mesh\+Manager, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classSwapchainRecreater}{Swapchain\+Recreater}} $>$ \&swapchain\+Recreater, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$ \&gui, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$ \&render\+Targeter)
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_a1f168461c6689e4acae3dd20d60e020b}{draw\+Frame}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, bool \mbox{\hyperlink{classGraphicsPipeline_afd423fe832373306f783bf2952d941de}{framebuffer\+Resized}}, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$ descriptor\+Manager, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ buffer\+Manager, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$ mesh\+Manager, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classSwapchainRecreater}{Swapchain\+Recreater}} $>$ swapchain\+Recreater, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$ gui, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$ render\+Targeter)
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_aeb86c882fa8e7e21dd03564d58081a6f}{record\+Full\+Draw}} (Vk\+Command\+Buffer command\+Buffer, uint32\+\_\+t image\+Index, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$ \&descriptor\+Manager, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ \&buffer\+Manager, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$ \&mesh\+Manager, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$ \&gui, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$ \&render\+Targeter)
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_a336dfdb1044e1ebac65f4a9ce4bd4a7c}{record\+Offscreen\+Draw}} (Vk\+Command\+Buffer command\+Buffer, uint32\+\_\+t image\+Index, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$ descriptor\+Manager, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ buffer\+Manager, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$ mesh\+Manager, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$ gui, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$ render\+Targeter)
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_a270e23a99c598a06fb10125137a2be9b}{draw\+Mesh}} (Vk\+Command\+Buffer command\+Buffer, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ \&buffer\+Manager, const std\+::string \&mesh\+Name, const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMesh}{Mesh}} $>$ \&mesh\+Ptr, bool use\+Push\+Constant)
+\item 
+void \mbox{\hyperlink{classGraphicsPipeline_a35737563e8e2f531a0cb4f4208058323}{cleanup}} ()
+\item 
+Vk\+Pipeline \mbox{\hyperlink{classGraphicsPipeline_ad272ba605a42eb5380f2003d68702d30}{get\+Graphics\+Pipeline}} ()
+\item 
+Vk\+Pipeline\+Layout \mbox{\hyperlink{classGraphicsPipeline_a354d0860ebcc380170ef20fb0ffbd353}{get\+Pipeline\+Layout}} ()
+\item 
+std\+::vector$<$ Vk\+Command\+Buffer $>$ \mbox{\hyperlink{classGraphicsPipeline_acf74df7260bd6fd9e5e1b9259bf56cc9}{get\+Command\+Buffers}} ()
+\item 
+Vk\+Command\+Pool \mbox{\hyperlink{classGraphicsPipeline_ad9ae135165778c8b41b9c55bc8dbbfe2}{get\+Command\+Pool}} ()
+\item 
+uint32\+\_\+t \mbox{\hyperlink{classGraphicsPipeline_a95368133b2eba03b330b0b1da5571b6d}{get\+Current\+Frame}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classGraphicsPipeline_afd423fe832373306f783bf2952d941de}{framebuffer\+Resized}} = false
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classGraphicsPipeline_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classGraphicsPipeline_ad0b25e77cd9fbb627ec5b4c060b2cc63}\index{GraphicsPipeline@{GraphicsPipeline}!GraphicsPipeline@{GraphicsPipeline}}
+\index{GraphicsPipeline@{GraphicsPipeline}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{GraphicsPipeline()}{GraphicsPipeline()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_ad0b25e77cd9fbb627ec5b4c060b2cc63} 
+Graphics\+Pipeline\+::\+Graphics\+Pipeline (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classVulkanInstance}{Vulkan\+Instance}} $>$}]{instance}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDevices}{Devices}} $>$}]{devices}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classGraphicsPipeline_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classGraphicsPipeline_a35737563e8e2f531a0cb4f4208058323}\index{GraphicsPipeline@{GraphicsPipeline}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a35737563e8e2f531a0cb4f4208058323} 
+void Graphics\+Pipeline\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_a50491dc07e838c5f8101912156f78226}\index{GraphicsPipeline@{GraphicsPipeline}!createCommandBuffer@{createCommandBuffer}}
+\index{createCommandBuffer@{createCommandBuffer}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{createCommandBuffer()}{createCommandBuffer()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a50491dc07e838c5f8101912156f78226} 
+void Graphics\+Pipeline\+::create\+Command\+Buffer (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_ae0010f99bef827812628784c69ec23c4}\index{GraphicsPipeline@{GraphicsPipeline}!createCommandPool@{createCommandPool}}
+\index{createCommandPool@{createCommandPool}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{createCommandPool()}{createCommandPool()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_ae0010f99bef827812628784c69ec23c4} 
+void Graphics\+Pipeline\+::create\+Command\+Pool (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_afd54d09a056a62fe6fbeda996ca5892d}\index{GraphicsPipeline@{GraphicsPipeline}!createGraphicsPipeline@{createGraphicsPipeline}}
+\index{createGraphicsPipeline@{createGraphicsPipeline}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{createGraphicsPipeline()}{createGraphicsPipeline()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_afd54d09a056a62fe6fbeda996ca5892d} 
+void Graphics\+Pipeline\+::create\+Graphics\+Pipeline (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$}]{render\+Targeter}{, }\item[{std\+::array$<$ Vk\+Descriptor\+Set\+Layout, 3 $>$}]{descriptor\+Set\+Layouts}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_a4a8d11e10d4a1dc89b7562d5e3ac1e44}\index{GraphicsPipeline@{GraphicsPipeline}!createSyncObjects@{createSyncObjects}}
+\index{createSyncObjects@{createSyncObjects}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{createSyncObjects()}{createSyncObjects()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a4a8d11e10d4a1dc89b7562d5e3ac1e44} 
+void Graphics\+Pipeline\+::create\+Sync\+Objects (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_a1f168461c6689e4acae3dd20d60e020b}\index{GraphicsPipeline@{GraphicsPipeline}!drawFrame@{drawFrame}}
+\index{drawFrame@{drawFrame}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{drawFrame()}{drawFrame()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a1f168461c6689e4acae3dd20d60e020b} 
+void Graphics\+Pipeline\+::draw\+Frame (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{bool}]{framebuffer\+Resized}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$}]{descriptor\+Manager}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$}]{buffer\+Manager}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$}]{mesh\+Manager}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classSwapchainRecreater}{Swapchain\+Recreater}} $>$}]{swapchain\+Recreater}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$}]{gui}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$}]{render\+Targeter}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_a270e23a99c598a06fb10125137a2be9b}\index{GraphicsPipeline@{GraphicsPipeline}!drawMesh@{drawMesh}}
+\index{drawMesh@{drawMesh}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{drawMesh()}{drawMesh()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a270e23a99c598a06fb10125137a2be9b} 
+void Graphics\+Pipeline\+::draw\+Mesh (\begin{DoxyParamCaption}\item[{Vk\+Command\+Buffer}]{command\+Buffer}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ \&}]{buffer\+Manager}{, }\item[{const std\+::string \&}]{mesh\+Name}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMesh}{Mesh}} $>$ \&}]{mesh\+Ptr}{, }\item[{bool}]{use\+Push\+Constant}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_a4ea9059102b872806b1cca00a560651c}\index{GraphicsPipeline@{GraphicsPipeline}!drawOffscreen@{drawOffscreen}}
+\index{drawOffscreen@{drawOffscreen}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{drawOffscreen()}{drawOffscreen()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a4ea9059102b872806b1cca00a560651c} 
+void Graphics\+Pipeline\+::draw\+Offscreen (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{bool}]{framebuffer\+Resized}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$ \&}]{descriptor\+Manager}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ \&}]{buffer\+Manager}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$ \&}]{mesh\+Manager}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classSwapchainRecreater}{Swapchain\+Recreater}} $>$ \&}]{swapchain\+Recreater}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$ \&}]{gui}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$ \&}]{render\+Targeter}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_a9006c46bad7130488561e79132f995cc}\index{GraphicsPipeline@{GraphicsPipeline}!drawSwapchain@{drawSwapchain}}
+\index{drawSwapchain@{drawSwapchain}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{drawSwapchain()}{drawSwapchain()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a9006c46bad7130488561e79132f995cc} 
+void Graphics\+Pipeline\+::draw\+Swapchain (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{bool}]{framebuffer\+Resized}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$ \&}]{descriptor\+Manager}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ \&}]{buffer\+Manager}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$ \&}]{mesh\+Manager}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classSwapchainRecreater}{Swapchain\+Recreater}} $>$ \&}]{swapchain\+Recreater}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$ \&}]{gui}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$ \&}]{render\+Targeter}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_acf74df7260bd6fd9e5e1b9259bf56cc9}\index{GraphicsPipeline@{GraphicsPipeline}!getCommandBuffers@{getCommandBuffers}}
+\index{getCommandBuffers@{getCommandBuffers}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{getCommandBuffers()}{getCommandBuffers()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_acf74df7260bd6fd9e5e1b9259bf56cc9} 
+std\+::vector$<$ Vk\+Command\+Buffer $>$ Graphics\+Pipeline\+::get\+Command\+Buffers (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classGraphicsPipeline_ad9ae135165778c8b41b9c55bc8dbbfe2}\index{GraphicsPipeline@{GraphicsPipeline}!getCommandPool@{getCommandPool}}
+\index{getCommandPool@{getCommandPool}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{getCommandPool()}{getCommandPool()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_ad9ae135165778c8b41b9c55bc8dbbfe2} 
+Vk\+Command\+Pool Graphics\+Pipeline\+::get\+Command\+Pool (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classGraphicsPipeline_a95368133b2eba03b330b0b1da5571b6d}\index{GraphicsPipeline@{GraphicsPipeline}!getCurrentFrame@{getCurrentFrame}}
+\index{getCurrentFrame@{getCurrentFrame}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{getCurrentFrame()}{getCurrentFrame()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a95368133b2eba03b330b0b1da5571b6d} 
+uint32\+\_\+t Graphics\+Pipeline\+::get\+Current\+Frame (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classGraphicsPipeline_ad272ba605a42eb5380f2003d68702d30}\index{GraphicsPipeline@{GraphicsPipeline}!getGraphicsPipeline@{getGraphicsPipeline}}
+\index{getGraphicsPipeline@{getGraphicsPipeline}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{getGraphicsPipeline()}{getGraphicsPipeline()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_ad272ba605a42eb5380f2003d68702d30} 
+Vk\+Pipeline Graphics\+Pipeline\+::get\+Graphics\+Pipeline (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classGraphicsPipeline_a354d0860ebcc380170ef20fb0ffbd353}\index{GraphicsPipeline@{GraphicsPipeline}!getPipelineLayout@{getPipelineLayout}}
+\index{getPipelineLayout@{getPipelineLayout}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{getPipelineLayout()}{getPipelineLayout()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a354d0860ebcc380170ef20fb0ffbd353} 
+Vk\+Pipeline\+Layout Graphics\+Pipeline\+::get\+Pipeline\+Layout (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classGraphicsPipeline_aeb86c882fa8e7e21dd03564d58081a6f}\index{GraphicsPipeline@{GraphicsPipeline}!recordFullDraw@{recordFullDraw}}
+\index{recordFullDraw@{recordFullDraw}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{recordFullDraw()}{recordFullDraw()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_aeb86c882fa8e7e21dd03564d58081a6f} 
+void Graphics\+Pipeline\+::record\+Full\+Draw (\begin{DoxyParamCaption}\item[{Vk\+Command\+Buffer}]{command\+Buffer}{, }\item[{uint32\+\_\+t}]{image\+Index}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$ \&}]{descriptor\+Manager}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ \&}]{buffer\+Manager}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$ \&}]{mesh\+Manager}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$ \&}]{gui}{, }\item[{const std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$ \&}]{render\+Targeter}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGraphicsPipeline_a336dfdb1044e1ebac65f4a9ce4bd4a7c}\index{GraphicsPipeline@{GraphicsPipeline}!recordOffscreenDraw@{recordOffscreenDraw}}
+\index{recordOffscreenDraw@{recordOffscreenDraw}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{recordOffscreenDraw()}{recordOffscreenDraw()}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_a336dfdb1044e1ebac65f4a9ce4bd4a7c} 
+void Graphics\+Pipeline\+::record\+Offscreen\+Draw (\begin{DoxyParamCaption}\item[{Vk\+Command\+Buffer}]{command\+Buffer}{, }\item[{uint32\+\_\+t}]{image\+Index}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDescriptorManager}{Descriptor\+Manager}} $>$}]{descriptor\+Manager}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$}]{buffer\+Manager}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMeshManager}{Mesh\+Manager}} $>$}]{mesh\+Manager}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classGUI}{GUI}} $>$}]{gui}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classRenderTargeter}{Render\+Targeter}} $>$}]{render\+Targeter}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classGraphicsPipeline_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classGraphicsPipeline_afd423fe832373306f783bf2952d941de}\index{GraphicsPipeline@{GraphicsPipeline}!framebufferResized@{framebufferResized}}
+\index{framebufferResized@{framebufferResized}!GraphicsPipeline@{GraphicsPipeline}}
+\doxysubsubsection{\texorpdfstring{framebufferResized}{framebufferResized}}
+{\footnotesize\ttfamily \label{classGraphicsPipeline_afd423fe832373306f783bf2952d941de} 
+bool Graphics\+Pipeline\+::framebuffer\+Resized = false}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{GraphicsPipeline_8h}{Graphics\+Pipeline.\+h}}\item 
+\mbox{\hyperlink{GraphicsPipeline_8cpp}{Graphics\+Pipeline.\+cpp}}\end{DoxyCompactItemize}

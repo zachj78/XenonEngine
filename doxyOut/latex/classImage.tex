@@ -1,0 +1,129 @@
+\doxysection{Image Class Reference}
+\hypertarget{classImage}{}\label{classImage}\index{Image@{Image}}
+
+
+{\ttfamily \#include $<$Image.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classImage_a0f320cc3b99b37fa1198ced3a711f988}{Image}} (Vk\+Device logical\+Device, Vk\+Physical\+Device physical\+Device)
+\item 
+void \mbox{\hyperlink{classImage_aa20eefa89162e4d62840159755bc7772}{cleanup}} ()
+\item 
+void \mbox{\hyperlink{classImage_a856bd5d39f67fde7cda6d923ed9348ca}{create\+Texture\+Image}} (\mbox{\hyperlink{stb__image_8h_a28eb51a1512ce382ee50f20e1d04d50d}{stbi\+\_\+uc}} \texorpdfstring{$\ast$}{*}pixels, int tex\+Width, int tex\+Height, std\+::string texture\+Path, Vk\+Command\+Pool command\+Pool, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBuffer}{Buffer}} $>$ staging\+Buf, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ buffer\+Manager)
+\item 
+void \mbox{\hyperlink{classImage_a61aed9dd2df48a92395ee1690f47802a}{create\+Depth\+Image}} (Vk\+Extent2D render\+Target\+Extent)
+\item 
+void \mbox{\hyperlink{classImage_ab1bd7869124db979049472d8699907f3}{create\+Image}} (uint32\+\_\+t width, uint32\+\_\+t height, Vk\+Image\+Tiling image\+Tiling, Vk\+Image\+Usage\+Flags usage, Vk\+Memory\+Property\+Flags properties)
+\item 
+void \mbox{\hyperlink{classImage_a96452c97c171496d43f25fd8aa998c67}{transition\+Image\+Layout}} (Vk\+Image\+Layout new\+Layout, Vk\+Command\+Pool command\+Pool, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ buffer\+Manager)
+\item 
+void \mbox{\hyperlink{classImage_ae0fa8d3ba6c7a30a97487704498e2930}{copy\+Buffer\+To\+Image}} (Vk\+Buffer buffer, Vk\+Command\+Pool command\+Pool, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ buffer\+Manager)
+\item 
+void \mbox{\hyperlink{classImage_ad71715e30a180cda12ac052d2822cebe}{create\+Image\+View}} ()
+\item 
+void \mbox{\hyperlink{classImage_acc10ae4ce5844e78a43d2cb0090aa706}{create\+Texture\+Sampler}} ()
+\item 
+void \mbox{\hyperlink{classImage_a797e2f900fe22d28dcfbd003a95a647d}{print\+Errors}} () const
+\item 
+Vk\+Sampler \mbox{\hyperlink{classImage_a2fba99403244beec2746e1785a7d267a}{get\+Sampler}} ()
+\item 
+Vk\+Image \mbox{\hyperlink{classImage_a5717dca652f9b44e2ccd93377adef6c1}{get\+Image}} ()
+\item 
+\mbox{\hyperlink{structImageDetails}{Image\+Details}} \mbox{\hyperlink{classImage_a99d09336630e44cba1225a123c42d92a}{get\+Image\+Details}} ()
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classImage_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classImage_a0f320cc3b99b37fa1198ced3a711f988}\index{Image@{Image}!Image@{Image}}
+\index{Image@{Image}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{Image()}{Image()}}
+{\footnotesize\ttfamily \label{classImage_a0f320cc3b99b37fa1198ced3a711f988} 
+Image\+::\+Image (\begin{DoxyParamCaption}\item[{Vk\+Device}]{logical\+Device}{, }\item[{Vk\+Physical\+Device}]{physical\+Device}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classImage_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classImage_aa20eefa89162e4d62840159755bc7772}\index{Image@{Image}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{classImage_aa20eefa89162e4d62840159755bc7772} 
+void Image\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classImage_ae0fa8d3ba6c7a30a97487704498e2930}\index{Image@{Image}!copyBufferToImage@{copyBufferToImage}}
+\index{copyBufferToImage@{copyBufferToImage}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{copyBufferToImage()}{copyBufferToImage()}}
+{\footnotesize\ttfamily \label{classImage_ae0fa8d3ba6c7a30a97487704498e2930} 
+void Image\+::copy\+Buffer\+To\+Image (\begin{DoxyParamCaption}\item[{Vk\+Buffer}]{buffer}{, }\item[{Vk\+Command\+Pool}]{command\+Pool}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$}]{buffer\+Manager}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImage_a61aed9dd2df48a92395ee1690f47802a}\index{Image@{Image}!createDepthImage@{createDepthImage}}
+\index{createDepthImage@{createDepthImage}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{createDepthImage()}{createDepthImage()}}
+{\footnotesize\ttfamily \label{classImage_a61aed9dd2df48a92395ee1690f47802a} 
+void Image\+::create\+Depth\+Image (\begin{DoxyParamCaption}\item[{Vk\+Extent2D}]{render\+Target\+Extent}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImage_ab1bd7869124db979049472d8699907f3}\index{Image@{Image}!createImage@{createImage}}
+\index{createImage@{createImage}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{createImage()}{createImage()}}
+{\footnotesize\ttfamily \label{classImage_ab1bd7869124db979049472d8699907f3} 
+void Image\+::create\+Image (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{width}{, }\item[{uint32\+\_\+t}]{height}{, }\item[{Vk\+Image\+Tiling}]{image\+Tiling}{, }\item[{Vk\+Image\+Usage\+Flags}]{usage}{, }\item[{Vk\+Memory\+Property\+Flags}]{properties}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImage_ad71715e30a180cda12ac052d2822cebe}\index{Image@{Image}!createImageView@{createImageView}}
+\index{createImageView@{createImageView}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{createImageView()}{createImageView()}}
+{\footnotesize\ttfamily \label{classImage_ad71715e30a180cda12ac052d2822cebe} 
+void Image\+::create\+Image\+View (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImage_a856bd5d39f67fde7cda6d923ed9348ca}\index{Image@{Image}!createTextureImage@{createTextureImage}}
+\index{createTextureImage@{createTextureImage}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{createTextureImage()}{createTextureImage()}}
+{\footnotesize\ttfamily \label{classImage_a856bd5d39f67fde7cda6d923ed9348ca} 
+void Image\+::create\+Texture\+Image (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{stb__image_8h_a28eb51a1512ce382ee50f20e1d04d50d}{stbi\+\_\+uc}} \texorpdfstring{$\ast$}{*}}]{pixels}{, }\item[{int}]{tex\+Width}{, }\item[{int}]{tex\+Height}{, }\item[{std\+::string}]{texture\+Path}{, }\item[{Vk\+Command\+Pool}]{command\+Pool}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBuffer}{Buffer}} $>$}]{staging\+Buf}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$}]{buffer\+Manager}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImage_acc10ae4ce5844e78a43d2cb0090aa706}\index{Image@{Image}!createTextureSampler@{createTextureSampler}}
+\index{createTextureSampler@{createTextureSampler}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{createTextureSampler()}{createTextureSampler()}}
+{\footnotesize\ttfamily \label{classImage_acc10ae4ce5844e78a43d2cb0090aa706} 
+void Image\+::create\+Texture\+Sampler (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImage_a5717dca652f9b44e2ccd93377adef6c1}\index{Image@{Image}!getImage@{getImage}}
+\index{getImage@{getImage}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{getImage()}{getImage()}}
+{\footnotesize\ttfamily \label{classImage_a5717dca652f9b44e2ccd93377adef6c1} 
+Vk\+Image Image\+::get\+Image (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classImage_a99d09336630e44cba1225a123c42d92a}\index{Image@{Image}!getImageDetails@{getImageDetails}}
+\index{getImageDetails@{getImageDetails}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{getImageDetails()}{getImageDetails()}}
+{\footnotesize\ttfamily \label{classImage_a99d09336630e44cba1225a123c42d92a} 
+\mbox{\hyperlink{structImageDetails}{Image\+Details}} Image\+::get\+Image\+Details (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classImage_a2fba99403244beec2746e1785a7d267a}\index{Image@{Image}!getSampler@{getSampler}}
+\index{getSampler@{getSampler}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{getSampler()}{getSampler()}}
+{\footnotesize\ttfamily \label{classImage_a2fba99403244beec2746e1785a7d267a} 
+Vk\+Sampler Image\+::get\+Sampler (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classImage_a797e2f900fe22d28dcfbd003a95a647d}\index{Image@{Image}!printErrors@{printErrors}}
+\index{printErrors@{printErrors}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{printErrors()}{printErrors()}}
+{\footnotesize\ttfamily \label{classImage_a797e2f900fe22d28dcfbd003a95a647d} 
+void Image\+::print\+Errors (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{classImage_a96452c97c171496d43f25fd8aa998c67}\index{Image@{Image}!transitionImageLayout@{transitionImageLayout}}
+\index{transitionImageLayout@{transitionImageLayout}!Image@{Image}}
+\doxysubsubsection{\texorpdfstring{transitionImageLayout()}{transitionImageLayout()}}
+{\footnotesize\ttfamily \label{classImage_a96452c97c171496d43f25fd8aa998c67} 
+void Image\+::transition\+Image\+Layout (\begin{DoxyParamCaption}\item[{Vk\+Image\+Layout}]{new\+Layout}{, }\item[{Vk\+Command\+Pool}]{command\+Pool}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$}]{buffer\+Manager}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{Image_8h}{Image.\+h}}\item 
+\mbox{\hyperlink{Image_8cpp}{Image.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,75 @@
+\doxysection{Memory\+Utils.\+h File Reference}
+\hypertarget{MemoryUtils_8h}{}\label{MemoryUtils_8h}\index{MemoryUtils.h@{MemoryUtils.h}}
+{\ttfamily \#include "{}Utils/config.\+h"{}}\newline
+Include dependency graph for Memory\+Utils.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{MemoryUtils_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{MemoryUtils_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{MemoryUtils_8h_ad97e04d7ac62287435673cf1ed43dcef}{MEMORY\+\_\+\+UTILS\+\_\+H}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{MemoryUtils_8h_a1f0b9c2f5539e45ca236cec9a5039581}{find\+Memory\+Type}} (Vk\+Physical\+Device physical\+Device, uint32\+\_\+t type\+Filter, Vk\+Memory\+Property\+Flags properties)
+\item 
+uint32\+\_\+t \mbox{\hyperlink{MemoryUtils_8h_ab6e535b36f2496e51a29f26735990baf}{verbose\+Find\+Memory\+Type}} (Vk\+Physical\+Device physical\+Device, uint32\+\_\+t type\+Filter, Vk\+Memory\+Property\+Flags properties)
+\item 
+Vk\+Format \mbox{\hyperlink{MemoryUtils_8h_a4bdf61ebe35693cb5d752c9b8fae8124}{find\+Supported\+Format}} (Vk\+Physical\+Device physical\+Device, const std\+::vector$<$ Vk\+Format $>$ \&potential\+Formats, Vk\+Image\+Tiling tiling, Vk\+Format\+Feature\+Flags features)
+\item 
+Vk\+Format \mbox{\hyperlink{MemoryUtils_8h_a0868fd02c4ac08f1b0811c6b97fe62a0}{find\+Depth\+Format}} (Vk\+Physical\+Device physical\+Device)
+\end{DoxyCompactItemize}
+
+
+\label{doc-define-members}
+\Hypertarget{MemoryUtils_8h_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{MemoryUtils_8h_ad97e04d7ac62287435673cf1ed43dcef}\index{MemoryUtils.h@{MemoryUtils.h}!MEMORY\_UTILS\_H@{MEMORY\_UTILS\_H}}
+\index{MEMORY\_UTILS\_H@{MEMORY\_UTILS\_H}!MemoryUtils.h@{MemoryUtils.h}}
+\doxysubsubsection{\texorpdfstring{MEMORY\_UTILS\_H}{MEMORY\_UTILS\_H}}
+{\footnotesize\ttfamily \label{MemoryUtils_8h_ad97e04d7ac62287435673cf1ed43dcef} 
+\#define MEMORY\+\_\+\+UTILS\+\_\+H}
+
+
+
+\label{doc-func-members}
+\Hypertarget{MemoryUtils_8h_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{MemoryUtils_8h_a0868fd02c4ac08f1b0811c6b97fe62a0}\index{MemoryUtils.h@{MemoryUtils.h}!findDepthFormat@{findDepthFormat}}
+\index{findDepthFormat@{findDepthFormat}!MemoryUtils.h@{MemoryUtils.h}}
+\doxysubsubsection{\texorpdfstring{findDepthFormat()}{findDepthFormat()}}
+{\footnotesize\ttfamily \label{MemoryUtils_8h_a0868fd02c4ac08f1b0811c6b97fe62a0} 
+Vk\+Format find\+Depth\+Format (\begin{DoxyParamCaption}\item[{Vk\+Physical\+Device}]{physical\+Device}{}\end{DoxyParamCaption})}
+
+\Hypertarget{MemoryUtils_8h_a1f0b9c2f5539e45ca236cec9a5039581}\index{MemoryUtils.h@{MemoryUtils.h}!findMemoryType@{findMemoryType}}
+\index{findMemoryType@{findMemoryType}!MemoryUtils.h@{MemoryUtils.h}}
+\doxysubsubsection{\texorpdfstring{findMemoryType()}{findMemoryType()}}
+{\footnotesize\ttfamily \label{MemoryUtils_8h_a1f0b9c2f5539e45ca236cec9a5039581} 
+uint32\+\_\+t find\+Memory\+Type (\begin{DoxyParamCaption}\item[{Vk\+Physical\+Device}]{physical\+Device}{, }\item[{uint32\+\_\+t}]{type\+Filter}{, }\item[{Vk\+Memory\+Property\+Flags}]{properties}{}\end{DoxyParamCaption})}
+
+\Hypertarget{MemoryUtils_8h_a4bdf61ebe35693cb5d752c9b8fae8124}\index{MemoryUtils.h@{MemoryUtils.h}!findSupportedFormat@{findSupportedFormat}}
+\index{findSupportedFormat@{findSupportedFormat}!MemoryUtils.h@{MemoryUtils.h}}
+\doxysubsubsection{\texorpdfstring{findSupportedFormat()}{findSupportedFormat()}}
+{\footnotesize\ttfamily \label{MemoryUtils_8h_a4bdf61ebe35693cb5d752c9b8fae8124} 
+Vk\+Format find\+Supported\+Format (\begin{DoxyParamCaption}\item[{Vk\+Physical\+Device}]{physical\+Device}{, }\item[{const std\+::vector$<$ Vk\+Format $>$ \&}]{potential\+Formats}{, }\item[{Vk\+Image\+Tiling}]{tiling}{, }\item[{Vk\+Format\+Feature\+Flags}]{features}{}\end{DoxyParamCaption})}
+
+\Hypertarget{MemoryUtils_8h_ab6e535b36f2496e51a29f26735990baf}\index{MemoryUtils.h@{MemoryUtils.h}!verboseFindMemoryType@{verboseFindMemoryType}}
+\index{verboseFindMemoryType@{verboseFindMemoryType}!MemoryUtils.h@{MemoryUtils.h}}
+\doxysubsubsection{\texorpdfstring{verboseFindMemoryType()}{verboseFindMemoryType()}}
+{\footnotesize\ttfamily \label{MemoryUtils_8h_ab6e535b36f2496e51a29f26735990baf} 
+uint32\+\_\+t verbose\+Find\+Memory\+Type (\begin{DoxyParamCaption}\item[{Vk\+Physical\+Device}]{physical\+Device}{, }\item[{uint32\+\_\+t}]{type\+Filter}{, }\item[{Vk\+Memory\+Property\+Flags}]{properties}{}\end{DoxyParamCaption})}
+

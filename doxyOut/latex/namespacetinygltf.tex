@@ -1,0 +1,479 @@
+\doxysection{tinygltf Namespace Reference}
+\hypertarget{namespacetinygltf}{}\label{namespacetinygltf}\index{tinygltf@{tinygltf}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Accessor}{Accessor}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Animation}{Animation}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1AnimationChannel}{Animation\+Channel}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1AnimationSampler}{Animation\+Sampler}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Asset}{Asset}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1AudioEmitter}{Audio\+Emitter}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1AudioSource}{Audio\+Source}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Buffer}{Buffer}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1BufferView}{Buffer\+View}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Camera}{Camera}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1FsCallbacks}{Fs\+Callbacks}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Image}{Image}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Light}{Light}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Material}{Material}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Mesh}{Mesh}}
+\item 
+class \mbox{\hyperlink{classtinygltf_1_1Model}{Model}}
+\item 
+class \mbox{\hyperlink{classtinygltf_1_1Node}{Node}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1NormalTextureInfo}{Normal\+Texture\+Info}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1OcclusionTextureInfo}{Occlusion\+Texture\+Info}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1OrthographicCamera}{Orthographic\+Camera}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Parameter}{Parameter}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1PbrMetallicRoughness}{Pbr\+Metallic\+Roughness}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1PerspectiveCamera}{Perspective\+Camera}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1PositionalEmitter}{Positional\+Emitter}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Primitive}{Primitive}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Sampler}{Sampler}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Scene}{Scene}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Skin}{Skin}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1SpotLight}{Spot\+Light}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1Texture}{Texture}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1TextureInfo}{Texture\+Info}}
+\item 
+class \mbox{\hyperlink{classtinygltf_1_1TinyGLTF}{Tiny\+GLTF}}
+\item 
+struct \mbox{\hyperlink{structtinygltf_1_1URICallbacks}{URICallbacks}}
+\item 
+class \mbox{\hyperlink{classtinygltf_1_1Value}{Value}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_a0d443011b9c0c6508b5b3a71250d5db3}{Color\+Value}} = std\+::array$<$double, 4$>$
+\begin{DoxyCompactList}\small\item\em Aggregate object for representing a color. \end{DoxyCompactList}\item 
+typedef std\+::map$<$ std\+::string, \mbox{\hyperlink{structtinygltf_1_1Parameter}{Parameter}} $>$ \mbox{\hyperlink{namespacetinygltf_a84f692e4ae3db9cd350d4ea841e29ee0}{Parameter\+Map}}
+\item 
+typedef std\+::map$<$ std\+::string, \mbox{\hyperlink{classtinygltf_1_1Value}{Value}} $>$ \mbox{\hyperlink{namespacetinygltf_a2d794ff0b2793f41432277b3ac92819d}{Extension\+Map}}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_a6967e3d17f04352e5c3d22f9d2a37db4}{URIEncode\+Function}}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_aebebb3c2f7e238026fd76e5b15a257a2}{URIDecode\+Function}}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_aef63b3ed0cb2f7c6992253f63d15bdfa}{File\+Exists\+Function}}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_a09b67f5f430dfb5779fa93f01e717807}{Expand\+File\+Path\+Function}}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_a94a164ad5db5e33aa69d7c2de78de46d}{Read\+Whole\+File\+Function}}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_a1e23645e482eb9d896030921a7be90c9}{Write\+Whole\+File\+Function}}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_ade408fc485cbbfd96977835c9869e9a1}{Get\+File\+Size\+Function}}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_aeb69eb3f148ddba2c6fe080f6d9a0b3b}{Load\+Image\+Data\+Function}}
+\item 
+using \mbox{\hyperlink{namespacetinygltf_a3d0bb4353c768b4d0bf4a3ae3396676b}{Write\+Image\+Data\+Function}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7}{Type}} \{ \newline
+\mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a2caae2d74d8ce46ebe9f27653d27d6b2}{NULL\+\_\+\+TYPE}}
+, \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7aad05431fde461442f452f0578733a68f}{REAL\+\_\+\+TYPE}}
+, \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7ad47a080c40272551d34fca9594d1e000}{INT\+\_\+\+TYPE}}
+, \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a95c12ccbbeb971b793a4e92bc2b6a6af}{BOOL\+\_\+\+TYPE}}
+, \newline
+\mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a709e1de707fec63fa99b0d03d70839f6}{STRING\+\_\+\+TYPE}}
+, \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a9f203f44b2e0bb3fdc2854f65d0e6089}{ARRAY\+\_\+\+TYPE}}
+, \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a3eea36a4ead3daa411bff99f6ae6e494}{BINARY\+\_\+\+TYPE}}
+, \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7ac944f73b75ec304f1189cf9c7c559203}{OBJECT\+\_\+\+TYPE}}
+ \}
+\item 
+enum \mbox{\hyperlink{namespacetinygltf_a6cec4aed000632cebb63348120bb946f}{Parse\+Strictness}} \{ \mbox{\hyperlink{namespacetinygltf_a6cec4aed000632cebb63348120bb946fa4949a750b2dc7524142dc39fe1cddddc}{Permissive}}
+, \mbox{\hyperlink{namespacetinygltf_a6cec4aed000632cebb63348120bb946fa516e1ea1b0f87e33423972607a704dc4}{Strict}}
+ \}
+\item 
+enum \mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2}{Section\+Check}} \{ \newline
+\mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2aa9f492579a01cbb2ced6fc15cf0fd48d}{NO\+\_\+\+REQUIRE}} = 0x00
+, \mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a609149331fcb3c07b2f96f6da07d1bef}{REQUIRE\+\_\+\+VERSION}} = 0x01
+, \mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a05c63c368fa9c54de927c78068300be2}{REQUIRE\+\_\+\+SCENE}} = 0x02
+, \mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2ae92ecf9d75b2ffdf5570bc54f8d2edf2}{REQUIRE\+\_\+\+SCENES}} = 0x04
+, \newline
+\mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a282194f3fbd768ddada163b206674b5f}{REQUIRE\+\_\+\+NODES}} = 0x08
+, \mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a1a179f38f1ec1856f2ae77506aee2b6a}{REQUIRE\+\_\+\+ACCESSORS}} = 0x10
+, \mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2aabf61d03168d2cd15ca6d6e1d7629379}{REQUIRE\+\_\+\+BUFFERS}} = 0x20
+, \mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a162272d410055eb62c12d3c300befcee}{REQUIRE\+\_\+\+BUFFER\+\_\+\+VIEWS}} = 0x40
+, \newline
+\mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2ade019772fbf2ff7c47ef142f9be74f1f}{REQUIRE\+\_\+\+ALL}} = 0x7f
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacetinygltf_add352ac07751862b70126f22321cf891}{Is\+Data\+URI}} (const std\+::string \&in)
+\item 
+bool \mbox{\hyperlink{namespacetinygltf_aa4d0e1d62a1926038e63585638f88ff8}{Decode\+Data\+URI}} (std\+::vector$<$ unsigned char $>$ \texorpdfstring{$\ast$}{*}out, std\+::string \&mime\+\_\+type, const std\+::string \&in, size\+\_\+t req\+Bytes, bool check\+Size)
+\item 
+bool \mbox{\hyperlink{namespacetinygltf_a706fe59212e1787230a99547cbe29a6c}{URIDecode}} (const std\+::string \&in\+\_\+uri, std\+::string \texorpdfstring{$\ast$}{*}out\+\_\+uri, void \texorpdfstring{$\ast$}{*}user\+\_\+data)
+\item 
+bool \mbox{\hyperlink{namespacetinygltf_a73d9058e4f4fdb98ef035622360de928}{File\+Exists}} (const std\+::string \&abs\+\_\+filename, void \texorpdfstring{$\ast$}{*})
+\item 
+std\+::string \mbox{\hyperlink{namespacetinygltf_a2cc3baf7856ea03c802b5c6ad01851cb}{Expand\+File\+Path}} (const std\+::string \&filepath, void \texorpdfstring{$\ast$}{*}userdata)
+\item 
+bool \mbox{\hyperlink{namespacetinygltf_a6eaa919e030e52e39843f0a302c65eb8}{Read\+Whole\+File}} (std\+::vector$<$ unsigned char $>$ \texorpdfstring{$\ast$}{*}out, std\+::string \texorpdfstring{$\ast$}{*}err, const std\+::string \&filepath, void \texorpdfstring{$\ast$}{*})
+\item 
+bool \mbox{\hyperlink{namespacetinygltf_a0c9787423194dbd8bbda277e89b92fb5}{Write\+Whole\+File}} (std\+::string \texorpdfstring{$\ast$}{*}err, const std\+::string \&filepath, const std\+::vector$<$ unsigned char $>$ \&contents, void \texorpdfstring{$\ast$}{*})
+\item 
+bool \mbox{\hyperlink{namespacetinygltf_a8263a3b6226d5459ab58dc8369a219d1}{Get\+File\+Size\+In\+Bytes}} (size\+\_\+t \texorpdfstring{$\ast$}{*}filesize\+\_\+out, std\+::string \texorpdfstring{$\ast$}{*}err, const std\+::string \&filepath, void \texorpdfstring{$\ast$}{*})
+\item 
+bool \mbox{\hyperlink{namespacetinygltf_aee35a1a1bc4b90c187f18bcc00a5904c}{Load\+Image\+Data}} (\mbox{\hyperlink{structtinygltf_1_1Image}{Image}} \texorpdfstring{$\ast$}{*}image, const int image\+\_\+idx, std\+::string \texorpdfstring{$\ast$}{*}err, std\+::string \texorpdfstring{$\ast$}{*}warn, int req\+\_\+width, int req\+\_\+height, const unsigned char \texorpdfstring{$\ast$}{*}bytes, int size, void \texorpdfstring{$\ast$}{*})
+\item 
+bool \mbox{\hyperlink{namespacetinygltf_ac642919d4f7df1cfc6dd21c4f029690b}{Write\+Image\+Data}} (const std\+::string \texorpdfstring{$\ast$}{*}basepath, const std\+::string \texorpdfstring{$\ast$}{*}filename, const \mbox{\hyperlink{structtinygltf_1_1Image}{Image}} \texorpdfstring{$\ast$}{*}image, bool embed\+Images, const \mbox{\hyperlink{structtinygltf_1_1FsCallbacks}{Fs\+Callbacks}} \texorpdfstring{$\ast$}{*}fs\+\_\+cb, const \mbox{\hyperlink{structtinygltf_1_1URICallbacks}{URICallbacks}} \texorpdfstring{$\ast$}{*}uri\+\_\+cb, std\+::string \texorpdfstring{$\ast$}{*}out\+\_\+uri, void \texorpdfstring{$\ast$}{*})
+\end{DoxyCompactItemize}
+
+
+\label{doc-typedef-members}
+\Hypertarget{namespacetinygltf_doc-typedef-members}
+\doxysubsection{Typedef Documentation}
+\Hypertarget{namespacetinygltf_a0d443011b9c0c6508b5b3a71250d5db3}\index{tinygltf@{tinygltf}!ColorValue@{ColorValue}}
+\index{ColorValue@{ColorValue}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{ColorValue}{ColorValue}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a0d443011b9c0c6508b5b3a71250d5db3} 
+using \mbox{\hyperlink{namespacetinygltf_a0d443011b9c0c6508b5b3a71250d5db3}{tinygltf\+::\+Color\+Value}} = std\+::array$<$double, 4$>$}
+
+
+
+Aggregate object for representing a color. 
+
+\Hypertarget{namespacetinygltf_a09b67f5f430dfb5779fa93f01e717807}\index{tinygltf@{tinygltf}!ExpandFilePathFunction@{ExpandFilePathFunction}}
+\index{ExpandFilePathFunction@{ExpandFilePathFunction}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{ExpandFilePathFunction}{ExpandFilePathFunction}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a09b67f5f430dfb5779fa93f01e717807} 
+using \mbox{\hyperlink{namespacetinygltf_a09b67f5f430dfb5779fa93f01e717807}{tinygltf\+::\+Expand\+File\+Path\+Function}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ std::function<std::string(\textcolor{keyword}{const}\ std::string\ \&,\ \textcolor{keywordtype}{void}\ *)>}
+
+\end{DoxyCode}
+\doxylink{namespacetinygltf_a09b67f5f430dfb5779fa93f01e717807}{Expand\+File\+Path\+Function} type. Signature for custom filesystem callbacks. \Hypertarget{namespacetinygltf_a2d794ff0b2793f41432277b3ac92819d}\index{tinygltf@{tinygltf}!ExtensionMap@{ExtensionMap}}
+\index{ExtensionMap@{ExtensionMap}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{ExtensionMap}{ExtensionMap}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a2d794ff0b2793f41432277b3ac92819d} 
+typedef std\+::map$<$std\+::string, \mbox{\hyperlink{classtinygltf_1_1Value}{Value}}$>$ \mbox{\hyperlink{namespacetinygltf_a2d794ff0b2793f41432277b3ac92819d}{tinygltf\+::\+Extension\+Map}}}
+
+\Hypertarget{namespacetinygltf_aef63b3ed0cb2f7c6992253f63d15bdfa}\index{tinygltf@{tinygltf}!FileExistsFunction@{FileExistsFunction}}
+\index{FileExistsFunction@{FileExistsFunction}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{FileExistsFunction}{FileExistsFunction}}
+{\footnotesize\ttfamily \label{namespacetinygltf_aef63b3ed0cb2f7c6992253f63d15bdfa} 
+using \mbox{\hyperlink{namespacetinygltf_aef63b3ed0cb2f7c6992253f63d15bdfa}{tinygltf\+::\+File\+Exists\+Function}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ std::function<bool(}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{const}\ std::string\ \&\ ,\ \textcolor{keywordtype}{void}\ *\ )>}
+
+\end{DoxyCode}
+\doxylink{namespacetinygltf_aef63b3ed0cb2f7c6992253f63d15bdfa}{File\+Exists\+Function} type. Signature for custom filesystem callbacks. \Hypertarget{namespacetinygltf_ade408fc485cbbfd96977835c9869e9a1}\index{tinygltf@{tinygltf}!GetFileSizeFunction@{GetFileSizeFunction}}
+\index{GetFileSizeFunction@{GetFileSizeFunction}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{GetFileSizeFunction}{GetFileSizeFunction}}
+{\footnotesize\ttfamily \label{namespacetinygltf_ade408fc485cbbfd96977835c9869e9a1} 
+using \mbox{\hyperlink{namespacetinygltf_ade408fc485cbbfd96977835c9869e9a1}{tinygltf\+::\+Get\+File\+Size\+Function}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ std::function<bool(\textcolor{keywordtype}{size\_t}\ *filesize\_out,\ std::string\ *err,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\ \&abs\_filename,\ \textcolor{keywordtype}{void}\ *userdata)>}
+
+\end{DoxyCode}
+\doxylink{namespacetinygltf_ade408fc485cbbfd96977835c9869e9a1}{Get\+File\+Size\+Function} type. Signature for custom filesystem callbacks. \Hypertarget{namespacetinygltf_aeb69eb3f148ddba2c6fe080f6d9a0b3b}\index{tinygltf@{tinygltf}!LoadImageDataFunction@{LoadImageDataFunction}}
+\index{LoadImageDataFunction@{LoadImageDataFunction}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{LoadImageDataFunction}{LoadImageDataFunction}}
+{\footnotesize\ttfamily \label{namespacetinygltf_aeb69eb3f148ddba2c6fe080f6d9a0b3b} 
+using \mbox{\hyperlink{namespacetinygltf_aeb69eb3f148ddba2c6fe080f6d9a0b3b}{tinygltf\+::\+Load\+Image\+Data\+Function}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ std::function<bool(}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{structtinygltf_1_1Image}{Image}}\ *\ ,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ ,\ std::string\ *\ ,}
+\DoxyCodeLine{\ \ \ \ std::string\ *\ ,\ \textcolor{keywordtype}{int}\ ,\ \textcolor{keywordtype}{int}\ ,}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *\ ,\ \textcolor{keywordtype}{int}\ ,\ \textcolor{keywordtype}{void}\ *\ )>}
+
+\end{DoxyCode}
+\doxylink{namespacetinygltf_aeb69eb3f148ddba2c6fe080f6d9a0b3b}{Load\+Image\+Data\+Function} type. Signature for custom image loading callbacks. \Hypertarget{namespacetinygltf_a84f692e4ae3db9cd350d4ea841e29ee0}\index{tinygltf@{tinygltf}!ParameterMap@{ParameterMap}}
+\index{ParameterMap@{ParameterMap}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{ParameterMap}{ParameterMap}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a84f692e4ae3db9cd350d4ea841e29ee0} 
+typedef std\+::map$<$std\+::string, \mbox{\hyperlink{structtinygltf_1_1Parameter}{Parameter}}$>$ \mbox{\hyperlink{namespacetinygltf_a84f692e4ae3db9cd350d4ea841e29ee0}{tinygltf\+::\+Parameter\+Map}}}
+
+\Hypertarget{namespacetinygltf_a94a164ad5db5e33aa69d7c2de78de46d}\index{tinygltf@{tinygltf}!ReadWholeFileFunction@{ReadWholeFileFunction}}
+\index{ReadWholeFileFunction@{ReadWholeFileFunction}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{ReadWholeFileFunction}{ReadWholeFileFunction}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a94a164ad5db5e33aa69d7c2de78de46d} 
+using \mbox{\hyperlink{namespacetinygltf_a94a164ad5db5e33aa69d7c2de78de46d}{tinygltf\+::\+Read\+Whole\+File\+Function}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ std::function<bool(}
+\DoxyCodeLine{\ \ \ \ std::vector<unsigned\ char>\ *,\ std::string\ *,\ \textcolor{keyword}{const}\ std::string\ \&,\ \textcolor{keywordtype}{void}\ *)>}
+
+\end{DoxyCode}
+\doxylink{namespacetinygltf_a94a164ad5db5e33aa69d7c2de78de46d}{Read\+Whole\+File\+Function} type. Signature for custom filesystem callbacks. \Hypertarget{namespacetinygltf_aebebb3c2f7e238026fd76e5b15a257a2}\index{tinygltf@{tinygltf}!URIDecodeFunction@{URIDecodeFunction}}
+\index{URIDecodeFunction@{URIDecodeFunction}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{URIDecodeFunction}{URIDecodeFunction}}
+{\footnotesize\ttfamily \label{namespacetinygltf_aebebb3c2f7e238026fd76e5b15a257a2} 
+using \mbox{\hyperlink{namespacetinygltf_aebebb3c2f7e238026fd76e5b15a257a2}{tinygltf\+::\+URIDecode\+Function}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ std::function<bool(\textcolor{keyword}{const}\ std::string\ \&\ ,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ *\ ,\ \textcolor{keywordtype}{void}\ *\ )>}
+
+\end{DoxyCode}
+\doxylink{namespacetinygltf_aebebb3c2f7e238026fd76e5b15a257a2}{URIDecode\+Function} type. Signature for custom URI decoding of external resources such as .bin and image files. Used by tinygltf when computing filenames to write resources. \Hypertarget{namespacetinygltf_a6967e3d17f04352e5c3d22f9d2a37db4}\index{tinygltf@{tinygltf}!URIEncodeFunction@{URIEncodeFunction}}
+\index{URIEncodeFunction@{URIEncodeFunction}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{URIEncodeFunction}{URIEncodeFunction}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a6967e3d17f04352e5c3d22f9d2a37db4} 
+using \mbox{\hyperlink{namespacetinygltf_a6967e3d17f04352e5c3d22f9d2a37db4}{tinygltf\+::\+URIEncode\+Function}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ std::function<bool(}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{const}\ std::string\ \&\ ,\ \textcolor{keyword}{const}\ std::string\ \&\ ,}
+\DoxyCodeLine{\ \ \ \ std::string\ *\ ,\ \textcolor{keywordtype}{void}\ *\ )>}
+
+\end{DoxyCode}
+\doxylink{namespacetinygltf_a6967e3d17f04352e5c3d22f9d2a37db4}{URIEncode\+Function} type. Signature for custom URI encoding of external resources such as .bin and image files. Used by tinygltf to re-\/encode the final location of saved files. object\+\_\+type may be used to encode buffer and image URIs differently, for example. See \href{https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html\#uris}{\texttt{https\+://registry.\+khronos.\+org/gl\+TF/specs/2.\+0/gl\+TF-\/2.\+0.\+html\#uris}} \Hypertarget{namespacetinygltf_a3d0bb4353c768b4d0bf4a3ae3396676b}\index{tinygltf@{tinygltf}!WriteImageDataFunction@{WriteImageDataFunction}}
+\index{WriteImageDataFunction@{WriteImageDataFunction}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{WriteImageDataFunction}{WriteImageDataFunction}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a3d0bb4353c768b4d0bf4a3ae3396676b} 
+using \mbox{\hyperlink{namespacetinygltf_a3d0bb4353c768b4d0bf4a3ae3396676b}{tinygltf\+::\+Write\+Image\+Data\+Function}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ std::function<bool(}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{const}\ std::string\ *\ ,\ \textcolor{keyword}{const}\ std::string\ *\ ,}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structtinygltf_1_1Image}{Image}}\ *image,\ \textcolor{keywordtype}{bool}\ ,}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structtinygltf_1_1FsCallbacks}{FsCallbacks}}\ *\ ,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structtinygltf_1_1URICallbacks}{URICallbacks}}\ *\ ,}
+\DoxyCodeLine{\ \ \ \ std::string\ *\ ,\ \textcolor{keywordtype}{void}\ *\ )>}
+
+\end{DoxyCode}
+\doxylink{namespacetinygltf_a3d0bb4353c768b4d0bf4a3ae3396676b}{Write\+Image\+Data\+Function} type. Signature for custom image writing callbacks. The out\+\_\+uri parameter becomes the URI written to the gltf and may reference a file or contain a data URI. \Hypertarget{namespacetinygltf_a1e23645e482eb9d896030921a7be90c9}\index{tinygltf@{tinygltf}!WriteWholeFileFunction@{WriteWholeFileFunction}}
+\index{WriteWholeFileFunction@{WriteWholeFileFunction}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{WriteWholeFileFunction}{WriteWholeFileFunction}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a1e23645e482eb9d896030921a7be90c9} 
+using \mbox{\hyperlink{namespacetinygltf_a1e23645e482eb9d896030921a7be90c9}{tinygltf\+::\+Write\+Whole\+File\+Function}}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ std::function<bool(std::string\ *,\ \textcolor{keyword}{const}\ std::string\ \&,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<unsigned\ char>\ \&,\ \textcolor{keywordtype}{void}\ *)>}
+
+\end{DoxyCode}
+\doxylink{namespacetinygltf_a1e23645e482eb9d896030921a7be90c9}{Write\+Whole\+File\+Function} type. Signature for custom filesystem callbacks. 
+
+\label{doc-enum-members}
+\Hypertarget{namespacetinygltf_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{namespacetinygltf_a6cec4aed000632cebb63348120bb946f}\index{tinygltf@{tinygltf}!ParseStrictness@{ParseStrictness}}
+\index{ParseStrictness@{ParseStrictness}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{ParseStrictness}{ParseStrictness}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a6cec4aed000632cebb63348120bb946f} 
+enum \mbox{\hyperlink{namespacetinygltf_a6cec4aed000632cebb63348120bb946f}{tinygltf\+::\+Parse\+Strictness}}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Permissive@{Permissive}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!Permissive@{Permissive}}}\Hypertarget{namespacetinygltf_a6cec4aed000632cebb63348120bb946fa4949a750b2dc7524142dc39fe1cddddc}\label{namespacetinygltf_a6cec4aed000632cebb63348120bb946fa4949a750b2dc7524142dc39fe1cddddc} 
+Permissive&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{Strict@{Strict}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!Strict@{Strict}}}\Hypertarget{namespacetinygltf_a6cec4aed000632cebb63348120bb946fa516e1ea1b0f87e33423972607a704dc4}\label{namespacetinygltf_a6cec4aed000632cebb63348120bb946fa516e1ea1b0f87e33423972607a704dc4} 
+Strict&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2}\index{tinygltf@{tinygltf}!SectionCheck@{SectionCheck}}
+\index{SectionCheck@{SectionCheck}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{SectionCheck}{SectionCheck}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2} 
+enum \mbox{\hyperlink{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2}{tinygltf\+::\+Section\+Check}}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NO\_REQUIRE@{NO\_REQUIRE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!NO\_REQUIRE@{NO\_REQUIRE}}}\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2aa9f492579a01cbb2ced6fc15cf0fd48d}\label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2aa9f492579a01cbb2ced6fc15cf0fd48d} 
+NO\+\_\+\+REQUIRE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REQUIRE\_VERSION@{REQUIRE\_VERSION}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!REQUIRE\_VERSION@{REQUIRE\_VERSION}}}\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a609149331fcb3c07b2f96f6da07d1bef}\label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a609149331fcb3c07b2f96f6da07d1bef} 
+REQUIRE\+\_\+\+VERSION&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REQUIRE\_SCENE@{REQUIRE\_SCENE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!REQUIRE\_SCENE@{REQUIRE\_SCENE}}}\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a05c63c368fa9c54de927c78068300be2}\label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a05c63c368fa9c54de927c78068300be2} 
+REQUIRE\+\_\+\+SCENE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REQUIRE\_SCENES@{REQUIRE\_SCENES}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!REQUIRE\_SCENES@{REQUIRE\_SCENES}}}\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2ae92ecf9d75b2ffdf5570bc54f8d2edf2}\label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2ae92ecf9d75b2ffdf5570bc54f8d2edf2} 
+REQUIRE\+\_\+\+SCENES&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REQUIRE\_NODES@{REQUIRE\_NODES}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!REQUIRE\_NODES@{REQUIRE\_NODES}}}\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a282194f3fbd768ddada163b206674b5f}\label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a282194f3fbd768ddada163b206674b5f} 
+REQUIRE\+\_\+\+NODES&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REQUIRE\_ACCESSORS@{REQUIRE\_ACCESSORS}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!REQUIRE\_ACCESSORS@{REQUIRE\_ACCESSORS}}}\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a1a179f38f1ec1856f2ae77506aee2b6a}\label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a1a179f38f1ec1856f2ae77506aee2b6a} 
+REQUIRE\+\_\+\+ACCESSORS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REQUIRE\_BUFFERS@{REQUIRE\_BUFFERS}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!REQUIRE\_BUFFERS@{REQUIRE\_BUFFERS}}}\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2aabf61d03168d2cd15ca6d6e1d7629379}\label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2aabf61d03168d2cd15ca6d6e1d7629379} 
+REQUIRE\+\_\+\+BUFFERS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REQUIRE\_BUFFER\_VIEWS@{REQUIRE\_BUFFER\_VIEWS}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!REQUIRE\_BUFFER\_VIEWS@{REQUIRE\_BUFFER\_VIEWS}}}\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a162272d410055eb62c12d3c300befcee}\label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2a162272d410055eb62c12d3c300befcee} 
+REQUIRE\+\_\+\+BUFFER\+\_\+\+VIEWS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REQUIRE\_ALL@{REQUIRE\_ALL}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!REQUIRE\_ALL@{REQUIRE\_ALL}}}\Hypertarget{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2ade019772fbf2ff7c47ef142f9be74f1f}\label{namespacetinygltf_a673082113ce9b7a462eff741a771d6d2ade019772fbf2ff7c47ef142f9be74f1f} 
+REQUIRE\+\_\+\+ALL&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7}\index{tinygltf@{tinygltf}!Type@{Type}}
+\index{Type@{Type}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{Type}{Type}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7} 
+enum \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7}{tinygltf\+::\+Type}}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NULL\_TYPE@{NULL\_TYPE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!NULL\_TYPE@{NULL\_TYPE}}}\Hypertarget{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a2caae2d74d8ce46ebe9f27653d27d6b2}\label{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a2caae2d74d8ce46ebe9f27653d27d6b2} 
+NULL\+\_\+\+TYPE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REAL\_TYPE@{REAL\_TYPE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!REAL\_TYPE@{REAL\_TYPE}}}\Hypertarget{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7aad05431fde461442f452f0578733a68f}\label{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7aad05431fde461442f452f0578733a68f} 
+REAL\+\_\+\+TYPE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INT\_TYPE@{INT\_TYPE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!INT\_TYPE@{INT\_TYPE}}}\Hypertarget{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7ad47a080c40272551d34fca9594d1e000}\label{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7ad47a080c40272551d34fca9594d1e000} 
+INT\+\_\+\+TYPE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOOL\_TYPE@{BOOL\_TYPE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!BOOL\_TYPE@{BOOL\_TYPE}}}\Hypertarget{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a95c12ccbbeb971b793a4e92bc2b6a6af}\label{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a95c12ccbbeb971b793a4e92bc2b6a6af} 
+BOOL\+\_\+\+TYPE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{STRING\_TYPE@{STRING\_TYPE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!STRING\_TYPE@{STRING\_TYPE}}}\Hypertarget{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a709e1de707fec63fa99b0d03d70839f6}\label{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a709e1de707fec63fa99b0d03d70839f6} 
+STRING\+\_\+\+TYPE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ARRAY\_TYPE@{ARRAY\_TYPE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!ARRAY\_TYPE@{ARRAY\_TYPE}}}\Hypertarget{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a9f203f44b2e0bb3fdc2854f65d0e6089}\label{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a9f203f44b2e0bb3fdc2854f65d0e6089} 
+ARRAY\+\_\+\+TYPE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BINARY\_TYPE@{BINARY\_TYPE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!BINARY\_TYPE@{BINARY\_TYPE}}}\Hypertarget{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a3eea36a4ead3daa411bff99f6ae6e494}\label{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a3eea36a4ead3daa411bff99f6ae6e494} 
+BINARY\+\_\+\+TYPE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{OBJECT\_TYPE@{OBJECT\_TYPE}!tinygltf@{tinygltf}}\index{tinygltf@{tinygltf}!OBJECT\_TYPE@{OBJECT\_TYPE}}}\Hypertarget{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7ac944f73b75ec304f1189cf9c7c559203}\label{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7ac944f73b75ec304f1189cf9c7c559203} 
+OBJECT\+\_\+\+TYPE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{namespacetinygltf_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacetinygltf_aa4d0e1d62a1926038e63585638f88ff8}\index{tinygltf@{tinygltf}!DecodeDataURI@{DecodeDataURI}}
+\index{DecodeDataURI@{DecodeDataURI}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{DecodeDataURI()}{DecodeDataURI()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_aa4d0e1d62a1926038e63585638f88ff8} 
+bool tinygltf\+::\+Decode\+Data\+URI (\begin{DoxyParamCaption}\item[{std\+::vector$<$ unsigned char $>$ \texorpdfstring{$\ast$}{*}}]{out}{, }\item[{std\+::string \&}]{mime\+\_\+type}{, }\item[{const std\+::string \&}]{in}{, }\item[{size\+\_\+t}]{req\+Bytes}{, }\item[{bool}]{check\+Size}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespacetinygltf_a2cc3baf7856ea03c802b5c6ad01851cb}\index{tinygltf@{tinygltf}!ExpandFilePath@{ExpandFilePath}}
+\index{ExpandFilePath@{ExpandFilePath}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{ExpandFilePath()}{ExpandFilePath()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a2cc3baf7856ea03c802b5c6ad01851cb} 
+std\+::string tinygltf\+::\+Expand\+File\+Path (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filepath}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{userdata}{}\end{DoxyParamCaption})}
+
+Expand file path(e.\+g. {\ttfamily \texorpdfstring{$\sim$}{\string~}} to home directory on posix, {\ttfamily APPDATA\%} to {\ttfamily C\+:\textbackslash{}\textbackslash{}Users\textbackslash{}\textbackslash{}tinygltf\textbackslash{}\textbackslash{}App\+Data})
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{in}}  & {\em filepath} & File path string. Assume UTF-\/8 \\
+\hline
+\mbox{\texttt{in}}  & {\em userdata} & User data. Set to {\ttfamily nullptr} if you don\textquotesingle{}t need it. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespacetinygltf_a73d9058e4f4fdb98ef035622360de928}\index{tinygltf@{tinygltf}!FileExists@{FileExists}}
+\index{FileExists@{FileExists}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{FileExists()}{FileExists()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a73d9058e4f4fdb98ef035622360de928} 
+bool tinygltf\+::\+File\+Exists (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{abs\+\_\+filename}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespacetinygltf_a8263a3b6226d5459ab58dc8369a219d1}\index{tinygltf@{tinygltf}!GetFileSizeInBytes@{GetFileSizeInBytes}}
+\index{GetFileSizeInBytes@{GetFileSizeInBytes}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{GetFileSizeInBytes()}{GetFileSizeInBytes()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a8263a3b6226d5459ab58dc8369a219d1} 
+bool tinygltf\+::\+Get\+File\+Size\+In\+Bytes (\begin{DoxyParamCaption}\item[{size\+\_\+t \texorpdfstring{$\ast$}{*}}]{filesize\+\_\+out}{, }\item[{std\+::string \texorpdfstring{$\ast$}{*}}]{err}{, }\item[{const std\+::string \&}]{filepath}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespacetinygltf_add352ac07751862b70126f22321cf891}\index{tinygltf@{tinygltf}!IsDataURI@{IsDataURI}}
+\index{IsDataURI@{IsDataURI}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{IsDataURI()}{IsDataURI()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_add352ac07751862b70126f22321cf891} 
+bool tinygltf\+::\+Is\+Data\+URI (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{in}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespacetinygltf_aee35a1a1bc4b90c187f18bcc00a5904c}\index{tinygltf@{tinygltf}!LoadImageData@{LoadImageData}}
+\index{LoadImageData@{LoadImageData}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{LoadImageData()}{LoadImageData()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_aee35a1a1bc4b90c187f18bcc00a5904c} 
+bool tinygltf\+::\+Load\+Image\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structtinygltf_1_1Image}{Image}} \texorpdfstring{$\ast$}{*}}]{image}{, }\item[{const int}]{image\+\_\+idx}{, }\item[{std\+::string \texorpdfstring{$\ast$}{*}}]{err}{, }\item[{std\+::string \texorpdfstring{$\ast$}{*}}]{warn}{, }\item[{int}]{req\+\_\+width}{, }\item[{int}]{req\+\_\+height}{, }\item[{const unsigned char \texorpdfstring{$\ast$}{*}}]{bytes}{, }\item[{int}]{size}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespacetinygltf_a6eaa919e030e52e39843f0a302c65eb8}\index{tinygltf@{tinygltf}!ReadWholeFile@{ReadWholeFile}}
+\index{ReadWholeFile@{ReadWholeFile}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{ReadWholeFile()}{ReadWholeFile()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a6eaa919e030e52e39843f0a302c65eb8} 
+bool tinygltf\+::\+Read\+Whole\+File (\begin{DoxyParamCaption}\item[{std\+::vector$<$ unsigned char $>$ \texorpdfstring{$\ast$}{*}}]{out}{, }\item[{std\+::string \texorpdfstring{$\ast$}{*}}]{err}{, }\item[{const std\+::string \&}]{filepath}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespacetinygltf_a706fe59212e1787230a99547cbe29a6c}\index{tinygltf@{tinygltf}!URIDecode@{URIDecode}}
+\index{URIDecode@{URIDecode}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{URIDecode()}{URIDecode()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a706fe59212e1787230a99547cbe29a6c} 
+bool tinygltf\+::\+URIDecode (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{in\+\_\+uri}{, }\item[{std\+::string \texorpdfstring{$\ast$}{*}}]{out\+\_\+uri}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{user\+\_\+data}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespacetinygltf_ac642919d4f7df1cfc6dd21c4f029690b}\index{tinygltf@{tinygltf}!WriteImageData@{WriteImageData}}
+\index{WriteImageData@{WriteImageData}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{WriteImageData()}{WriteImageData()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_ac642919d4f7df1cfc6dd21c4f029690b} 
+bool tinygltf\+::\+Write\+Image\+Data (\begin{DoxyParamCaption}\item[{const std\+::string \texorpdfstring{$\ast$}{*}}]{basepath}{, }\item[{const std\+::string \texorpdfstring{$\ast$}{*}}]{filename}{, }\item[{const \mbox{\hyperlink{structtinygltf_1_1Image}{Image}} \texorpdfstring{$\ast$}{*}}]{image}{, }\item[{bool}]{embed\+Images}{, }\item[{const \mbox{\hyperlink{structtinygltf_1_1FsCallbacks}{Fs\+Callbacks}} \texorpdfstring{$\ast$}{*}}]{fs\+\_\+cb}{, }\item[{const \mbox{\hyperlink{structtinygltf_1_1URICallbacks}{URICallbacks}} \texorpdfstring{$\ast$}{*}}]{uri\+\_\+cb}{, }\item[{std\+::string \texorpdfstring{$\ast$}{*}}]{out\+\_\+uri}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{namespacetinygltf_a0c9787423194dbd8bbda277e89b92fb5}\index{tinygltf@{tinygltf}!WriteWholeFile@{WriteWholeFile}}
+\index{WriteWholeFile@{WriteWholeFile}!tinygltf@{tinygltf}}
+\doxysubsubsection{\texorpdfstring{WriteWholeFile()}{WriteWholeFile()}}
+{\footnotesize\ttfamily \label{namespacetinygltf_a0c9787423194dbd8bbda277e89b92fb5} 
+bool tinygltf\+::\+Write\+Whole\+File (\begin{DoxyParamCaption}\item[{std\+::string \texorpdfstring{$\ast$}{*}}]{err}{, }\item[{const std\+::string \&}]{filepath}{, }\item[{const std\+::vector$<$ unsigned char $>$ \&}]{contents}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{}{}\end{DoxyParamCaption})}
+

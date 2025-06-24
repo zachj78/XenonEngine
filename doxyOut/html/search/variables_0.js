@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['_5fcallbacksdatabuf_0',['_CallbacksDataBuf',['../structImDrawList.html#adc3b2d80055a36dbea3719e24465424b',1,'ImDrawList']]],
+  ['_5fchannels_1',['_Channels',['../structImDrawListSplitter.html#ab3b0bdddacaa7b347c41735c2d9952dc',1,'ImDrawListSplitter']]],
+  ['_5fcliprectstack_2',['_ClipRectStack',['../structImDrawList.html#ae950024f053f3c94dc2c763d20be609d',1,'ImDrawList']]],
+  ['_5fcmdbuffer_3',['_CmdBuffer',['../structImDrawChannel.html#a8bb018bc09e2a1f4389c78390a437f78',1,'ImDrawChannel']]],
+  ['_5fcmdheader_4',['_CmdHeader',['../structImDrawList.html#a87d1ec89ec6a742fd4d097d2b924e92b',1,'ImDrawList']]],
+  ['_5fcount_5',['_Count',['../structImDrawListSplitter.html#ae3a1593ee05bc52e6284943eab3c97a2',1,'ImDrawListSplitter']]],
+  ['_5fcurrent_6',['_Current',['../structImDrawListSplitter.html#a99a46d62e09810f31d0a6efd4a0d2b09',1,'ImDrawListSplitter']]],
+  ['_5fdata_7',['_Data',['../structImDrawList.html#ad5a67c6f1487a812410e9979d1cf4a02',1,'ImDrawList']]],
+  ['_5fears_8',['_Ears',['../structImTriangulator.html#ac347ef75d88cbf545d50ad85e77cbe3d',1,'ImTriangulator']]],
+  ['_5ffringescale_9',['_FringeScale',['../structImDrawList.html#aa667eca45099e5679b161c17ac6ec7e0',1,'ImDrawList']]],
+  ['_5fidxbuffer_10',['_IdxBuffer',['../structImDrawChannel.html#abf48aaacbb4908d4b1ff8b54ee85a45f',1,'ImDrawChannel']]],
+  ['_5fidxwriteptr_11',['_IdxWritePtr',['../structImDrawList.html#a771f4c7f71873852fe030c3e498e5843',1,'ImDrawList']]],
+  ['_5fnodes_12',['_Nodes',['../structImTriangulator.html#a05c05caa6fc9d87c0b6036d223a5b998',1,'ImTriangulator']]],
+  ['_5fownername_13',['_OwnerName',['../structImDrawList.html#a643f385fb9d5fc35a431e72a10a212f5',1,'ImDrawList']]],
+  ['_5fpath_14',['_Path',['../structImDrawList.html#a5bdc39abf351360500048628b8dc1b07',1,'ImDrawList']]],
+  ['_5freflexes_15',['_Reflexes',['../structImTriangulator.html#a017362849997e8a99b4b48c9f9d850bb',1,'ImTriangulator']]],
+  ['_5fselectionorder_16',['_SelectionOrder',['../structImGuiSelectionBasicStorage.html#ac19585561995804e48065e21f1bb5b30',1,'ImGuiSelectionBasicStorage']]],
+  ['_5fsplitter_17',['_Splitter',['../structImDrawList.html#a2893207705100e8a5da8122da56bd162',1,'ImDrawList']]],
+  ['_5fstorage_18',['_Storage',['../structImGuiSelectionBasicStorage.html#aefb9716a0b190090ce3234fd3f7a0b77',1,'ImGuiSelectionBasicStorage']]],
+  ['_5ftextureidstack_19',['_TextureIdStack',['../structImDrawList.html#a848faddd121da050214b8d8159e5e704',1,'ImDrawList']]],
+  ['_5ftrianglesleft_20',['_TrianglesLeft',['../structImTriangulator.html#ada070a1b9bf5641714dfb4cf69200625',1,'ImTriangulator']]],
+  ['_5fvtxcurrentidx_21',['_VtxCurrentIdx',['../structImDrawList.html#a2228793183665bc3d8612795555fe505',1,'ImDrawList']]],
+  ['_5fvtxwriteptr_22',['_VtxWritePtr',['../structImDrawList.html#a67f870f5140bf1cab14b8515b7386073',1,'ImDrawList']]]
+];

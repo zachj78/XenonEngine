@@ -1,0 +1,41 @@
+\doxysection{Vulkan\+Instance.\+h}
+\hypertarget{VulkanInstance_8h_source}{}\label{VulkanInstance_8h_source}\index{VulkanInstance.h@{VulkanInstance.h}}
+\mbox{\hyperlink{VulkanInstance_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ VULKAN\_INSTANCE\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ VULKAN\_INSTANCE\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{Utils/config.h}}"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{helperFuncs_8h}{Utils/helperFuncs.h}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{DebugManager_8h}{Managers/DebugManager.h}}"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classVulkanInstance_a0e533f48d0b8734163c509eda8386775}{VulkanInstance}}\ \{}
+\DoxyCodeLine{00009\ \textcolor{keyword}{public}:\ }
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classVulkanInstance_adcbf5efe2b68f42a0c2cac4698c76a27}{framebufferResized}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{comment}{//Initialize\ GLFW\ window\ on\ instance\ construction}}
+\DoxyCodeLine{00013\ \ \ \ \ \mbox{\hyperlink{classVulkanInstance_a0e533f48d0b8734163c509eda8386775}{VulkanInstance}}(std::shared\_ptr<DebugManager>\ debugManager);}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classVulkanInstance_a80b3cb55526d30bd9e69cac3aa0af9b2}{cleanup}}();}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{comment}{//Main\ functions}}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classVulkanInstance_a669b3058491896f52a7945dfed4a1d3d}{createInstance}}();}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classVulkanInstance_a39d930bc808e98d8d0df72cbe83668d4}{createSurface}}();}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//Getter\ functions}}
+\DoxyCodeLine{00021\ \ \ \ \ GLFWwindow*\ \mbox{\hyperlink{classVulkanInstance_a377fe387d970db00bc23e95544790da0}{getWindowPtr}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ window;\ \};}
+\DoxyCodeLine{00022\ \ \ \ \ VkInstance\ \mbox{\hyperlink{classVulkanInstance_a4c6f363693ff7d4c93a1a3eeee4dbb11}{getInstance}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ instance;\ \};}
+\DoxyCodeLine{00023\ \ \ \ \ VkSurfaceKHR\ \mbox{\hyperlink{classVulkanInstance_a36999d83ddb401b04c7ba542f1e56878}{getSurface}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ surface;\ \};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{private}:\ }
+\DoxyCodeLine{00028\ \ \ \ \ std::shared\_ptr<DebugManager>\ instance\_debugManager;}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ GLFWwindow*\ window\ =\ VK\_NULL\_HANDLE;}
+\DoxyCodeLine{00031\ \ \ \ \ VkInstance\ instance\ =\ VK\_NULL\_HANDLE;\ \textcolor{comment}{//\ Vulkan\ Instance}}
+\DoxyCodeLine{00032\ \ \ \ \ VkSurfaceKHR\ surface;}
+\DoxyCodeLine{00033\ \};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

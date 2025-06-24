@@ -1,0 +1,141 @@
+\doxysection{Plane Class Reference}
+\hypertarget{classPlane}{}\label{classPlane}\index{Plane@{Plane}}
+
+
+{\ttfamily \#include $<$Mesh\+Manager.\+h$>$}
+
+
+
+Inheritance diagram for Plane\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=123pt]{classPlane__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Plane\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=123pt]{classPlane__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classPlane_acb3d70d79c18dff94594dd58f5712ddd}{Plane}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMaterial}{Material}} $>$ material)
+\item 
+const std\+::vector$<$ \mbox{\hyperlink{structVertex}{Vertex}} $>$ \& \mbox{\hyperlink{classPlane_ac52c353c953b8268c3b1cf1302bf7b0d}{get\+Vertices}} () const override
+\item 
+const std\+::vector$<$ uint32\+\_\+t $>$ \& \mbox{\hyperlink{classPlane_ad35ebf0db2c9dc17845e9b7e131b9e0e}{get\+Indices}} () const override
+\item 
+glm\+::mat4 \mbox{\hyperlink{classPlane_a945e51c664a1a9809d604b977f543888}{get\+Model\+Matrix}} () const override
+\item 
+int \mbox{\hyperlink{classPlane_ab85c38b46064d686c898a2c27545a823}{get\+Mesh\+Index}} () const override
+\item 
+void \mbox{\hyperlink{classPlane_a14e40319f2a9987d65d219ee45589e2b}{set\+Mesh\+Index}} (int index) override
+\item 
+std\+::string \mbox{\hyperlink{classPlane_ab2012c4cd07b25d1f387a50639ef4ffd}{get\+Name}} () const override
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMaterial}{Material}} $>$ \mbox{\hyperlink{classPlane_a4f418163c64c23ae16d34e908d0d205a}{get\+Material}} () const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classMesh}{Mesh}}}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{classMesh_a651347a4a847da7d491641c66c7904c5}{\texorpdfstring{$\sim$}{\string~}\+Mesh}} ()=default
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classPlane_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classPlane_acb3d70d79c18dff94594dd58f5712ddd}\index{Plane@{Plane}!Plane@{Plane}}
+\index{Plane@{Plane}!Plane@{Plane}}
+\doxysubsubsection{\texorpdfstring{Plane()}{Plane()}}
+{\footnotesize\ttfamily \label{classPlane_acb3d70d79c18dff94594dd58f5712ddd} 
+Plane\+::\+Plane (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMaterial}{Material}} $>$}]{material}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classPlane_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classPlane_ad35ebf0db2c9dc17845e9b7e131b9e0e}\index{Plane@{Plane}!getIndices@{getIndices}}
+\index{getIndices@{getIndices}!Plane@{Plane}}
+\doxysubsubsection{\texorpdfstring{getIndices()}{getIndices()}}
+{\footnotesize\ttfamily \label{classPlane_ad35ebf0db2c9dc17845e9b7e131b9e0e} 
+const std\+::vector$<$ uint32\+\_\+t $>$ \& Plane\+::get\+Indices (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classMesh_a14fcdf7745cdfffd14b42f0db18a7b33}{Mesh}}.
+
+\Hypertarget{classPlane_a4f418163c64c23ae16d34e908d0d205a}\index{Plane@{Plane}!getMaterial@{getMaterial}}
+\index{getMaterial@{getMaterial}!Plane@{Plane}}
+\doxysubsubsection{\texorpdfstring{getMaterial()}{getMaterial()}}
+{\footnotesize\ttfamily \label{classPlane_a4f418163c64c23ae16d34e908d0d205a} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMaterial}{Material}} $>$ Plane\+::get\+Material (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classMesh_afab2499b474f589c0e3fd3ac4ef4eb68}{Mesh}}.
+
+\Hypertarget{classPlane_ab85c38b46064d686c898a2c27545a823}\index{Plane@{Plane}!getMeshIndex@{getMeshIndex}}
+\index{getMeshIndex@{getMeshIndex}!Plane@{Plane}}
+\doxysubsubsection{\texorpdfstring{getMeshIndex()}{getMeshIndex()}}
+{\footnotesize\ttfamily \label{classPlane_ab85c38b46064d686c898a2c27545a823} 
+int Plane\+::get\+Mesh\+Index (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classMesh_a7109a7668cc0c87775eb98c014205bf0}{Mesh}}.
+
+\Hypertarget{classPlane_a945e51c664a1a9809d604b977f543888}\index{Plane@{Plane}!getModelMatrix@{getModelMatrix}}
+\index{getModelMatrix@{getModelMatrix}!Plane@{Plane}}
+\doxysubsubsection{\texorpdfstring{getModelMatrix()}{getModelMatrix()}}
+{\footnotesize\ttfamily \label{classPlane_a945e51c664a1a9809d604b977f543888} 
+glm\+::mat4 Plane\+::get\+Model\+Matrix (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classMesh_a7b058b372a16e978eddac158f4dbb9f4}{Mesh}}.
+
+\Hypertarget{classPlane_ab2012c4cd07b25d1f387a50639ef4ffd}\index{Plane@{Plane}!getName@{getName}}
+\index{getName@{getName}!Plane@{Plane}}
+\doxysubsubsection{\texorpdfstring{getName()}{getName()}}
+{\footnotesize\ttfamily \label{classPlane_ab2012c4cd07b25d1f387a50639ef4ffd} 
+std\+::string Plane\+::get\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classMesh_a4c885e81e764eb77e1571b055df95f7c}{Mesh}}.
+
+\Hypertarget{classPlane_ac52c353c953b8268c3b1cf1302bf7b0d}\index{Plane@{Plane}!getVertices@{getVertices}}
+\index{getVertices@{getVertices}!Plane@{Plane}}
+\doxysubsubsection{\texorpdfstring{getVertices()}{getVertices()}}
+{\footnotesize\ttfamily \label{classPlane_ac52c353c953b8268c3b1cf1302bf7b0d} 
+const std\+::vector$<$ \mbox{\hyperlink{structVertex}{Vertex}} $>$ \& Plane\+::get\+Vertices (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classMesh_a26691d8d42f300c98e31ffdeb45bcf16}{Mesh}}.
+
+\Hypertarget{classPlane_a14e40319f2a9987d65d219ee45589e2b}\index{Plane@{Plane}!setMeshIndex@{setMeshIndex}}
+\index{setMeshIndex@{setMeshIndex}!Plane@{Plane}}
+\doxysubsubsection{\texorpdfstring{setMeshIndex()}{setMeshIndex()}}
+{\footnotesize\ttfamily \label{classPlane_a14e40319f2a9987d65d219ee45589e2b} 
+void Plane\+::set\+Mesh\+Index (\begin{DoxyParamCaption}\item[{int}]{index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classMesh_ac76afd41d76640438cfb1dde810c84ac}{Mesh}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{MeshManager_8h}{Mesh\+Manager.\+h}}\end{DoxyCompactItemize}

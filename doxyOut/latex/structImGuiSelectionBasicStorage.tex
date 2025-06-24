@@ -1,0 +1,165 @@
+\doxysection{Im\+Gui\+Selection\+Basic\+Storage Struct Reference}
+\hypertarget{structImGuiSelectionBasicStorage}{}\label{structImGuiSelectionBasicStorage}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+
+
+{\ttfamily \#include $<$imgui.\+h$>$}
+
+
+
+Inheritance diagram for Im\+Gui\+Selection\+Basic\+Storage\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{structImGuiSelectionBasicStorage__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Im\+Gui\+Selection\+Basic\+Storage\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{structImGuiSelectionBasicStorage__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{imgui_8h_a43829975e84e45d1149597467a14bbf5}{IMGUI\+\_\+\+API}} \mbox{\hyperlink{structImGuiSelectionBasicStorage_ac81a4d67326ea25041e140319239126c}{Im\+Gui\+Selection\+Basic\+Storage}} ()
+\item 
+\mbox{\hyperlink{imgui_8h_a43829975e84e45d1149597467a14bbf5}{IMGUI\+\_\+\+API}} void \mbox{\hyperlink{structImGuiSelectionBasicStorage_a5da8efc0dbe1611b3f980afba295110a}{Apply\+Requests}} (\mbox{\hyperlink{structImGuiMultiSelectIO}{Im\+Gui\+Multi\+Select\+IO}} \texorpdfstring{$\ast$}{*}ms\+\_\+io)
+\item 
+\mbox{\hyperlink{imgui_8h_a43829975e84e45d1149597467a14bbf5}{IMGUI\+\_\+\+API}} bool \mbox{\hyperlink{structImGuiSelectionBasicStorage_ab55dc39b0ce40405957af6ff0086f4af}{Contains}} (\mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}} id) const
+\item 
+\mbox{\hyperlink{imgui_8h_a43829975e84e45d1149597467a14bbf5}{IMGUI\+\_\+\+API}} void \mbox{\hyperlink{structImGuiSelectionBasicStorage_a9b1f057e4578e031520a78ae392af037}{Clear}} ()
+\item 
+\mbox{\hyperlink{imgui_8h_a43829975e84e45d1149597467a14bbf5}{IMGUI\+\_\+\+API}} void \mbox{\hyperlink{structImGuiSelectionBasicStorage_a18377dc1f474f77951a5da925c4cbfac}{Swap}} (\mbox{\hyperlink{structImGuiSelectionBasicStorage}{Im\+Gui\+Selection\+Basic\+Storage}} \&r)
+\item 
+\mbox{\hyperlink{imgui_8h_a43829975e84e45d1149597467a14bbf5}{IMGUI\+\_\+\+API}} void \mbox{\hyperlink{structImGuiSelectionBasicStorage_a00b16e65ced786c9446c419ab9a75a0a}{Set\+Item\+Selected}} (\mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}} id, bool selected)
+\item 
+\mbox{\hyperlink{imgui_8h_a43829975e84e45d1149597467a14bbf5}{IMGUI\+\_\+\+API}} bool \mbox{\hyperlink{structImGuiSelectionBasicStorage_a8fe947343b7944c6447b2ae4c6b35d72}{Get\+Next\+Selected\+Item}} (void \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}opaque\+\_\+it, \mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}} \texorpdfstring{$\ast$}{*}out\+\_\+id)
+\item 
+\mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}} \mbox{\hyperlink{structImGuiSelectionBasicStorage_a331efab75bdd203770ed5ccaaa09a6d1}{Get\+Storage\+Id\+From\+Index}} (int idx)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{structImGuiSelectionBasicStorage_a5f6fdbea143f5c65d851ff8ae190685e}{Size}}
+\item 
+bool \mbox{\hyperlink{structImGuiSelectionBasicStorage_a5e56e08cdc1dc14def833a98a8b14195}{Preserve\+Order}}
+\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structImGuiSelectionBasicStorage_aedc850d514307cfc204847b2716180ac}{User\+Data}}
+\item 
+\mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}}(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structImGuiSelectionBasicStorage_af28b898003c26e0e47d3bd11520b8f43}{Adapter\+Index\+To\+Storage\+Id}} )(\mbox{\hyperlink{structImGuiSelectionBasicStorage}{Im\+Gui\+Selection\+Basic\+Storage}} \texorpdfstring{$\ast$}{*}self, int idx)
+\item 
+int \mbox{\hyperlink{structImGuiSelectionBasicStorage_ac19585561995804e48065e21f1bb5b30}{\+\_\+\+Selection\+Order}}
+\item 
+\mbox{\hyperlink{structImGuiStorage}{Im\+Gui\+Storage}} \mbox{\hyperlink{structImGuiSelectionBasicStorage_aefb9716a0b190090ce3234fd3f7a0b77}{\+\_\+\+Storage}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{structImGuiSelectionBasicStorage_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structImGuiSelectionBasicStorage_ac81a4d67326ea25041e140319239126c}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{ImGuiSelectionBasicStorage()}{ImGuiSelectionBasicStorage()}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_ac81a4d67326ea25041e140319239126c} 
+Im\+Gui\+Selection\+Basic\+Storage\+::\+Im\+Gui\+Selection\+Basic\+Storage (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{structImGuiSelectionBasicStorage_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{structImGuiSelectionBasicStorage_a5da8efc0dbe1611b3f980afba295110a}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!ApplyRequests@{ApplyRequests}}
+\index{ApplyRequests@{ApplyRequests}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{ApplyRequests()}{ApplyRequests()}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_a5da8efc0dbe1611b3f980afba295110a} 
+void Im\+Gui\+Selection\+Basic\+Storage\+::\+Apply\+Requests (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structImGuiMultiSelectIO}{Im\+Gui\+Multi\+Select\+IO}} \texorpdfstring{$\ast$}{*}}]{ms\+\_\+io}{}\end{DoxyParamCaption})}
+
+\Hypertarget{structImGuiSelectionBasicStorage_a9b1f057e4578e031520a78ae392af037}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!Clear@{Clear}}
+\index{Clear@{Clear}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{Clear()}{Clear()}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_a9b1f057e4578e031520a78ae392af037} 
+void Im\+Gui\+Selection\+Basic\+Storage\+::\+Clear (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{structImGuiSelectionBasicStorage_ab55dc39b0ce40405957af6ff0086f4af}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!Contains@{Contains}}
+\index{Contains@{Contains}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{Contains()}{Contains()}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_ab55dc39b0ce40405957af6ff0086f4af} 
+bool Im\+Gui\+Selection\+Basic\+Storage\+::\+Contains (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}}}]{id}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{structImGuiSelectionBasicStorage_a8fe947343b7944c6447b2ae4c6b35d72}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!GetNextSelectedItem@{GetNextSelectedItem}}
+\index{GetNextSelectedItem@{GetNextSelectedItem}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{GetNextSelectedItem()}{GetNextSelectedItem()}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_a8fe947343b7944c6447b2ae4c6b35d72} 
+bool Im\+Gui\+Selection\+Basic\+Storage\+::\+Get\+Next\+Selected\+Item (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{opaque\+\_\+it}{, }\item[{\mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}} \texorpdfstring{$\ast$}{*}}]{out\+\_\+id}{}\end{DoxyParamCaption})}
+
+\Hypertarget{structImGuiSelectionBasicStorage_a331efab75bdd203770ed5ccaaa09a6d1}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!GetStorageIdFromIndex@{GetStorageIdFromIndex}}
+\index{GetStorageIdFromIndex@{GetStorageIdFromIndex}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{GetStorageIdFromIndex()}{GetStorageIdFromIndex()}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_a331efab75bdd203770ed5ccaaa09a6d1} 
+\mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}} Im\+Gui\+Selection\+Basic\+Storage\+::\+Get\+Storage\+Id\+From\+Index (\begin{DoxyParamCaption}\item[{int}]{idx}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{structImGuiSelectionBasicStorage_a00b16e65ced786c9446c419ab9a75a0a}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!SetItemSelected@{SetItemSelected}}
+\index{SetItemSelected@{SetItemSelected}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{SetItemSelected()}{SetItemSelected()}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_a00b16e65ced786c9446c419ab9a75a0a} 
+void Im\+Gui\+Selection\+Basic\+Storage\+::\+Set\+Item\+Selected (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}}}]{id}{, }\item[{bool}]{selected}{}\end{DoxyParamCaption})}
+
+\Hypertarget{structImGuiSelectionBasicStorage_a18377dc1f474f77951a5da925c4cbfac}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!Swap@{Swap}}
+\index{Swap@{Swap}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{Swap()}{Swap()}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_a18377dc1f474f77951a5da925c4cbfac} 
+void Im\+Gui\+Selection\+Basic\+Storage\+::\+Swap (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structImGuiSelectionBasicStorage}{Im\+Gui\+Selection\+Basic\+Storage}} \&}]{r}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{structImGuiSelectionBasicStorage_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structImGuiSelectionBasicStorage_ac19585561995804e48065e21f1bb5b30}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!\_SelectionOrder@{\_SelectionOrder}}
+\index{\_SelectionOrder@{\_SelectionOrder}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{\_SelectionOrder}{\_SelectionOrder}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_ac19585561995804e48065e21f1bb5b30} 
+int Im\+Gui\+Selection\+Basic\+Storage\+::\+\_\+\+Selection\+Order}
+
+\Hypertarget{structImGuiSelectionBasicStorage_aefb9716a0b190090ce3234fd3f7a0b77}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!\_Storage@{\_Storage}}
+\index{\_Storage@{\_Storage}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{\_Storage}{\_Storage}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_aefb9716a0b190090ce3234fd3f7a0b77} 
+\mbox{\hyperlink{structImGuiStorage}{Im\+Gui\+Storage}} Im\+Gui\+Selection\+Basic\+Storage\+::\+\_\+\+Storage}
+
+\Hypertarget{structImGuiSelectionBasicStorage_af28b898003c26e0e47d3bd11520b8f43}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!AdapterIndexToStorageId@{AdapterIndexToStorageId}}
+\index{AdapterIndexToStorageId@{AdapterIndexToStorageId}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{AdapterIndexToStorageId}{AdapterIndexToStorageId}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_af28b898003c26e0e47d3bd11520b8f43} 
+\mbox{\hyperlink{imgui_8h_a1785c9b6f4e16406764a85f32582236f}{Im\+Gui\+ID}}(\texorpdfstring{$\ast$}{*} Im\+Gui\+Selection\+Basic\+Storage\+::\+Adapter\+Index\+To\+Storage\+Id) (\mbox{\hyperlink{structImGuiSelectionBasicStorage}{Im\+Gui\+Selection\+Basic\+Storage}} \texorpdfstring{$\ast$}{*}self, int idx)}
+
+\Hypertarget{structImGuiSelectionBasicStorage_a5e56e08cdc1dc14def833a98a8b14195}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!PreserveOrder@{PreserveOrder}}
+\index{PreserveOrder@{PreserveOrder}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{PreserveOrder}{PreserveOrder}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_a5e56e08cdc1dc14def833a98a8b14195} 
+bool Im\+Gui\+Selection\+Basic\+Storage\+::\+Preserve\+Order}
+
+\Hypertarget{structImGuiSelectionBasicStorage_a5f6fdbea143f5c65d851ff8ae190685e}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!Size@{Size}}
+\index{Size@{Size}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{Size}{Size}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_a5f6fdbea143f5c65d851ff8ae190685e} 
+int Im\+Gui\+Selection\+Basic\+Storage\+::\+Size}
+
+\Hypertarget{structImGuiSelectionBasicStorage_aedc850d514307cfc204847b2716180ac}\index{ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}!UserData@{UserData}}
+\index{UserData@{UserData}!ImGuiSelectionBasicStorage@{ImGuiSelectionBasicStorage}}
+\doxysubsubsection{\texorpdfstring{UserData}{UserData}}
+{\footnotesize\ttfamily \label{structImGuiSelectionBasicStorage_aedc850d514307cfc204847b2716180ac} 
+void\texorpdfstring{$\ast$}{*} Im\+Gui\+Selection\+Basic\+Storage\+::\+User\+Data}
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{imgui_8h}{imgui.\+h}}\item 
+\mbox{\hyperlink{imgui__widgets_8cpp}{imgui\+\_\+widgets.\+cpp}}\end{DoxyCompactItemize}

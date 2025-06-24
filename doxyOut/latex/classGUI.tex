@@ -1,0 +1,65 @@
+\doxysection{GUI Class Reference}
+\hypertarget{classGUI}{}\label{classGUI}\index{GUI@{GUI}}
+
+
+{\ttfamily \#include $<$GUI.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classGUI_a8cbb3140b7d3c9d8e942d6ce6b60a0e8}{GUI}} ()
+\item 
+void \mbox{\hyperlink{classGUI_a79590fd852ddeb86afec2cc4984adb0f}{link\+To\+App}} (bool using\+Swapchain, GLFWwindow \texorpdfstring{$\ast$}{*}window, Vk\+Instance instance, Vk\+Device logical\+Device, Vk\+Physical\+Device physical\+Device, uint32\+\_\+t graphics\+Queue\+Index, Vk\+Queue graphics\+Queue, uint32\+\_\+t min\+Image\+Count, uint32\+\_\+t image\+Count, std\+::vector$<$ Vk\+Image\+View $>$ target\+Image\+Views, Vk\+Render\+Pass render\+Pass, Vk\+Sampler target\+Sampler=nullptr)
+\item 
+void \mbox{\hyperlink{classGUI_a5c604bc38728fe70dd4c13aa8b9e2f12}{begin\+Frame}} (uint32\+\_\+t current\+Frame)
+\item 
+void \mbox{\hyperlink{classGUI_a40fafed007e372994bca7479a4d5c567}{end\+Frame}} ()
+\item 
+void \mbox{\hyperlink{classGUI_a77c1b8daaa385596109a57bc4127837e}{record}} (Vk\+Command\+Buffer command\+Buffer)
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classGUI_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classGUI_a8cbb3140b7d3c9d8e942d6ce6b60a0e8}\index{GUI@{GUI}!GUI@{GUI}}
+\index{GUI@{GUI}!GUI@{GUI}}
+\doxysubsubsection{\texorpdfstring{GUI()}{GUI()}}
+{\footnotesize\ttfamily \label{classGUI_a8cbb3140b7d3c9d8e942d6ce6b60a0e8} 
+GUI\+::\+GUI (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classGUI_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classGUI_a5c604bc38728fe70dd4c13aa8b9e2f12}\index{GUI@{GUI}!beginFrame@{beginFrame}}
+\index{beginFrame@{beginFrame}!GUI@{GUI}}
+\doxysubsubsection{\texorpdfstring{beginFrame()}{beginFrame()}}
+{\footnotesize\ttfamily \label{classGUI_a5c604bc38728fe70dd4c13aa8b9e2f12} 
+void GUI\+::begin\+Frame (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{current\+Frame}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGUI_a40fafed007e372994bca7479a4d5c567}\index{GUI@{GUI}!endFrame@{endFrame}}
+\index{endFrame@{endFrame}!GUI@{GUI}}
+\doxysubsubsection{\texorpdfstring{endFrame()}{endFrame()}}
+{\footnotesize\ttfamily \label{classGUI_a40fafed007e372994bca7479a4d5c567} 
+void GUI\+::end\+Frame (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classGUI_a79590fd852ddeb86afec2cc4984adb0f}\index{GUI@{GUI}!linkToApp@{linkToApp}}
+\index{linkToApp@{linkToApp}!GUI@{GUI}}
+\doxysubsubsection{\texorpdfstring{linkToApp()}{linkToApp()}}
+{\footnotesize\ttfamily \label{classGUI_a79590fd852ddeb86afec2cc4984adb0f} 
+void GUI\+::link\+To\+App (\begin{DoxyParamCaption}\item[{bool}]{using\+Swapchain}{, }\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{Vk\+Instance}]{instance}{, }\item[{Vk\+Device}]{logical\+Device}{, }\item[{Vk\+Physical\+Device}]{physical\+Device}{, }\item[{uint32\+\_\+t}]{graphics\+Queue\+Index}{, }\item[{Vk\+Queue}]{graphics\+Queue}{, }\item[{uint32\+\_\+t}]{min\+Image\+Count}{, }\item[{uint32\+\_\+t}]{image\+Count}{, }\item[{std\+::vector$<$ Vk\+Image\+View $>$}]{target\+Image\+Views}{, }\item[{Vk\+Render\+Pass}]{render\+Pass}{, }\item[{Vk\+Sampler}]{target\+Sampler}{ = {\ttfamily nullptr}}\end{DoxyParamCaption})}
+
+\Hypertarget{classGUI_a77c1b8daaa385596109a57bc4127837e}\index{GUI@{GUI}!record@{record}}
+\index{record@{record}!GUI@{GUI}}
+\doxysubsubsection{\texorpdfstring{record()}{record()}}
+{\footnotesize\ttfamily \label{classGUI_a77c1b8daaa385596109a57bc4127837e} 
+void GUI\+::record (\begin{DoxyParamCaption}\item[{Vk\+Command\+Buffer}]{command\+Buffer}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{GUI_8h}{GUI.\+h}}\item 
+\mbox{\hyperlink{GUI_8cpp}{GUI.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,97 @@
+\doxysection{Vulkan\+Instance Class Reference}
+\hypertarget{classVulkanInstance}{}\label{classVulkanInstance}\index{VulkanInstance@{VulkanInstance}}
+
+
+{\ttfamily \#include $<$Vulkan\+Instance.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classVulkanInstance_a0e533f48d0b8734163c509eda8386775}{Vulkan\+Instance}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDebugManager}{Debug\+Manager}} $>$ debug\+Manager)
+\item 
+void \mbox{\hyperlink{classVulkanInstance_a80b3cb55526d30bd9e69cac3aa0af9b2}{cleanup}} ()
+\item 
+void \mbox{\hyperlink{classVulkanInstance_a669b3058491896f52a7945dfed4a1d3d}{create\+Instance}} ()
+\item 
+void \mbox{\hyperlink{classVulkanInstance_a39d930bc808e98d8d0df72cbe83668d4}{create\+Surface}} ()
+\item 
+GLFWwindow \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classVulkanInstance_a377fe387d970db00bc23e95544790da0}{get\+Window\+Ptr}} () const
+\item 
+Vk\+Instance \mbox{\hyperlink{classVulkanInstance_a4c6f363693ff7d4c93a1a3eeee4dbb11}{get\+Instance}} () const
+\item 
+Vk\+Surface\+KHR \mbox{\hyperlink{classVulkanInstance_a36999d83ddb401b04c7ba542f1e56878}{get\+Surface}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classVulkanInstance_adcbf5efe2b68f42a0c2cac4698c76a27}{framebuffer\+Resized}} = false
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classVulkanInstance_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classVulkanInstance_a0e533f48d0b8734163c509eda8386775}\index{VulkanInstance@{VulkanInstance}!VulkanInstance@{VulkanInstance}}
+\index{VulkanInstance@{VulkanInstance}!VulkanInstance@{VulkanInstance}}
+\doxysubsubsection{\texorpdfstring{VulkanInstance()}{VulkanInstance()}}
+{\footnotesize\ttfamily \label{classVulkanInstance_a0e533f48d0b8734163c509eda8386775} 
+Vulkan\+Instance\+::\+Vulkan\+Instance (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDebugManager}{Debug\+Manager}} $>$}]{debug\+Manager}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classVulkanInstance_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classVulkanInstance_a80b3cb55526d30bd9e69cac3aa0af9b2}\index{VulkanInstance@{VulkanInstance}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!VulkanInstance@{VulkanInstance}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{classVulkanInstance_a80b3cb55526d30bd9e69cac3aa0af9b2} 
+void Vulkan\+Instance\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classVulkanInstance_a669b3058491896f52a7945dfed4a1d3d}\index{VulkanInstance@{VulkanInstance}!createInstance@{createInstance}}
+\index{createInstance@{createInstance}!VulkanInstance@{VulkanInstance}}
+\doxysubsubsection{\texorpdfstring{createInstance()}{createInstance()}}
+{\footnotesize\ttfamily \label{classVulkanInstance_a669b3058491896f52a7945dfed4a1d3d} 
+void Vulkan\+Instance\+::create\+Instance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classVulkanInstance_a39d930bc808e98d8d0df72cbe83668d4}\index{VulkanInstance@{VulkanInstance}!createSurface@{createSurface}}
+\index{createSurface@{createSurface}!VulkanInstance@{VulkanInstance}}
+\doxysubsubsection{\texorpdfstring{createSurface()}{createSurface()}}
+{\footnotesize\ttfamily \label{classVulkanInstance_a39d930bc808e98d8d0df72cbe83668d4} 
+void Vulkan\+Instance\+::create\+Surface (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classVulkanInstance_a4c6f363693ff7d4c93a1a3eeee4dbb11}\index{VulkanInstance@{VulkanInstance}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!VulkanInstance@{VulkanInstance}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \label{classVulkanInstance_a4c6f363693ff7d4c93a1a3eeee4dbb11} 
+Vk\+Instance Vulkan\+Instance\+::get\+Instance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classVulkanInstance_a36999d83ddb401b04c7ba542f1e56878}\index{VulkanInstance@{VulkanInstance}!getSurface@{getSurface}}
+\index{getSurface@{getSurface}!VulkanInstance@{VulkanInstance}}
+\doxysubsubsection{\texorpdfstring{getSurface()}{getSurface()}}
+{\footnotesize\ttfamily \label{classVulkanInstance_a36999d83ddb401b04c7ba542f1e56878} 
+Vk\+Surface\+KHR Vulkan\+Instance\+::get\+Surface (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classVulkanInstance_a377fe387d970db00bc23e95544790da0}\index{VulkanInstance@{VulkanInstance}!getWindowPtr@{getWindowPtr}}
+\index{getWindowPtr@{getWindowPtr}!VulkanInstance@{VulkanInstance}}
+\doxysubsubsection{\texorpdfstring{getWindowPtr()}{getWindowPtr()}}
+{\footnotesize\ttfamily \label{classVulkanInstance_a377fe387d970db00bc23e95544790da0} 
+GLFWwindow \texorpdfstring{$\ast$}{*} Vulkan\+Instance\+::get\+Window\+Ptr (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classVulkanInstance_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classVulkanInstance_adcbf5efe2b68f42a0c2cac4698c76a27}\index{VulkanInstance@{VulkanInstance}!framebufferResized@{framebufferResized}}
+\index{framebufferResized@{framebufferResized}!VulkanInstance@{VulkanInstance}}
+\doxysubsubsection{\texorpdfstring{framebufferResized}{framebufferResized}}
+{\footnotesize\ttfamily \label{classVulkanInstance_adcbf5efe2b68f42a0c2cac4698c76a27} 
+bool Vulkan\+Instance\+::framebuffer\+Resized = false}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{VulkanInstance_8h}{Vulkan\+Instance.\+h}}\item 
+\mbox{\hyperlink{VulkanInstance_8cpp}{Vulkan\+Instance.\+cpp}}\end{DoxyCompactItemize}

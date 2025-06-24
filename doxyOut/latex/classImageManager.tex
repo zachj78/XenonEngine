@@ -1,0 +1,89 @@
+\doxysection{Image\+Manager Class Reference}
+\hypertarget{classImageManager}{}\label{classImageManager}\index{ImageManager@{ImageManager}}
+
+
+{\ttfamily \#include $<$Image\+Manager.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classImageManager_ad741d730ca582b8e823544e66fbb337a}{Image\+Manager}} (Vk\+Device logical\+Device, Vk\+Physical\+Device physical\+Device, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$)
+\item 
+void \mbox{\hyperlink{classImageManager_a0288398b98c441cf6805c031d3f9ed31}{create\+Texture\+Image}} (std\+::string name, std\+::string texture\+Path, Vk\+Command\+Pool command\+Pool)
+\item 
+void \mbox{\hyperlink{classImageManager_a3d6dae3f8146df3cf342865bd1b2d307}{remove\+Image}} (std\+::string name)
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classImage}{Image}} $>$ \mbox{\hyperlink{classImageManager_a113ab8639d88c564946af57f79824afc}{get\+Image}} (std\+::string name)
+\item 
+Vk\+Sampler \mbox{\hyperlink{classImageManager_a3c5299e5e446ae5e3bb4014c2f439363}{get\+Sampler}} (std\+::string name)
+\item 
+Vk\+Image \mbox{\hyperlink{classImageManager_ae25ea9a5fe31421417d47dd1be7cb3f8}{get\+Image\+Handle}} (std\+::string name)
+\item 
+\mbox{\hyperlink{structImageDetails}{Image\+Details}} \mbox{\hyperlink{classImageManager_a85dacd72c1bfee3d35a10d065a9020ff}{get\+Image\+Details}} (std\+::string name)
+\item 
+void \mbox{\hyperlink{classImageManager_a6f7e90914d06717abec3c1d33b89ab5b}{cleanup}} ()
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classImageManager_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classImageManager_ad741d730ca582b8e823544e66fbb337a}\index{ImageManager@{ImageManager}!ImageManager@{ImageManager}}
+\index{ImageManager@{ImageManager}!ImageManager@{ImageManager}}
+\doxysubsubsection{\texorpdfstring{ImageManager()}{ImageManager()}}
+{\footnotesize\ttfamily \label{classImageManager_ad741d730ca582b8e823544e66fbb337a} 
+Image\+Manager\+::\+Image\+Manager (\begin{DoxyParamCaption}\item[{Vk\+Device}]{logical\+Device}{, }\item[{Vk\+Physical\+Device}]{physical\+Device}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$}]{buffer\+Manager}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classImageManager_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classImageManager_a6f7e90914d06717abec3c1d33b89ab5b}\index{ImageManager@{ImageManager}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!ImageManager@{ImageManager}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{classImageManager_a6f7e90914d06717abec3c1d33b89ab5b} 
+void Image\+Manager\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImageManager_a0288398b98c441cf6805c031d3f9ed31}\index{ImageManager@{ImageManager}!createTextureImage@{createTextureImage}}
+\index{createTextureImage@{createTextureImage}!ImageManager@{ImageManager}}
+\doxysubsubsection{\texorpdfstring{createTextureImage()}{createTextureImage()}}
+{\footnotesize\ttfamily \label{classImageManager_a0288398b98c441cf6805c031d3f9ed31} 
+void Image\+Manager\+::create\+Texture\+Image (\begin{DoxyParamCaption}\item[{std\+::string}]{name}{, }\item[{std\+::string}]{texture\+Path}{, }\item[{Vk\+Command\+Pool}]{command\+Pool}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImageManager_a113ab8639d88c564946af57f79824afc}\index{ImageManager@{ImageManager}!getImage@{getImage}}
+\index{getImage@{getImage}!ImageManager@{ImageManager}}
+\doxysubsubsection{\texorpdfstring{getImage()}{getImage()}}
+{\footnotesize\ttfamily \label{classImageManager_a113ab8639d88c564946af57f79824afc} 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classImage}{Image}} $>$ Image\+Manager\+::get\+Image (\begin{DoxyParamCaption}\item[{std\+::string}]{name}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImageManager_a85dacd72c1bfee3d35a10d065a9020ff}\index{ImageManager@{ImageManager}!getImageDetails@{getImageDetails}}
+\index{getImageDetails@{getImageDetails}!ImageManager@{ImageManager}}
+\doxysubsubsection{\texorpdfstring{getImageDetails()}{getImageDetails()}}
+{\footnotesize\ttfamily \label{classImageManager_a85dacd72c1bfee3d35a10d065a9020ff} 
+\mbox{\hyperlink{structImageDetails}{Image\+Details}} Image\+Manager\+::get\+Image\+Details (\begin{DoxyParamCaption}\item[{std\+::string}]{name}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImageManager_ae25ea9a5fe31421417d47dd1be7cb3f8}\index{ImageManager@{ImageManager}!getImageHandle@{getImageHandle}}
+\index{getImageHandle@{getImageHandle}!ImageManager@{ImageManager}}
+\doxysubsubsection{\texorpdfstring{getImageHandle()}{getImageHandle()}}
+{\footnotesize\ttfamily \label{classImageManager_ae25ea9a5fe31421417d47dd1be7cb3f8} 
+Vk\+Image Image\+Manager\+::get\+Image\+Handle (\begin{DoxyParamCaption}\item[{std\+::string}]{name}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImageManager_a3c5299e5e446ae5e3bb4014c2f439363}\index{ImageManager@{ImageManager}!getSampler@{getSampler}}
+\index{getSampler@{getSampler}!ImageManager@{ImageManager}}
+\doxysubsubsection{\texorpdfstring{getSampler()}{getSampler()}}
+{\footnotesize\ttfamily \label{classImageManager_a3c5299e5e446ae5e3bb4014c2f439363} 
+Vk\+Sampler Image\+Manager\+::get\+Sampler (\begin{DoxyParamCaption}\item[{std\+::string}]{name}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classImageManager_a3d6dae3f8146df3cf342865bd1b2d307}\index{ImageManager@{ImageManager}!removeImage@{removeImage}}
+\index{removeImage@{removeImage}!ImageManager@{ImageManager}}
+\doxysubsubsection{\texorpdfstring{removeImage()}{removeImage()}}
+{\footnotesize\ttfamily \label{classImageManager_a3d6dae3f8146df3cf342865bd1b2d307} 
+void Image\+Manager\+::remove\+Image (\begin{DoxyParamCaption}\item[{std\+::string}]{name}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{ImageManager_8h}{Image\+Manager.\+h}}\item 
+\mbox{\hyperlink{ImageManager_8cpp}{Image\+Manager.\+cpp}}\end{DoxyCompactItemize}

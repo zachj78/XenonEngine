@@ -1,0 +1,386 @@
+\doxysection{tinygltf\+::Value Class Reference}
+\hypertarget{classtinygltf_1_1Value}{}\label{classtinygltf_1_1Value}\index{tinygltf::Value@{tinygltf::Value}}
+
+
+{\ttfamily \#include $<$tiny\+\_\+gltf.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::vector$<$ \mbox{\hyperlink{classtinygltf_1_1Value}{Value}} $>$ \mbox{\hyperlink{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0}{Array}}
+\item 
+typedef std\+::map$<$ std\+::string, \mbox{\hyperlink{classtinygltf_1_1Value}{Value}} $>$ \mbox{\hyperlink{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1}{Object}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a6d8b1eefadac65b36ffdb60d281681df}{Value}} ()=default
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_acb31bbaed70de016d213cacf3c0ac14c}{Value}} (bool b)
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_ae2e1a1a99142d1440aa06755118873e6}{Value}} (int i)
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a0662d23d7cab532b9da290eb8549393a}{Value}} (double n)
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_abfcf374fbf6705235292c8bd0fdbc8ff}{Value}} (const std\+::string \&s)
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a9f64e01382d2ce636c15e0747e388891}{Value}} (std\+::string \&\&s)
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a7e13b80fb6ae2f07388a7cf4021073c0}{Value}} (const char \texorpdfstring{$\ast$}{*}s)
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a81822725466cdd74b2bf1d5782533e04}{Value}} (const unsigned char \texorpdfstring{$\ast$}{*}p, size\+\_\+t n)
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a2ab6827fb73b51855e2ef66bed8e1ce7}{Value}} (std\+::vector$<$ unsigned char $>$ \&\&v) noexcept
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_abceef0441cc4d385263f85680a9cadb6}{Value}} (const \mbox{\hyperlink{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0}{Array}} \&a)
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a2a3da8139d9d60d794fef0a44785a70f}{Value}} (\mbox{\hyperlink{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0}{Array}} \&\&a) noexcept
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a459f48ddeec09749584c1ddc5ab24e5a}{Value}} (const \mbox{\hyperlink{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1}{Object}} \&o)
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a73d64b819ad21bf63371314e868857d1}{Value}} (\mbox{\hyperlink{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1}{Object}} \&\&o) noexcept
+\item 
+char \mbox{\hyperlink{classtinygltf_1_1Value_a7a2cf61680e4f25a5efebf7f7210cd2d}{Type}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_a55be9a990ea297c75b754509883ba2fc}{Is\+Bool}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_a2907df0272e69b81c96053dfb208309f}{Is\+Int}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_afdaca730e8e46a5827ada566ea97ec2d}{Is\+Number}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_a62a423efe05ebbdb98f5e56114b3f0a5}{Is\+Real}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_a7b783b4d683538870151cb2efc3df676}{Is\+String}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_aa63dee73585e980573d882c718101867}{Is\+Binary}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_aec6d24d7fda47506a91ed51aae5b8730}{Is\+Array}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_a2c340b7e0cf07cca233c24004b501fb7}{Is\+Object}} () const
+\item 
+double \mbox{\hyperlink{classtinygltf_1_1Value_a4d67519361e55a9aae72e0ffda7f2b05}{Get\+Number\+As\+Double}} () const
+\item 
+int \mbox{\hyperlink{classtinygltf_1_1Value_a75425d997a0919757028d6c5af16ad29}{Get\+Number\+As\+Int}} () const
+\item 
+{\footnotesize template$<$typename T$>$ }\\const T \& \mbox{\hyperlink{classtinygltf_1_1Value_a7a3c5b38bd637b99d778c30fc486d4fb}{Get}} () const
+\item 
+{\footnotesize template$<$typename T$>$ }\\T \& \mbox{\hyperlink{classtinygltf_1_1Value_aa3adaff43f3bf670eb7a8e7279bc5f79}{Get}} ()
+\item 
+const \mbox{\hyperlink{classtinygltf_1_1Value}{Value}} \& \mbox{\hyperlink{classtinygltf_1_1Value_ace421f943ddc0a73b287c9625df10e3b}{Get}} (size\+\_\+t idx) const
+\item 
+const \mbox{\hyperlink{classtinygltf_1_1Value}{Value}} \& \mbox{\hyperlink{classtinygltf_1_1Value_a5d4848c8372ab49204767feb07c4089b}{Get}} (const std\+::string \&key) const
+\item 
+size\+\_\+t \mbox{\hyperlink{classtinygltf_1_1Value_a6622ae4eb21a3305b1758563f091bd7d}{Array\+Len}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_ab58601c660a189bf125cd4b84a26fe4a}{Has}} (const std\+::string \&key) const
+\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classtinygltf_1_1Value_a4322872140167ef1a1c5dc28264c67ea}{Keys}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classtinygltf_1_1Value_a4f685b1a08cd39dfec98dd23b3f8304c}{Size}} () const
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_a753a59022f5d0cc22bc54eef42343ba7}{operator==}} (const \mbox{\hyperlink{classtinygltf_1_1Value}{tinygltf\+::\+Value}} \&other) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classtinygltf_1_1Value_ab3efa7e2cb38ae2574d16bcc8555839c}{type\+\_\+}} = \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a2caae2d74d8ce46ebe9f27653d27d6b2}{NULL\+\_\+\+TYPE}}
+\item 
+int \mbox{\hyperlink{classtinygltf_1_1Value_afb10625813c4f7f1c285a42f8ea11f97}{int\+\_\+value\+\_\+}} = 0
+\item 
+double \mbox{\hyperlink{classtinygltf_1_1Value_a463574f062cd98aa536c7e4f8488aec7}{real\+\_\+value\+\_\+}} = 0.\+0
+\item 
+std\+::string \mbox{\hyperlink{classtinygltf_1_1Value_a8b8185da9182bd609b39ee57c2eb72f8}{string\+\_\+value\+\_\+}}
+\item 
+std\+::vector$<$ unsigned char $>$ \mbox{\hyperlink{classtinygltf_1_1Value_a478e99be08eb9611ff30678a6ded21de}{binary\+\_\+value\+\_\+}}
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0}{Array}} \mbox{\hyperlink{classtinygltf_1_1Value_a4e7674babd934c04d53d149e0bd3d2c0}{array\+\_\+value\+\_\+}}
+\item 
+\mbox{\hyperlink{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1}{Object}} \mbox{\hyperlink{classtinygltf_1_1Value_ac57d9a665b665016373c263f1792bff4}{object\+\_\+value\+\_\+}}
+\item 
+bool \mbox{\hyperlink{classtinygltf_1_1Value_a9f252c0530d25a01b3047cbf8a43aefd}{boolean\+\_\+value\+\_\+}} = false
+\end{DoxyCompactItemize}
+
+
+\label{doc-typedef-members}
+\Hypertarget{classtinygltf_1_1Value_doc-typedef-members}
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0}\index{tinygltf::Value@{tinygltf::Value}!Array@{Array}}
+\index{Array@{Array}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Array}{Array}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0} 
+typedef std\+::vector$<$\mbox{\hyperlink{classtinygltf_1_1Value}{Value}}$>$ \mbox{\hyperlink{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0}{tinygltf\+::\+Value\+::\+Array}}}
+
+\Hypertarget{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1}\index{tinygltf::Value@{tinygltf::Value}!Object@{Object}}
+\index{Object@{Object}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Object}{Object}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1} 
+typedef std\+::map$<$std\+::string, \mbox{\hyperlink{classtinygltf_1_1Value}{Value}}$>$ \mbox{\hyperlink{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1}{tinygltf\+::\+Value\+::\+Object}}}
+
+
+
+\label{doc-constructors}
+\Hypertarget{classtinygltf_1_1Value_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classtinygltf_1_1Value_a6d8b1eefadac65b36ffdb60d281681df}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [1/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a6d8b1eefadac65b36ffdb60d281681df} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\Hypertarget{classtinygltf_1_1Value_acb31bbaed70de016d213cacf3c0ac14c}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [2/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_acb31bbaed70de016d213cacf3c0ac14c} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{bool}]{b}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classtinygltf_1_1Value_ae2e1a1a99142d1440aa06755118873e6}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [3/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_ae2e1a1a99142d1440aa06755118873e6} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{int}]{i}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classtinygltf_1_1Value_a0662d23d7cab532b9da290eb8549393a}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [4/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a0662d23d7cab532b9da290eb8549393a} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{double}]{n}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classtinygltf_1_1Value_abfcf374fbf6705235292c8bd0fdbc8ff}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [5/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_abfcf374fbf6705235292c8bd0fdbc8ff} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classtinygltf_1_1Value_a9f64e01382d2ce636c15e0747e388891}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [6/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a9f64e01382d2ce636c15e0747e388891} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{std\+::string \&\&}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classtinygltf_1_1Value_a7e13b80fb6ae2f07388a7cf4021073c0}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [7/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a7e13b80fb6ae2f07388a7cf4021073c0} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{s}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classtinygltf_1_1Value_a81822725466cdd74b2bf1d5782533e04}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [8/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a81822725466cdd74b2bf1d5782533e04} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{const unsigned char \texorpdfstring{$\ast$}{*}}]{p}{, }\item[{size\+\_\+t}]{n}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classtinygltf_1_1Value_a2ab6827fb73b51855e2ef66bed8e1ce7}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [9/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a2ab6827fb73b51855e2ef66bed8e1ce7} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{std\+::vector$<$ unsigned char $>$ \&\&}]{v}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classtinygltf_1_1Value_abceef0441cc4d385263f85680a9cadb6}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [10/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_abceef0441cc4d385263f85680a9cadb6} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0}{Array}} \&}]{a}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classtinygltf_1_1Value_a2a3da8139d9d60d794fef0a44785a70f}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [11/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a2a3da8139d9d60d794fef0a44785a70f} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0}{Array}} \&\&}]{a}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [noexcept]}}
+
+\Hypertarget{classtinygltf_1_1Value_a459f48ddeec09749584c1ddc5ab24e5a}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [12/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a459f48ddeec09749584c1ddc5ab24e5a} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1}{Object}} \&}]{o}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+\Hypertarget{classtinygltf_1_1Value_a73d64b819ad21bf63371314e868857d1}\index{tinygltf::Value@{tinygltf::Value}!Value@{Value}}
+\index{Value@{Value}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Value()}{Value()}\hspace{0.1cm}{\footnotesize\ttfamily [13/13]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a73d64b819ad21bf63371314e868857d1} 
+tinygltf\+::\+Value\+::\+Value (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1}{Object}} \&\&}]{o}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}, {\ttfamily [noexcept]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classtinygltf_1_1Value_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classtinygltf_1_1Value_a6622ae4eb21a3305b1758563f091bd7d}\index{tinygltf::Value@{tinygltf::Value}!ArrayLen@{ArrayLen}}
+\index{ArrayLen@{ArrayLen}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{ArrayLen()}{ArrayLen()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a6622ae4eb21a3305b1758563f091bd7d} 
+size\+\_\+t tinygltf\+::\+Value\+::\+Array\+Len (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_aa3adaff43f3bf670eb7a8e7279bc5f79}\index{tinygltf::Value@{tinygltf::Value}!Get@{Get}}
+\index{Get@{Get}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_aa3adaff43f3bf670eb7a8e7279bc5f79} 
+template$<$typename T$>$ \\
+T \& tinygltf\+::\+Value\+::\+Get (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classtinygltf_1_1Value_a7a3c5b38bd637b99d778c30fc486d4fb}\index{tinygltf::Value@{tinygltf::Value}!Get@{Get}}
+\index{Get@{Get}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a7a3c5b38bd637b99d778c30fc486d4fb} 
+template$<$typename T$>$ \\
+const T \& tinygltf\+::\+Value\+::\+Get (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{classtinygltf_1_1Value_a5d4848c8372ab49204767feb07c4089b}\index{tinygltf::Value@{tinygltf::Value}!Get@{Get}}
+\index{Get@{Get}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a5d4848c8372ab49204767feb07c4089b} 
+const \mbox{\hyperlink{classtinygltf_1_1Value}{Value}} \& tinygltf\+::\+Value\+::\+Get (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_ace421f943ddc0a73b287c9625df10e3b}\index{tinygltf::Value@{tinygltf::Value}!Get@{Get}}
+\index{Get@{Get}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_ace421f943ddc0a73b287c9625df10e3b} 
+const \mbox{\hyperlink{classtinygltf_1_1Value}{Value}} \& tinygltf\+::\+Value\+::\+Get (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{idx}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a4d67519361e55a9aae72e0ffda7f2b05}\index{tinygltf::Value@{tinygltf::Value}!GetNumberAsDouble@{GetNumberAsDouble}}
+\index{GetNumberAsDouble@{GetNumberAsDouble}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{GetNumberAsDouble()}{GetNumberAsDouble()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a4d67519361e55a9aae72e0ffda7f2b05} 
+double tinygltf\+::\+Value\+::\+Get\+Number\+As\+Double (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a75425d997a0919757028d6c5af16ad29}\index{tinygltf::Value@{tinygltf::Value}!GetNumberAsInt@{GetNumberAsInt}}
+\index{GetNumberAsInt@{GetNumberAsInt}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{GetNumberAsInt()}{GetNumberAsInt()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a75425d997a0919757028d6c5af16ad29} 
+int tinygltf\+::\+Value\+::\+Get\+Number\+As\+Int (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_ab58601c660a189bf125cd4b84a26fe4a}\index{tinygltf::Value@{tinygltf::Value}!Has@{Has}}
+\index{Has@{Has}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Has()}{Has()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_ab58601c660a189bf125cd4b84a26fe4a} 
+bool tinygltf\+::\+Value\+::\+Has (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{key}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_aec6d24d7fda47506a91ed51aae5b8730}\index{tinygltf::Value@{tinygltf::Value}!IsArray@{IsArray}}
+\index{IsArray@{IsArray}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{IsArray()}{IsArray()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_aec6d24d7fda47506a91ed51aae5b8730} 
+bool tinygltf\+::\+Value\+::\+Is\+Array (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_aa63dee73585e980573d882c718101867}\index{tinygltf::Value@{tinygltf::Value}!IsBinary@{IsBinary}}
+\index{IsBinary@{IsBinary}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{IsBinary()}{IsBinary()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_aa63dee73585e980573d882c718101867} 
+bool tinygltf\+::\+Value\+::\+Is\+Binary (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a55be9a990ea297c75b754509883ba2fc}\index{tinygltf::Value@{tinygltf::Value}!IsBool@{IsBool}}
+\index{IsBool@{IsBool}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{IsBool()}{IsBool()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a55be9a990ea297c75b754509883ba2fc} 
+bool tinygltf\+::\+Value\+::\+Is\+Bool (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a2907df0272e69b81c96053dfb208309f}\index{tinygltf::Value@{tinygltf::Value}!IsInt@{IsInt}}
+\index{IsInt@{IsInt}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{IsInt()}{IsInt()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a2907df0272e69b81c96053dfb208309f} 
+bool tinygltf\+::\+Value\+::\+Is\+Int (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_afdaca730e8e46a5827ada566ea97ec2d}\index{tinygltf::Value@{tinygltf::Value}!IsNumber@{IsNumber}}
+\index{IsNumber@{IsNumber}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{IsNumber()}{IsNumber()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_afdaca730e8e46a5827ada566ea97ec2d} 
+bool tinygltf\+::\+Value\+::\+Is\+Number (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a2c340b7e0cf07cca233c24004b501fb7}\index{tinygltf::Value@{tinygltf::Value}!IsObject@{IsObject}}
+\index{IsObject@{IsObject}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{IsObject()}{IsObject()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a2c340b7e0cf07cca233c24004b501fb7} 
+bool tinygltf\+::\+Value\+::\+Is\+Object (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a62a423efe05ebbdb98f5e56114b3f0a5}\index{tinygltf::Value@{tinygltf::Value}!IsReal@{IsReal}}
+\index{IsReal@{IsReal}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{IsReal()}{IsReal()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a62a423efe05ebbdb98f5e56114b3f0a5} 
+bool tinygltf\+::\+Value\+::\+Is\+Real (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a7b783b4d683538870151cb2efc3df676}\index{tinygltf::Value@{tinygltf::Value}!IsString@{IsString}}
+\index{IsString@{IsString}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{IsString()}{IsString()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a7b783b4d683538870151cb2efc3df676} 
+bool tinygltf\+::\+Value\+::\+Is\+String (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a4322872140167ef1a1c5dc28264c67ea}\index{tinygltf::Value@{tinygltf::Value}!Keys@{Keys}}
+\index{Keys@{Keys}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Keys()}{Keys()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a4322872140167ef1a1c5dc28264c67ea} 
+std\+::vector$<$ std\+::string $>$ tinygltf\+::\+Value\+::\+Keys (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a753a59022f5d0cc22bc54eef42343ba7}\index{tinygltf::Value@{tinygltf::Value}!operator==@{operator==}}
+\index{operator==@{operator==}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a753a59022f5d0cc22bc54eef42343ba7} 
+bool tinygltf\+::\+Value\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtinygltf_1_1Value}{tinygltf\+::\+Value}} \&}]{other}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{classtinygltf_1_1Value_a4f685b1a08cd39dfec98dd23b3f8304c}\index{tinygltf::Value@{tinygltf::Value}!Size@{Size}}
+\index{Size@{Size}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Size()}{Size()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a4f685b1a08cd39dfec98dd23b3f8304c} 
+size\+\_\+t tinygltf\+::\+Value\+::\+Size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classtinygltf_1_1Value_a7a2cf61680e4f25a5efebf7f7210cd2d}\index{tinygltf::Value@{tinygltf::Value}!Type@{Type}}
+\index{Type@{Type}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{Type()}{Type()}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a7a2cf61680e4f25a5efebf7f7210cd2d} 
+char tinygltf\+::\+Value\+::\+Type (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classtinygltf_1_1Value_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classtinygltf_1_1Value_a4e7674babd934c04d53d149e0bd3d2c0}\index{tinygltf::Value@{tinygltf::Value}!array\_value\_@{array\_value\_}}
+\index{array\_value\_@{array\_value\_}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{array\_value\_}{array\_value\_}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a4e7674babd934c04d53d149e0bd3d2c0} 
+\mbox{\hyperlink{classtinygltf_1_1Value_ad09a2238eb07711579ce6dfd88e7c4e0}{Array}} tinygltf\+::\+Value\+::array\+\_\+value\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{classtinygltf_1_1Value_a478e99be08eb9611ff30678a6ded21de}\index{tinygltf::Value@{tinygltf::Value}!binary\_value\_@{binary\_value\_}}
+\index{binary\_value\_@{binary\_value\_}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{binary\_value\_}{binary\_value\_}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a478e99be08eb9611ff30678a6ded21de} 
+std\+::vector$<$unsigned char$>$ tinygltf\+::\+Value\+::binary\+\_\+value\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{classtinygltf_1_1Value_a9f252c0530d25a01b3047cbf8a43aefd}\index{tinygltf::Value@{tinygltf::Value}!boolean\_value\_@{boolean\_value\_}}
+\index{boolean\_value\_@{boolean\_value\_}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{boolean\_value\_}{boolean\_value\_}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a9f252c0530d25a01b3047cbf8a43aefd} 
+bool tinygltf\+::\+Value\+::boolean\+\_\+value\+\_\+ = false\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{classtinygltf_1_1Value_afb10625813c4f7f1c285a42f8ea11f97}\index{tinygltf::Value@{tinygltf::Value}!int\_value\_@{int\_value\_}}
+\index{int\_value\_@{int\_value\_}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{int\_value\_}{int\_value\_}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_afb10625813c4f7f1c285a42f8ea11f97} 
+int tinygltf\+::\+Value\+::int\+\_\+value\+\_\+ = 0\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{classtinygltf_1_1Value_ac57d9a665b665016373c263f1792bff4}\index{tinygltf::Value@{tinygltf::Value}!object\_value\_@{object\_value\_}}
+\index{object\_value\_@{object\_value\_}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{object\_value\_}{object\_value\_}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_ac57d9a665b665016373c263f1792bff4} 
+\mbox{\hyperlink{classtinygltf_1_1Value_a1af8390d517aa6110eec792fbbea93f1}{Object}} tinygltf\+::\+Value\+::object\+\_\+value\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{classtinygltf_1_1Value_a463574f062cd98aa536c7e4f8488aec7}\index{tinygltf::Value@{tinygltf::Value}!real\_value\_@{real\_value\_}}
+\index{real\_value\_@{real\_value\_}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{real\_value\_}{real\_value\_}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a463574f062cd98aa536c7e4f8488aec7} 
+double tinygltf\+::\+Value\+::real\+\_\+value\+\_\+ = 0.\+0\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{classtinygltf_1_1Value_a8b8185da9182bd609b39ee57c2eb72f8}\index{tinygltf::Value@{tinygltf::Value}!string\_value\_@{string\_value\_}}
+\index{string\_value\_@{string\_value\_}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{string\_value\_}{string\_value\_}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_a8b8185da9182bd609b39ee57c2eb72f8} 
+std\+::string tinygltf\+::\+Value\+::string\+\_\+value\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+\Hypertarget{classtinygltf_1_1Value_ab3efa7e2cb38ae2574d16bcc8555839c}\index{tinygltf::Value@{tinygltf::Value}!type\_@{type\_}}
+\index{type\_@{type\_}!tinygltf::Value@{tinygltf::Value}}
+\doxysubsubsection{\texorpdfstring{type\_}{type\_}}
+{\footnotesize\ttfamily \label{classtinygltf_1_1Value_ab3efa7e2cb38ae2574d16bcc8555839c} 
+int tinygltf\+::\+Value\+::type\+\_\+ = \mbox{\hyperlink{namespacetinygltf_a2c1d6e5499b1e1b6618815042fe3bde7a2caae2d74d8ce46ebe9f27653d27d6b2}{NULL\+\_\+\+TYPE}}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tiny__gltf_8h}{tiny\+\_\+gltf.\+h}}\end{DoxyCompactItemize}

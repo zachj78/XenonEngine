@@ -1,0 +1,33 @@
+\doxysection{Swapchain\+Recreater.\+h}
+\hypertarget{SwapchainRecreater_8h_source}{}\label{SwapchainRecreater_8h_source}\index{SwapchainRecreater.h@{SwapchainRecreater.h}}
+\mbox{\hyperlink{SwapchainRecreater_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ SWAPCHAIN\_RECREATER\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ SWAPCHAIN\_RECREATER\_H}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{Utils/config.h}}"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classSwapchainRecreater}{SwapchainRecreater}}\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classSwapchainRecreater_acee40bff45877cd96dd83d668a128684}{setCallbacks}}(}
+\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ std::function<\textcolor{keywordtype}{void}()>\ cleanup,}
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ std::function<\textcolor{keywordtype}{void}()>\ getFramebufferDetails,}
+\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ std::function<\textcolor{keywordtype}{void}()>\ recreateDepthResources,}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \ \ std::function<\textcolor{keywordtype}{void}()>\ recreateTarget,}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ std::function<\textcolor{keywordtype}{void}()>\ recreateFramebuffers}
+\DoxyCodeLine{00015\ \ \ \ \ );}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classSwapchainRecreater_ae53d53a00b0fe364beaaaf3078e2701b}{recreateSwapchain}}(VkDevice\ logicalDevice,\ GLFWwindow*\ window);}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00020\ \ \ \ \ std::function<void()>\ cleanupCallback;\ \textcolor{comment}{//\ Cleans\ up\ swapchain\ or\ offscreen\ target}}
+\DoxyCodeLine{00021\ \ \ \ \ std::function<void()>\ framebufferDetailsCallback;\ \textcolor{comment}{//\ Sets\ appropriate\ render\ target\ extent\ and\ format}}
+\DoxyCodeLine{00022\ \ \ \ \ std::function<void()>\ recreateCallback;\ \textcolor{comment}{//\ Recreates\ swapchain\ or\ offscreen\ target}}
+\DoxyCodeLine{00023\ \ \ \ \ std::function<void()>\ recreateFramebuffersCallback;\ }
+\DoxyCodeLine{00024\ \ \ \ \ std::function<void()>\ recreateDepthResourcesCallback;}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

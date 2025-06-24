@@ -1,0 +1,59 @@
+\doxysection{Buffer\+Manager.\+h}
+\hypertarget{BufferManager_8h_source}{}\label{BufferManager_8h_source}\index{BufferManager.h@{BufferManager.h}}
+\mbox{\hyperlink{BufferManager_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ BUFFER\_MANAGER\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ BUFFER\_MANAGER\_H}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{Utils/config.h}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Buffer_8h}{Managers/Buffer.h}}"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Vertex_8h}{Managers/Vertex.h}}"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{comment}{//Forward\ declarations}}
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGraphicsPipeline}{GraphicsPipeline}};\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBuffer}{Buffer}};\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{class\ }\mbox{\hyperlink{structVertex}{Vertex}};\ }
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classBufferManager_a899ccc3ec722d0444c8c0ea41be450ca}{BufferManager}}\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00016\ \ \ \ \ \mbox{\hyperlink{classBufferManager_a899ccc3ec722d0444c8c0ea41be450ca}{BufferManager}}(}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ VkDevice\ logicalDevice,}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ VkPhysicalDevice\ physicalDevice,}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ VkQueue\ graphicsQueue}
+\DoxyCodeLine{00020\ \ \ \ \ );}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBufferManager_aae12e238aa23b73806f538bee9098bcd}{cleanup}}();}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBufferManager_a5ca5b467332502769d7fd5cabc93696c}{createBuffer}}(}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{Buffer_8h_adf8e136713c0691010d2bec6ba63e9cf}{BufferType}}\ type,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::string\&\ name,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ VkDeviceSize\ bufferSize,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ VkBufferUsageFlags\ usage,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ VkMemoryPropertyFlags\ properties,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ std::optional<std::vector<Vertex>>\ vertices\ =\ std::nullopt,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ std::optional<std::vector<uint32\_t>>\ indices\ =\ std::nullopt}
+\DoxyCodeLine{00032\ \ \ \ \ );}
+\DoxyCodeLine{00033\ \ \ \ \ }
+\DoxyCodeLine{00034\ \ \ \ \ VkCommandBuffer\ \mbox{\hyperlink{classBufferManager_afb032c306c82dec97fc94a24e79f1d29}{beginOneTimeCommands}}(VkCommandPool\ commandPool);}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBufferManager_ad681028084d16ba5b6c396f422e69b3a}{endOneTimeCommands}}(VkCommandBuffer\ commandBuffer,\ VkCommandPool\ commandPool);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBufferManager_a2f936377660b9721f01a683812f96d58}{copyBuffer}}(std::shared\_ptr<Buffer>\ srcBuffer,\ std::shared\_ptr<Buffer>\ dstBuffer,\ VkDeviceSize\ size,\ VkCommandPool\ commandPool);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ std::shared\_ptr<Buffer>\ \mbox{\hyperlink{classBufferManager_a285fccdec15e068dd25a4deeb7788316}{getBuffer}}(\textcolor{keyword}{const}\ std::string\&\ name);}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classBufferManager_a4ee04a2e424c6211b527086aa31cfa91}{removeBufferByName}}(\textcolor{keyword}{const}\ std::string\ name);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00045\ \ \ \ \ std::unordered\_map<std::string,\ std::shared\_ptr<Buffer>>\ buffers;}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ VkDevice\ bufferManager\_logicalDevice;}
+\DoxyCodeLine{00048\ \ \ \ \ VkPhysicalDevice\ bufferManager\_physicalDevice;}
+\DoxyCodeLine{00049\ \ \ \ \ std::shared\_ptr<GraphicsPipeline>\ bufferManager\_graphicsPipeline;}
+\DoxyCodeLine{00050\ \ \ \ \ VkQueue\ bufferManager\_graphicsQueue;}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

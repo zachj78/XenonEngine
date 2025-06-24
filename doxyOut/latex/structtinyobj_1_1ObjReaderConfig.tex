@@ -1,0 +1,67 @@
+\doxysection{tinyobj\+::Obj\+Reader\+Config Struct Reference}
+\hypertarget{structtinyobj_1_1ObjReaderConfig}{}\label{structtinyobj_1_1ObjReaderConfig}\index{tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}}
+
+
+{\ttfamily \#include $<$tiny\+\_\+obj\+\_\+loader.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structtinyobj_1_1ObjReaderConfig_af08a345cd47e3daf722818330fd95bce}{Obj\+Reader\+Config}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{structtinyobj_1_1ObjReaderConfig_a7ed0a20f5f6fe33fec82cbf8dd1fe8a3}{triangulate}}
+\item 
+std\+::string \mbox{\hyperlink{structtinyobj_1_1ObjReaderConfig_a011671d8ae0fd3f0c25fdfc09eb7a18e}{triangulation\+\_\+method}}
+\item 
+bool \mbox{\hyperlink{structtinyobj_1_1ObjReaderConfig_af89582372bda5ec5d45d7a20e7daf127}{vertex\+\_\+color}}
+\item 
+std\+::string \mbox{\hyperlink{structtinyobj_1_1ObjReaderConfig_aff3620e91b88583d1eb7747079941b65}{mtl\+\_\+search\+\_\+path}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{structtinyobj_1_1ObjReaderConfig_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structtinyobj_1_1ObjReaderConfig_af08a345cd47e3daf722818330fd95bce}\index{tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}!ObjReaderConfig@{ObjReaderConfig}}
+\index{ObjReaderConfig@{ObjReaderConfig}!tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}}
+\doxysubsubsection{\texorpdfstring{ObjReaderConfig()}{ObjReaderConfig()}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1ObjReaderConfig_af08a345cd47e3daf722818330fd95bce} 
+tinyobj\+::\+Obj\+Reader\+Config\+::\+Obj\+Reader\+Config (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{structtinyobj_1_1ObjReaderConfig_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structtinyobj_1_1ObjReaderConfig_aff3620e91b88583d1eb7747079941b65}\index{tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}!mtl\_search\_path@{mtl\_search\_path}}
+\index{mtl\_search\_path@{mtl\_search\_path}!tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}}
+\doxysubsubsection{\texorpdfstring{mtl\_search\_path}{mtl\_search\_path}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1ObjReaderConfig_aff3620e91b88583d1eb7747079941b65} 
+std\+::string tinyobj\+::\+Obj\+Reader\+Config\+::mtl\+\_\+search\+\_\+path}
+
+Search path to .mtl file. Default = "{}"{} = search from the same directory of .obj file. Valid only when loading .obj from a file. \Hypertarget{structtinyobj_1_1ObjReaderConfig_a7ed0a20f5f6fe33fec82cbf8dd1fe8a3}\index{tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}!triangulate@{triangulate}}
+\index{triangulate@{triangulate}!tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}}
+\doxysubsubsection{\texorpdfstring{triangulate}{triangulate}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1ObjReaderConfig_a7ed0a20f5f6fe33fec82cbf8dd1fe8a3} 
+bool tinyobj\+::\+Obj\+Reader\+Config\+::triangulate}
+
+\Hypertarget{structtinyobj_1_1ObjReaderConfig_a011671d8ae0fd3f0c25fdfc09eb7a18e}\index{tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}!triangulation\_method@{triangulation\_method}}
+\index{triangulation\_method@{triangulation\_method}!tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}}
+\doxysubsubsection{\texorpdfstring{triangulation\_method}{triangulation\_method}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1ObjReaderConfig_a011671d8ae0fd3f0c25fdfc09eb7a18e} 
+std\+::string tinyobj\+::\+Obj\+Reader\+Config\+::triangulation\+\_\+method}
+
+\Hypertarget{structtinyobj_1_1ObjReaderConfig_af89582372bda5ec5d45d7a20e7daf127}\index{tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}!vertex\_color@{vertex\_color}}
+\index{vertex\_color@{vertex\_color}!tinyobj::ObjReaderConfig@{tinyobj::ObjReaderConfig}}
+\doxysubsubsection{\texorpdfstring{vertex\_color}{vertex\_color}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1ObjReaderConfig_af89582372bda5ec5d45d7a20e7daf127} 
+bool tinyobj\+::\+Obj\+Reader\+Config\+::vertex\+\_\+color}
+
+Parse vertex color. If vertex color is not present, its filled with default value. false = no vertex color This will increase memory of parsed .obj 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tiny__obj__loader_8h}{tiny\+\_\+obj\+\_\+loader.\+h}}\end{DoxyCompactItemize}

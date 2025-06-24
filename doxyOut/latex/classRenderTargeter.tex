@@ -1,0 +1,137 @@
+\doxysection{Render\+Targeter Class Reference}
+\hypertarget{classRenderTargeter}{}\label{classRenderTargeter}\index{RenderTargeter@{RenderTargeter}}
+
+
+{\ttfamily \#include $<$Swapchain.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classRenderTargeter_ae86207387f20029c18e2046210c21a66}{Render\+Targeter}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classVulkanInstance}{Vulkan\+Instance}} $>$ instance, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDevices}{Devices}} $>$ devices)
+\item 
+void \mbox{\hyperlink{classRenderTargeter_a09469e2e8df406f495e6a5409d7c8881}{create\+Depth\+Image}} ()
+\item 
+void \mbox{\hyperlink{classRenderTargeter_afcb657e7d3381a013c8e5b42bef4650a}{get\+Framebuffer\+Details}} ()
+\item 
+void \mbox{\hyperlink{classRenderTargeter_abcf21a5ab7faf0574dd2f8b8521ec6ff}{create\+Swapchain\+Resources}} ()
+\item 
+void \mbox{\hyperlink{classRenderTargeter_a9d6bd7efa1567500faf9238febe73acc}{create\+Framebuffers}} (Vk\+Render\+Pass renderpass, bool using\+Offscreen\+Pass)
+\item 
+void \mbox{\hyperlink{classRenderTargeter_adc942e87605aa1434455b1166f0b8ada}{create\+Main\+Renderpass}} (bool is\+Swapchain)
+\item 
+void \mbox{\hyperlink{classRenderTargeter_a114fe710a70196e01c6633dbc0fc665a}{create\+Offscreen\+Renderpass}} ()
+\item 
+void \mbox{\hyperlink{classRenderTargeter_a772ffb017de070293e473693e39fe6fa}{transition\+Target\+Image\+Layout}} (Vk\+Command\+Buffer cmd\+Buffer, Vk\+Image image, Vk\+Format format, Vk\+Image\+Layout old\+Layout, Vk\+Image\+Layout new\+Layout, Vk\+Image\+Aspect\+Flags aspect\+Mask, uint32\+\_\+t mip\+Levels=1, uint32\+\_\+t base\+Mip\+Level=0, uint32\+\_\+t base\+Array\+Layer=0, uint32\+\_\+t layer\+Count=1)
+\item 
+void \mbox{\hyperlink{classRenderTargeter_a7206b56c133aa937eddedc2e71c0be04}{cleanup}} (bool is\+Last\+Cleanup)
+\item 
+Vk\+Swapchain\+KHR \& \mbox{\hyperlink{classRenderTargeter_af66b8d6a8d5926964b9c8de3e7628eba}{get\+Swapchain}} ()
+\item 
+Vk\+Sampler \mbox{\hyperlink{classRenderTargeter_ae0477d2cafa2917d960e1f93bcda4397}{get\+Offscreen\+Sampler}} ()
+\item 
+\mbox{\hyperlink{structRenderTarget}{Render\+Target}} \& \mbox{\hyperlink{classRenderTargeter_a085a6dcf8b2d4c189a15bd4e45f58006}{get\+Render\+Target}} ()
+\item 
+Vk\+Render\+Pass \& \mbox{\hyperlink{classRenderTargeter_a0c1213b5e558bcade58cdc103a1f2174}{get\+Main\+Pass}} ()
+\item 
+Vk\+Render\+Pass \& \mbox{\hyperlink{classRenderTargeter_a9ea1f2032b46d844a66ff66599106dad}{get\+Offscreen\+Pass}} ()
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classRenderTargeter_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classRenderTargeter_ae86207387f20029c18e2046210c21a66}\index{RenderTargeter@{RenderTargeter}!RenderTargeter@{RenderTargeter}}
+\index{RenderTargeter@{RenderTargeter}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{RenderTargeter()}{RenderTargeter()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_ae86207387f20029c18e2046210c21a66} 
+Render\+Targeter\+::\+Render\+Targeter (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classVulkanInstance}{Vulkan\+Instance}} $>$}]{instance}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classDevices}{Devices}} $>$}]{devices}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classRenderTargeter_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classRenderTargeter_a7206b56c133aa937eddedc2e71c0be04}\index{RenderTargeter@{RenderTargeter}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_a7206b56c133aa937eddedc2e71c0be04} 
+void Render\+Targeter\+::cleanup (\begin{DoxyParamCaption}\item[{bool}]{is\+Last\+Cleanup}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderTargeter_a09469e2e8df406f495e6a5409d7c8881}\index{RenderTargeter@{RenderTargeter}!createDepthImage@{createDepthImage}}
+\index{createDepthImage@{createDepthImage}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{createDepthImage()}{createDepthImage()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_a09469e2e8df406f495e6a5409d7c8881} 
+void Render\+Targeter\+::create\+Depth\+Image (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderTargeter_a9d6bd7efa1567500faf9238febe73acc}\index{RenderTargeter@{RenderTargeter}!createFramebuffers@{createFramebuffers}}
+\index{createFramebuffers@{createFramebuffers}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{createFramebuffers()}{createFramebuffers()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_a9d6bd7efa1567500faf9238febe73acc} 
+void Render\+Targeter\+::create\+Framebuffers (\begin{DoxyParamCaption}\item[{Vk\+Render\+Pass}]{renderpass}{, }\item[{bool}]{using\+Offscreen\+Pass}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderTargeter_adc942e87605aa1434455b1166f0b8ada}\index{RenderTargeter@{RenderTargeter}!createMainRenderpass@{createMainRenderpass}}
+\index{createMainRenderpass@{createMainRenderpass}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{createMainRenderpass()}{createMainRenderpass()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_adc942e87605aa1434455b1166f0b8ada} 
+void Render\+Targeter\+::create\+Main\+Renderpass (\begin{DoxyParamCaption}\item[{bool}]{is\+Swapchain}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRenderTargeter_a114fe710a70196e01c6633dbc0fc665a}\index{RenderTargeter@{RenderTargeter}!createOffscreenRenderpass@{createOffscreenRenderpass}}
+\index{createOffscreenRenderpass@{createOffscreenRenderpass}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{createOffscreenRenderpass()}{createOffscreenRenderpass()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_a114fe710a70196e01c6633dbc0fc665a} 
+void Render\+Targeter\+::create\+Offscreen\+Renderpass (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRenderTargeter_abcf21a5ab7faf0574dd2f8b8521ec6ff}\index{RenderTargeter@{RenderTargeter}!createSwapchainResources@{createSwapchainResources}}
+\index{createSwapchainResources@{createSwapchainResources}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{createSwapchainResources()}{createSwapchainResources()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_abcf21a5ab7faf0574dd2f8b8521ec6ff} 
+void Render\+Targeter\+::create\+Swapchain\+Resources (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderTargeter_afcb657e7d3381a013c8e5b42bef4650a}\index{RenderTargeter@{RenderTargeter}!getFramebufferDetails@{getFramebufferDetails}}
+\index{getFramebufferDetails@{getFramebufferDetails}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{getFramebufferDetails()}{getFramebufferDetails()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_afcb657e7d3381a013c8e5b42bef4650a} 
+void Render\+Targeter\+::get\+Framebuffer\+Details (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRenderTargeter_a0c1213b5e558bcade58cdc103a1f2174}\index{RenderTargeter@{RenderTargeter}!getMainPass@{getMainPass}}
+\index{getMainPass@{getMainPass}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{getMainPass()}{getMainPass()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_a0c1213b5e558bcade58cdc103a1f2174} 
+Vk\+Render\+Pass \& Render\+Targeter\+::get\+Main\+Pass (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRenderTargeter_a9ea1f2032b46d844a66ff66599106dad}\index{RenderTargeter@{RenderTargeter}!getOffscreenPass@{getOffscreenPass}}
+\index{getOffscreenPass@{getOffscreenPass}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{getOffscreenPass()}{getOffscreenPass()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_a9ea1f2032b46d844a66ff66599106dad} 
+Vk\+Render\+Pass \& Render\+Targeter\+::get\+Offscreen\+Pass (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRenderTargeter_ae0477d2cafa2917d960e1f93bcda4397}\index{RenderTargeter@{RenderTargeter}!getOffscreenSampler@{getOffscreenSampler}}
+\index{getOffscreenSampler@{getOffscreenSampler}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{getOffscreenSampler()}{getOffscreenSampler()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_ae0477d2cafa2917d960e1f93bcda4397} 
+Vk\+Sampler Render\+Targeter\+::get\+Offscreen\+Sampler (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRenderTargeter_a085a6dcf8b2d4c189a15bd4e45f58006}\index{RenderTargeter@{RenderTargeter}!getRenderTarget@{getRenderTarget}}
+\index{getRenderTarget@{getRenderTarget}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{getRenderTarget()}{getRenderTarget()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_a085a6dcf8b2d4c189a15bd4e45f58006} 
+\mbox{\hyperlink{structRenderTarget}{Render\+Target}} \& Render\+Targeter\+::get\+Render\+Target (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRenderTargeter_af66b8d6a8d5926964b9c8de3e7628eba}\index{RenderTargeter@{RenderTargeter}!getSwapchain@{getSwapchain}}
+\index{getSwapchain@{getSwapchain}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{getSwapchain()}{getSwapchain()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_af66b8d6a8d5926964b9c8de3e7628eba} 
+Vk\+Swapchain\+KHR \& Render\+Targeter\+::get\+Swapchain (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classRenderTargeter_a772ffb017de070293e473693e39fe6fa}\index{RenderTargeter@{RenderTargeter}!transitionTargetImageLayout@{transitionTargetImageLayout}}
+\index{transitionTargetImageLayout@{transitionTargetImageLayout}!RenderTargeter@{RenderTargeter}}
+\doxysubsubsection{\texorpdfstring{transitionTargetImageLayout()}{transitionTargetImageLayout()}}
+{\footnotesize\ttfamily \label{classRenderTargeter_a772ffb017de070293e473693e39fe6fa} 
+void Render\+Targeter\+::transition\+Target\+Image\+Layout (\begin{DoxyParamCaption}\item[{Vk\+Command\+Buffer}]{cmd\+Buffer}{, }\item[{Vk\+Image}]{image}{, }\item[{Vk\+Format}]{format}{, }\item[{Vk\+Image\+Layout}]{old\+Layout}{, }\item[{Vk\+Image\+Layout}]{new\+Layout}{, }\item[{Vk\+Image\+Aspect\+Flags}]{aspect\+Mask}{, }\item[{uint32\+\_\+t}]{mip\+Levels}{ = {\ttfamily 1}, }\item[{uint32\+\_\+t}]{base\+Mip\+Level}{ = {\ttfamily 0}, }\item[{uint32\+\_\+t}]{base\+Array\+Layer}{ = {\ttfamily 0}, }\item[{uint32\+\_\+t}]{layer\+Count}{ = {\ttfamily 1}}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{Swapchain_8h}{Swapchain.\+h}}\item 
+\mbox{\hyperlink{Swapchain_8cpp}{Swapchain.\+cpp}}\end{DoxyCompactItemize}

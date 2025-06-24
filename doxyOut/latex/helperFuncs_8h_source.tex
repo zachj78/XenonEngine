@@ -1,0 +1,29 @@
+\doxysection{helper\+Funcs.\+h}
+\hypertarget{helperFuncs_8h_source}{}\label{helperFuncs_8h_source}\index{helperFuncs.h@{helperFuncs.h}}
+\mbox{\hyperlink{helperFuncs_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ HELPER\_FUNCS\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ HELPER\_FUNCS\_H}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{comment}{//Config\ file}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{Utils/config.h}}"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ \ \ \ This\ function\ returns\ a\ list\ of\ required\ Vulkan\ extensions(char*\ strings)\ for\ GLFW}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ \ \ \ based\ on\ whether\ validation\ layers\ are\ enabled\ or\ not}}
+\DoxyCodeLine{00011\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00012\ std::vector<const\ char*>\ \mbox{\hyperlink{helperFuncs_8h_a7b21e47079c03690abf946547aa64745}{getRequiredExtensions}}();}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{comment}{/*\ }}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ \ \ This\ is\ a\ basic\ loader\ function}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ \ \ -\/>\ returns\ an\ VkInstance\ extension\ function's\ address\ with\ "{}vkGetInstanceProcAddr"{}}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00019\ T\ \mbox{\hyperlink{helperFuncs_8h_aa90a5634987e62738b5d2b48a214f287}{LoadInstanceFunction}}(VkInstance\ instance,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ name)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{reinterpret\_cast<}T\textcolor{keyword}{>}(vkGetInstanceProcAddr(instance,\ name));}
+\DoxyCodeLine{00021\ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

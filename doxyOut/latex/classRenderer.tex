@@ -1,0 +1,220 @@
+\doxysection{Renderer Class Reference}
+\hypertarget{classRenderer}{}\label{classRenderer}\index{Renderer@{Renderer}}
+
+
+{\ttfamily \#include $<$Renderer.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classRenderer_af7936059b0fd1fdf2676de94ad129a64}{create\+Renderer}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a9a0a5f207e3d9f60c6372a9c79b25df9}{draw}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_abf55fd4ba6f8f76af71628487c3c7905}{init\+Camera}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a7af4dbc0ef97748aabc69863d3cc61c3}{init\+Instance}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a79b03aa670c2e7c428c0062550dae00c}{init\+Devices}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a7b62fd189eed75793a1c645b51f9406d}{init\+Buffer\+Manager}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_aca44726ecc9fe676cad813d41365225c}{init\+Image\+Manager}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_afeb0f1ae0187fd7b3e1a179ee75fd817}{create\+Render\+Target\+Resources}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a8ba0bdac22af6ea45318c7e4bdf5eff0}{init\+Renderpass\+And\+Command\+Pool}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a68949efe1ccb2360d83b58e7589d0daa}{init\+Framebuffers}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_ad9c05dd71141771865baba0f4ad91e74}{init\+Uniform\+Buffer}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_aa13606c592e61b52bfcf50cd07a60287}{link\+Im\+Gui}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_ac84e5318f75b807fe449c4b46c2aafaa}{init\+Command\+Buffers}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_acb0af0bca8940bca531afa7c7f030e66}{init\+Sync\+Objects}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a7140a003b62e70219dd382620e649799}{create\+Descriptor\+Resources}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a006b591e744562a1a67a6bd855a15dd2}{create\+Meshes\+And\+Materials}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a96006d7047b3cf8eb556ab57ed1032a4}{create\+Material}} (std\+::string material\+Name, std\+::string path\+To\+Image)
+\item 
+void \mbox{\hyperlink{classRenderer_ab4358e3b9b966ef0383c2c9759ae9937}{create\+Mesh}} (std\+::string mesh\+Name, std\+::string material\+Name, std\+::string file\+Path)
+\item 
+void \mbox{\hyperlink{classRenderer_a1429e7ac260cebf472b5f51f49a69c47}{load\+Meshes\+To\+Vertex\+Buffer\+Manager}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_ad8e95dd69442ee43dc1d7af77700d2a1}{submit\+Mesh\+Request}} (const \mbox{\hyperlink{structMeshRequest}{Mesh\+Request}} \&request)
+\item 
+void \mbox{\hyperlink{classRenderer_a8c973f1886be7b726bbb9da7b8f975c2}{check\+Mesh\+Queue}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a07de9043800b378ccd0895098583b7a1}{submit\+Material\+Request}} (const \mbox{\hyperlink{structMaterialRequest}{Material\+Request}} \&request)
+\item 
+void \mbox{\hyperlink{classRenderer_aff25f35c7b63960d6c7e64dff60e6b64}{check\+Material\+Queue}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a40b6ff3f5a306181f0ddc04e47462f41}{cleanup}} ()
+\item 
+void \mbox{\hyperlink{classRenderer_a1bc403a7c949c261b7bb130d07d30540}{cleanup\+Resources}} ()
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{classRenderer_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classRenderer_aff25f35c7b63960d6c7e64dff60e6b64}\index{Renderer@{Renderer}!checkMaterialQueue@{checkMaterialQueue}}
+\index{checkMaterialQueue@{checkMaterialQueue}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{checkMaterialQueue()}{checkMaterialQueue()}}
+{\footnotesize\ttfamily \label{classRenderer_aff25f35c7b63960d6c7e64dff60e6b64} 
+void Renderer\+::check\+Material\+Queue (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a8c973f1886be7b726bbb9da7b8f975c2}\index{Renderer@{Renderer}!checkMeshQueue@{checkMeshQueue}}
+\index{checkMeshQueue@{checkMeshQueue}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{checkMeshQueue()}{checkMeshQueue()}}
+{\footnotesize\ttfamily \label{classRenderer_a8c973f1886be7b726bbb9da7b8f975c2} 
+void Renderer\+::check\+Mesh\+Queue (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a40b6ff3f5a306181f0ddc04e47462f41}\index{Renderer@{Renderer}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{classRenderer_a40b6ff3f5a306181f0ddc04e47462f41} 
+void Renderer\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a1bc403a7c949c261b7bb130d07d30540}\index{Renderer@{Renderer}!cleanupResources@{cleanupResources}}
+\index{cleanupResources@{cleanupResources}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{cleanupResources()}{cleanupResources()}}
+{\footnotesize\ttfamily \label{classRenderer_a1bc403a7c949c261b7bb130d07d30540} 
+void Renderer\+::cleanup\+Resources (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a7140a003b62e70219dd382620e649799}\index{Renderer@{Renderer}!createDescriptorResources@{createDescriptorResources}}
+\index{createDescriptorResources@{createDescriptorResources}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{createDescriptorResources()}{createDescriptorResources()}}
+{\footnotesize\ttfamily \label{classRenderer_a7140a003b62e70219dd382620e649799} 
+void Renderer\+::create\+Descriptor\+Resources (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a96006d7047b3cf8eb556ab57ed1032a4}\index{Renderer@{Renderer}!createMaterial@{createMaterial}}
+\index{createMaterial@{createMaterial}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{createMaterial()}{createMaterial()}}
+{\footnotesize\ttfamily \label{classRenderer_a96006d7047b3cf8eb556ab57ed1032a4} 
+void Renderer\+::create\+Material (\begin{DoxyParamCaption}\item[{std\+::string}]{material\+Name}{, }\item[{std\+::string}]{path\+To\+Image}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_ab4358e3b9b966ef0383c2c9759ae9937}\index{Renderer@{Renderer}!createMesh@{createMesh}}
+\index{createMesh@{createMesh}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{createMesh()}{createMesh()}}
+{\footnotesize\ttfamily \label{classRenderer_ab4358e3b9b966ef0383c2c9759ae9937} 
+void Renderer\+::create\+Mesh (\begin{DoxyParamCaption}\item[{std\+::string}]{mesh\+Name}{, }\item[{std\+::string}]{material\+Name}{, }\item[{std\+::string}]{file\+Path}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a006b591e744562a1a67a6bd855a15dd2}\index{Renderer@{Renderer}!createMeshesAndMaterials@{createMeshesAndMaterials}}
+\index{createMeshesAndMaterials@{createMeshesAndMaterials}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{createMeshesAndMaterials()}{createMeshesAndMaterials()}}
+{\footnotesize\ttfamily \label{classRenderer_a006b591e744562a1a67a6bd855a15dd2} 
+void Renderer\+::create\+Meshes\+And\+Materials (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_af7936059b0fd1fdf2676de94ad129a64}\index{Renderer@{Renderer}!createRenderer@{createRenderer}}
+\index{createRenderer@{createRenderer}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{createRenderer()}{createRenderer()}}
+{\footnotesize\ttfamily \label{classRenderer_af7936059b0fd1fdf2676de94ad129a64} 
+void Renderer\+::create\+Renderer (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_afeb0f1ae0187fd7b3e1a179ee75fd817}\index{Renderer@{Renderer}!createRenderTargetResources@{createRenderTargetResources}}
+\index{createRenderTargetResources@{createRenderTargetResources}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{createRenderTargetResources()}{createRenderTargetResources()}}
+{\footnotesize\ttfamily \label{classRenderer_afeb0f1ae0187fd7b3e1a179ee75fd817} 
+void Renderer\+::create\+Render\+Target\+Resources (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a9a0a5f207e3d9f60c6372a9c79b25df9}\index{Renderer@{Renderer}!draw@{draw}}
+\index{draw@{draw}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{draw()}{draw()}}
+{\footnotesize\ttfamily \label{classRenderer_a9a0a5f207e3d9f60c6372a9c79b25df9} 
+void Renderer\+::draw (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a7b62fd189eed75793a1c645b51f9406d}\index{Renderer@{Renderer}!initBufferManager@{initBufferManager}}
+\index{initBufferManager@{initBufferManager}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initBufferManager()}{initBufferManager()}}
+{\footnotesize\ttfamily \label{classRenderer_a7b62fd189eed75793a1c645b51f9406d} 
+void Renderer\+::init\+Buffer\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_abf55fd4ba6f8f76af71628487c3c7905}\index{Renderer@{Renderer}!initCamera@{initCamera}}
+\index{initCamera@{initCamera}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initCamera()}{initCamera()}}
+{\footnotesize\ttfamily \label{classRenderer_abf55fd4ba6f8f76af71628487c3c7905} 
+void Renderer\+::init\+Camera (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_ac84e5318f75b807fe449c4b46c2aafaa}\index{Renderer@{Renderer}!initCommandBuffers@{initCommandBuffers}}
+\index{initCommandBuffers@{initCommandBuffers}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initCommandBuffers()}{initCommandBuffers()}}
+{\footnotesize\ttfamily \label{classRenderer_ac84e5318f75b807fe449c4b46c2aafaa} 
+void Renderer\+::init\+Command\+Buffers (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a79b03aa670c2e7c428c0062550dae00c}\index{Renderer@{Renderer}!initDevices@{initDevices}}
+\index{initDevices@{initDevices}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initDevices()}{initDevices()}}
+{\footnotesize\ttfamily \label{classRenderer_a79b03aa670c2e7c428c0062550dae00c} 
+void Renderer\+::init\+Devices (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a68949efe1ccb2360d83b58e7589d0daa}\index{Renderer@{Renderer}!initFramebuffers@{initFramebuffers}}
+\index{initFramebuffers@{initFramebuffers}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initFramebuffers()}{initFramebuffers()}}
+{\footnotesize\ttfamily \label{classRenderer_a68949efe1ccb2360d83b58e7589d0daa} 
+void Renderer\+::init\+Framebuffers (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_aca44726ecc9fe676cad813d41365225c}\index{Renderer@{Renderer}!initImageManager@{initImageManager}}
+\index{initImageManager@{initImageManager}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initImageManager()}{initImageManager()}}
+{\footnotesize\ttfamily \label{classRenderer_aca44726ecc9fe676cad813d41365225c} 
+void Renderer\+::init\+Image\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a7af4dbc0ef97748aabc69863d3cc61c3}\index{Renderer@{Renderer}!initInstance@{initInstance}}
+\index{initInstance@{initInstance}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initInstance()}{initInstance()}}
+{\footnotesize\ttfamily \label{classRenderer_a7af4dbc0ef97748aabc69863d3cc61c3} 
+void Renderer\+::init\+Instance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a8ba0bdac22af6ea45318c7e4bdf5eff0}\index{Renderer@{Renderer}!initRenderpassAndCommandPool@{initRenderpassAndCommandPool}}
+\index{initRenderpassAndCommandPool@{initRenderpassAndCommandPool}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initRenderpassAndCommandPool()}{initRenderpassAndCommandPool()}}
+{\footnotesize\ttfamily \label{classRenderer_a8ba0bdac22af6ea45318c7e4bdf5eff0} 
+void Renderer\+::init\+Renderpass\+And\+Command\+Pool (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_acb0af0bca8940bca531afa7c7f030e66}\index{Renderer@{Renderer}!initSyncObjects@{initSyncObjects}}
+\index{initSyncObjects@{initSyncObjects}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initSyncObjects()}{initSyncObjects()}}
+{\footnotesize\ttfamily \label{classRenderer_acb0af0bca8940bca531afa7c7f030e66} 
+void Renderer\+::init\+Sync\+Objects (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_ad9c05dd71141771865baba0f4ad91e74}\index{Renderer@{Renderer}!initUniformBuffer@{initUniformBuffer}}
+\index{initUniformBuffer@{initUniformBuffer}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{initUniformBuffer()}{initUniformBuffer()}}
+{\footnotesize\ttfamily \label{classRenderer_ad9c05dd71141771865baba0f4ad91e74} 
+void Renderer\+::init\+Uniform\+Buffer (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_aa13606c592e61b52bfcf50cd07a60287}\index{Renderer@{Renderer}!linkImGui@{linkImGui}}
+\index{linkImGui@{linkImGui}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{linkImGui()}{linkImGui()}}
+{\footnotesize\ttfamily \label{classRenderer_aa13606c592e61b52bfcf50cd07a60287} 
+void Renderer\+::link\+Im\+Gui (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a1429e7ac260cebf472b5f51f49a69c47}\index{Renderer@{Renderer}!loadMeshesToVertexBufferManager@{loadMeshesToVertexBufferManager}}
+\index{loadMeshesToVertexBufferManager@{loadMeshesToVertexBufferManager}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{loadMeshesToVertexBufferManager()}{loadMeshesToVertexBufferManager()}}
+{\footnotesize\ttfamily \label{classRenderer_a1429e7ac260cebf472b5f51f49a69c47} 
+void Renderer\+::load\+Meshes\+To\+Vertex\+Buffer\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_a07de9043800b378ccd0895098583b7a1}\index{Renderer@{Renderer}!submitMaterialRequest@{submitMaterialRequest}}
+\index{submitMaterialRequest@{submitMaterialRequest}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{submitMaterialRequest()}{submitMaterialRequest()}}
+{\footnotesize\ttfamily \label{classRenderer_a07de9043800b378ccd0895098583b7a1} 
+void Renderer\+::submit\+Material\+Request (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structMaterialRequest}{Material\+Request}} \&}]{request}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classRenderer_ad8e95dd69442ee43dc1d7af77700d2a1}\index{Renderer@{Renderer}!submitMeshRequest@{submitMeshRequest}}
+\index{submitMeshRequest@{submitMeshRequest}!Renderer@{Renderer}}
+\doxysubsubsection{\texorpdfstring{submitMeshRequest()}{submitMeshRequest()}}
+{\footnotesize\ttfamily \label{classRenderer_ad8e95dd69442ee43dc1d7af77700d2a1} 
+void Renderer\+::submit\+Mesh\+Request (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structMeshRequest}{Mesh\+Request}} \&}]{request}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{Renderer_8h}{Renderer.\+h}}\item 
+\mbox{\hyperlink{Renderer_8cpp}{Renderer.\+cpp}}\end{DoxyCompactItemize}

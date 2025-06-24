@@ -1,0 +1,126 @@
+\doxysection{IO Class Reference}
+\hypertarget{classIO}{}\label{classIO}\index{IO@{IO}}
+
+
+{\ttfamily \#include $<$IO.\+h$>$}
+
+
+
+Collaboration diagram for IO\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{classIO__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classIO_ac7a75af18db182140ac67e14791c3981}{IO}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classCamera}{Camera}} $>$ camera)
+\item 
+void \mbox{\hyperlink{classIO_aa95626b3afee42617fc5662258a95859}{set\+Standard\+Binds}} ()
+\item 
+void \mbox{\hyperlink{classIO_aae0c4414090bca8d430680d30794c524}{bind\+Key}} (int key, std\+::function$<$ void()$>$ func)
+\item 
+void \mbox{\hyperlink{classIO_ad60803ea04ba2a800458e0c4d67ab2b2}{unbind\+Key}} (int key)
+\item 
+void \mbox{\hyperlink{classIO_a099e6324b5d00e1d39ec1cc3ddcefc01}{on\+Key}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, int key, int scancode, int action, int mods)
+\item 
+void \mbox{\hyperlink{classIO_a1ea5e76f0453375b0a47ea4f1bb48ea2}{on\+Mouse\+Move}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, double xpos, double ypos)
+\item 
+void \mbox{\hyperlink{classIO_ade614c53879546d0c05d29c82aefd28a}{poll\+Key\+Binds}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classIO_a0123c7126839275d2743f6952e45ac25}{key\+Callback}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, int key, int scancode, int action, int mods)
+\item 
+static void \mbox{\hyperlink{classIO_a89923eae322e6c64a8b7a776c79b2406}{mouse\+Callback}} (GLFWwindow \texorpdfstring{$\ast$}{*}window, double xpos, double ypos)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classIO}{IO}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classIO_a08f90a5fc736ef19141ee5e7603ed27a}{input\+Instance}} = nullptr
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classIO_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classIO_ac7a75af18db182140ac67e14791c3981}\index{IO@{IO}!IO@{IO}}
+\index{IO@{IO}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{IO()}{IO()}}
+{\footnotesize\ttfamily \label{classIO_ac7a75af18db182140ac67e14791c3981} 
+IO\+::\+IO (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classCamera}{Camera}} $>$}]{camera}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classIO_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classIO_aae0c4414090bca8d430680d30794c524}\index{IO@{IO}!bindKey@{bindKey}}
+\index{bindKey@{bindKey}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{bindKey()}{bindKey()}}
+{\footnotesize\ttfamily \label{classIO_aae0c4414090bca8d430680d30794c524} 
+void IO\+::bind\+Key (\begin{DoxyParamCaption}\item[{int}]{key}{, }\item[{std\+::function$<$ void()$>$}]{func}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classIO_a0123c7126839275d2743f6952e45ac25}\index{IO@{IO}!keyCallback@{keyCallback}}
+\index{keyCallback@{keyCallback}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{keyCallback()}{keyCallback()}}
+{\footnotesize\ttfamily \label{classIO_a0123c7126839275d2743f6952e45ac25} 
+void IO\+::key\+Callback (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{int}]{key}{, }\item[{int}]{scancode}{, }\item[{int}]{action}{, }\item[{int}]{mods}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{classIO_a89923eae322e6c64a8b7a776c79b2406}\index{IO@{IO}!mouseCallback@{mouseCallback}}
+\index{mouseCallback@{mouseCallback}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{mouseCallback()}{mouseCallback()}}
+{\footnotesize\ttfamily \label{classIO_a89923eae322e6c64a8b7a776c79b2406} 
+void IO\+::mouse\+Callback (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{double}]{xpos}{, }\item[{double}]{ypos}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+\Hypertarget{classIO_a099e6324b5d00e1d39ec1cc3ddcefc01}\index{IO@{IO}!onKey@{onKey}}
+\index{onKey@{onKey}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{onKey()}{onKey()}}
+{\footnotesize\ttfamily \label{classIO_a099e6324b5d00e1d39ec1cc3ddcefc01} 
+void IO\+::on\+Key (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{int}]{key}{, }\item[{int}]{scancode}{, }\item[{int}]{action}{, }\item[{int}]{mods}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classIO_a1ea5e76f0453375b0a47ea4f1bb48ea2}\index{IO@{IO}!onMouseMove@{onMouseMove}}
+\index{onMouseMove@{onMouseMove}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{onMouseMove()}{onMouseMove()}}
+{\footnotesize\ttfamily \label{classIO_a1ea5e76f0453375b0a47ea4f1bb48ea2} 
+void IO\+::on\+Mouse\+Move (\begin{DoxyParamCaption}\item[{GLFWwindow \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{double}]{xpos}{, }\item[{double}]{ypos}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classIO_ade614c53879546d0c05d29c82aefd28a}\index{IO@{IO}!pollKeyBinds@{pollKeyBinds}}
+\index{pollKeyBinds@{pollKeyBinds}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{pollKeyBinds()}{pollKeyBinds()}}
+{\footnotesize\ttfamily \label{classIO_ade614c53879546d0c05d29c82aefd28a} 
+void IO\+::poll\+Key\+Binds (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classIO_aa95626b3afee42617fc5662258a95859}\index{IO@{IO}!setStandardBinds@{setStandardBinds}}
+\index{setStandardBinds@{setStandardBinds}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{setStandardBinds()}{setStandardBinds()}}
+{\footnotesize\ttfamily \label{classIO_aa95626b3afee42617fc5662258a95859} 
+void IO\+::set\+Standard\+Binds (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classIO_ad60803ea04ba2a800458e0c4d67ab2b2}\index{IO@{IO}!unbindKey@{unbindKey}}
+\index{unbindKey@{unbindKey}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{unbindKey()}{unbindKey()}}
+{\footnotesize\ttfamily \label{classIO_ad60803ea04ba2a800458e0c4d67ab2b2} 
+void IO\+::unbind\+Key (\begin{DoxyParamCaption}\item[{int}]{key}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classIO_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classIO_a08f90a5fc736ef19141ee5e7603ed27a}\index{IO@{IO}!inputInstance@{inputInstance}}
+\index{inputInstance@{inputInstance}!IO@{IO}}
+\doxysubsubsection{\texorpdfstring{inputInstance}{inputInstance}}
+{\footnotesize\ttfamily \label{classIO_a08f90a5fc736ef19141ee5e7603ed27a} 
+\mbox{\hyperlink{classIO}{IO}} \texorpdfstring{$\ast$}{*} IO\+::input\+Instance = nullptr\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{IO_8h}{IO.\+h}}\item 
+\mbox{\hyperlink{IO_8cpp}{IO.\+cpp}}\end{DoxyCompactItemize}

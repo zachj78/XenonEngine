@@ -1,0 +1,58 @@
+\doxysection{GUI.\+h}
+\hypertarget{GUI_8h_source}{}\label{GUI_8h_source}\index{GUI.h@{GUI.h}}
+\mbox{\hyperlink{GUI_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ GUI\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ GUI\_H}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{Utils/config.h}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{MemoryUtils_8h}{Utils/MemoryUtils.h}}"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{comment}{//Forward\ definitions}}
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGraphicsPipeline}{GraphicsPipeline}};\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGUI_a8cbb3140b7d3c9d8e942d6ce6b60a0e8}{GUI}}\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{public}:\ }
+\DoxyCodeLine{00013\ \ \ \ \ \mbox{\hyperlink{classGUI_a8cbb3140b7d3c9d8e942d6ce6b60a0e8}{GUI}}()\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{imgui_8h_a4846e0a12ef734d9467d31572034bf07}{IMGUI\_CHECKVERSION}}();}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceImGui_a4ff6c9ad05a0eba37ce1b5ff1607810a}{ImGui::CreateContext}}();}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImGuiIO}{ImGuiIO}}\&\ io\ =\ \mbox{\hyperlink{namespaceImGui_a3179e560812f878f3961ce803a5d9302}{ImGui::GetIO}}();}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ io.\mbox{\hyperlink{structImGuiIO_a6267b8a1ffa964035e6540f5e4296e39}{ConfigFlags}}\ |=\ \mbox{\hyperlink{imgui_8h_a1853976c82e4686085530721ab586743a926fc18370c8821625743c453cb043f2}{ImGuiConfigFlags\_DockingEnable}};}
+\DoxyCodeLine{00018\ \ \ \ \ \}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//MAYBE\ FLATTEN\ INTO\ STRUCT\ \`{}LINK\_CONTEXT`?\ [FLAGGED]}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGUI_a79590fd852ddeb86afec2cc4984adb0f}{linkToApp}}(}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ usingSwapchain,\ }
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ GLFWwindow*\ window,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ VkInstance\ instance,}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ VkDevice\ logicalDevice,}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ VkPhysicalDevice\ physicalDevice,}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ uint32\_t\ graphicsQueueIndex,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ VkQueue\ graphicsQueue,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ uint32\_t\ minImageCount,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ uint32\_t\ imageCount,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ std::vector<VkImageView>\ targetImageViews,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ VkRenderPass\ renderPass,}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ VkSampler\ targetSampler\ =\ \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{00034\ \ \ \ \ );}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGUI_a5c604bc38728fe70dd4c13aa8b9e2f12}{beginFrame}}(uint32\_t\ currentFrame\ \textcolor{comment}{/*\ VkSampler\ sampler,\ VkImageView\ imageView*/});}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGUI_a40fafed007e372994bca7479a4d5c567}{endFrame}}();}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classGUI_a77c1b8daaa385596109a57bc4127837e}{record}}(VkCommandBuffer\ commandBuffer);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{private}:\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{comment}{//GUI\ STATE}}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{bool}\ showLeftPanel\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ showAssetManager\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{comment}{//Descriptor\ pool}}
+\DoxyCodeLine{00046\ \ \ \ \ VkDescriptorPool\ descriptorPool;}
+\DoxyCodeLine{00047\ \ \ \ \ VkDescriptorSetLayout\ offscreenLayout;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ std::vector<ImTextureID>\ offscreenTextureIDs;}
+\DoxyCodeLine{00050\ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

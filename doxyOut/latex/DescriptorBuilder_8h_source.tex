@@ -1,0 +1,60 @@
+\doxysection{Descriptor\+Builder.\+h}
+\hypertarget{DescriptorBuilder_8h_source}{}\label{DescriptorBuilder_8h_source}\index{DescriptorBuilder.h@{DescriptorBuilder.h}}
+\mbox{\hyperlink{DescriptorBuilder_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once\ }}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ DESCRIPTOR\_BUILDER\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ DESCRIPTOR\_BUILDER\_H}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{config_8h}{Utils/config.h}}"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{Buffer_8h}{Managers/Buffer.h}}"{}}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structUniformBufferInfo}{UniformBufferInfo}}\ \{}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{structUniformBufferInfo_a29ca8357013f959f8c95901f23b44d59}{mappedPtr}}\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00010\ \ \ \ \ std::shared\_ptr<Buffer>\ \mbox{\hyperlink{structUniformBufferInfo_ad6333532e25a6e030c5f724f6713b746}{buffer}};}
+\DoxyCodeLine{00011\ \};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\ \{}
+\DoxyCodeLine{00014\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{comment}{//\ Move\ constructor\ \&\ assignment}}
+\DoxyCodeLine{00016\ \ \ \ \ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}(\mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&\ \mbox{\hyperlink{classDescriptorBuilder_a5cdfee47bee1ae53c1bac0aac7d51c38}{operator=}}(\mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&\&)\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{comment}{//\ Deleted\ copy\ constructor\ \&\ assignment\ to\ prevent\ unsafe\ usage}}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{classDescriptorBuilder_aa4698537ded1db9d8f6ebc3ffade3ba3}{DescriptorBuilder}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&\ \mbox{\hyperlink{classDescriptorBuilder_abb993e2d0f93e2de8cfecd7c5855d0ce}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\ \mbox{\hyperlink{classDescriptorBuilder_a456d375ee2739a43e3f7f6a9103d75a3}{begin}}(VkDevice\ device);}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&\ \mbox{\hyperlink{classDescriptorBuilder_a200d6c5281af508598983ad8c89c33a6}{bindBuffer}}(uint32\_t\ binding,\ VkDescriptorType\ type,\ VkShaderStageFlags\ stageFlags,\ VkBuffer\ buffer,\ VkDeviceSize\ range\ =\ VK\_WHOLE\_SIZE);}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&\ \mbox{\hyperlink{classDescriptorBuilder_a67aeec0e9e16c2c4d109cb3872c8e1fd}{bindImage}}(uint32\_t\ binding,\ VkDescriptorType\ type,\ VkShaderStageFlags\ stageFlags,\ VkImageView\ imageView,\ VkSampler\ sampler);}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&\ \mbox{\hyperlink{classDescriptorBuilder_ab4f015fc3342d03bb1f268a219bd07aa}{bindImageArray}}(uint32\_t\ binding,}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ VkDescriptorType\ type,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ VkShaderStageFlags\ stageFlags,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<VkImageView>\ imageViews,}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<VkSampler>\ samplers,}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ VkDescriptorBindingFlags\ flags);}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}\&\ \mbox{\hyperlink{classDescriptorBuilder_a626846dd35851bc79bfad74ae261cfab}{setLayoutFlags}}(VkDescriptorSetLayoutCreateFlags\ flags\ =\ 0);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDescriptorBuilder_a1494478180e023a334261a6c33cae995}{buildLayout}}(VkDescriptorSetLayout\&\ layout);}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classDescriptorBuilder_a16bf2ba10edbe28c08472156717d0885}{buildSet}}(VkDescriptorSetLayout\&\ layout,\ VkDescriptorSet\&\ set,\ VkDescriptorPool\ pool);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{private}:\ }
+\DoxyCodeLine{00041\ \ \ \ \ \mbox{\hyperlink{classDescriptorBuilder_a7d90514dab9a31df8a666ae4ba91e156}{DescriptorBuilder}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ VkDevice\ device;\ }
+\DoxyCodeLine{00044\ \ \ \ \ std::vector<VkDescriptorSetLayoutBinding>\ bindings;}
+\DoxyCodeLine{00045\ \ \ \ \ std::vector<VkWriteDescriptorSet>\ writes;}
+\DoxyCodeLine{00046\ \ \ \ \ std::vector<VkDescriptorBufferInfo>\ bufferInfos;}
+\DoxyCodeLine{00047\ \ \ \ \ std::vector<std::vector<VkDescriptorImageInfo>>\ imageInfos;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{comment}{//FOR\ PER-\/MATERIAL\ BINDING}}
+\DoxyCodeLine{00050\ \ \ \ \ std::vector<VkDescriptorImageInfo>\ traditionalImageInfos;}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

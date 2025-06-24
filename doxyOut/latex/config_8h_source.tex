@@ -1,0 +1,87 @@
+\doxysection{config.\+h}
+\hypertarget{config_8h_source}{}\label{config_8h_source}\index{config.h@{config.h}}
+\mbox{\hyperlink{config_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//GLOBAL\ CONFIG\ FILE}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//FOR\ GLOBAL\ VARIABLES(try\ to\ minimize\ unless\ absolute\ necessary**)\ AND\ PREPROCESSOR\ MACROS}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#define\ GLFW\_INCLUDE\_VULKAN}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ GLM\_FORCE\_RADIANS}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ GLM\_FORCE\_DEPTH\_ZERO\_TO\_ONE}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ GLM\_ENABLE\_EXPERIMENTAL}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ IMGUI\_HAS\_DOCK}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ IMGUI\_ENABLE\_DOCKING}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{comment}{//PLATFORM\ SPECIFIC\ MACROS\ -\/>\ VULKAN\ AND\ GLFW}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#if\ defined(\_WIN32)}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \ \ \#pragma\ message("{}Detected\ Windows"{})}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \ \ \#define\ GLFW\_EXPLORE\_NATIVE\_WIN32}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \ \ \ \#define\ VK\_USE\_PLATFORM\_WIN32\_KHR}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#elif\ defined(\_\_APPLE\_\_)\ \&\&\ defined(\_\_MACH\_\_)}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\ \ \ \ \#pragma\ message("{}Detected\ MacOS"{})}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\ \ \ \ \#define\ VK\_USE\_PLATFORM\_MACOS\_MVK}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\ \ \ \ \#define\ GLFW\_EXPOSE\_NATIVE\_COCOA}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{comment}{//THIS\ NEEDS\ TO\ BE\ UPDATED\ TO\ CONDITIONALLY\ SUPPORT\ XCB\ AS\ WELL}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#elif\ defined(\_\_linux\_\_)}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\ \ \ \ \#pragma\ message("{}Detected\ Linux"{})}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\ \ \ \ \#define\ VK\_USE\_PLATFORM\_WAYLAND\_KHR}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\ \ \ \ \#define\ GLFW\_EXPOSE\_NATIVE\_WAYLAND}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\ \ \ \ \#error\ "{}Unsupported\ Platform"{}}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ <GLFW/glfw3.h>}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ <glm/glm.hpp>}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#include\ <glm/gtc/matrix\_transform.hpp>}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#include\ <glm/gtx/matrix\_decompose.hpp>}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#include\ "{}../src/External/imgui/imgui.h"{}}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#include\ "{}../src/External/imgui/imgui\_impl\_vulkan.h"{}}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#include\ "{}../src/External/imgui/imgui\_impl\_glfw.h"{}}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ <thread>}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#include\ <queue>}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#include\ <condition\_variable>}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#include\ <atomic>}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#include\ <stdexcept>}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#include\ <cstring>}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#include\ <cstdint>}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#include\ <optional>}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#include\ <set>}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#include\ <chrono>}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#include\ <future>}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \textcolor{comment}{//Platform\ Specific\ Includes}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#if\ defined(\_WIN32)}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\ \ \ \ \#include\ <direct.h>}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\ \ \ \ \#include\ <unistd.h>}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#ifdef\ NDEBUG}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{config_8h_aa19a430be1b9d313312e3194456b1a20}{enableValidationLayers}}\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#else\ }}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{constexpr}\ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{config_8h_aa19a430be1b9d313312e3194456b1a20}{enableValidationLayers}}\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{config_8h_a793aab50e121272021a3d4460af24bf7}{MAX\_FRAMES\_IN\_FLIGHT}}\ =\ 2;}
+
+\end{DoxyCode}

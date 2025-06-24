@@ -1,0 +1,50 @@
+\doxysection{Thread\+Pool Class Reference}
+\hypertarget{classThreadPool}{}\label{classThreadPool}\index{ThreadPool@{ThreadPool}}
+
+
+{\ttfamily \#include $<$Thread\+Pool.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classThreadPool_aa4de326369a57575951b94dfd15b76af}{Thread\+Pool}} (size\+\_\+t num\+Threads=std\+::thread\+::hardware\+\_\+concurrency())
+\item 
+\mbox{\hyperlink{classThreadPool_a44d3d2ab618970605e684efc216655eb}{\texorpdfstring{$\sim$}{\string~}\+Thread\+Pool}} ()
+\item 
+{\footnotesize template$<$typename Func, typename... Args$>$ }\\auto \mbox{\hyperlink{classThreadPool_a9a9999c74cf82967c75ea34c94d81ce5}{submit}} (Func \&\&f, Args \&\&... args) -\/$>$ std\+::future$<$ decltype(f(args...))$>$
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classThreadPool_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classThreadPool_aa4de326369a57575951b94dfd15b76af}\index{ThreadPool@{ThreadPool}!ThreadPool@{ThreadPool}}
+\index{ThreadPool@{ThreadPool}!ThreadPool@{ThreadPool}}
+\doxysubsubsection{\texorpdfstring{ThreadPool()}{ThreadPool()}}
+{\footnotesize\ttfamily \label{classThreadPool_aa4de326369a57575951b94dfd15b76af} 
+Thread\+Pool\+::\+Thread\+Pool (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{num\+Threads}{ = {\ttfamily std\+:\+:thread\+:\+:hardware\+\_\+concurrency()}}\end{DoxyParamCaption})}
+
+\Hypertarget{classThreadPool_a44d3d2ab618970605e684efc216655eb}\index{ThreadPool@{ThreadPool}!````~ThreadPool@{\texorpdfstring{$\sim$}{\string~}ThreadPool}}
+\index{````~ThreadPool@{\texorpdfstring{$\sim$}{\string~}ThreadPool}!ThreadPool@{ThreadPool}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}ThreadPool()}{\string~ThreadPool()}}
+{\footnotesize\ttfamily \label{classThreadPool_a44d3d2ab618970605e684efc216655eb} 
+Thread\+Pool\+::\texorpdfstring{$\sim$}{\string~}\+Thread\+Pool (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classThreadPool_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classThreadPool_a9a9999c74cf82967c75ea34c94d81ce5}\index{ThreadPool@{ThreadPool}!submit@{submit}}
+\index{submit@{submit}!ThreadPool@{ThreadPool}}
+\doxysubsubsection{\texorpdfstring{submit()}{submit()}}
+{\footnotesize\ttfamily \label{classThreadPool_a9a9999c74cf82967c75ea34c94d81ce5} 
+template$<$typename Func, typename... Args$>$ \\
+auto Thread\+Pool\+::submit (\begin{DoxyParamCaption}\item[{Func \&\&}]{f}{, }\item[{Args \&\&...}]{args}{}\end{DoxyParamCaption}) -\/$>$ std\+::future$<$decltype(f(args...))$>$ \hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{ThreadPool_8h}{Thread\+Pool.\+h}}\item 
+\mbox{\hyperlink{ThreadPool_8cpp}{Thread\+Pool.\+cpp}}\end{DoxyCompactItemize}

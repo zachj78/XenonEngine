@@ -1,0 +1,11 @@
+<map id="ExampleSelectionWithDeletion" name="ExampleSelectionWithDeletion">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,384,229,412"/>
+<area shape="rect" id="Node000002" href="$structImGuiSelectionBasicStorage.html" title=" " alt="" coords="14,307,220,335"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,350,120,384,114,384,114,350"/>
+<area shape="rect" id="Node000003" href="$structImGuiStorage.html" title=" " alt="" coords="62,207,172,234"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="120,250,120,307,114,307,114,250"/>
+<area shape="rect" id="Node000004" href="$structImVector.html" title=" " alt="" coords="6,106,228,134"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="120,149,120,206,114,206,114,149"/>
+<area shape="rect" id="Node000005" href="$structImGuiStoragePair.html" title=" " alt="" coords="50,5,184,33"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="120,49,120,105,114,105,114,49"/>
+</map>

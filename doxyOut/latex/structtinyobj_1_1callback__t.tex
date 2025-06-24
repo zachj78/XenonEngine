@@ -1,0 +1,107 @@
+\doxysection{tinyobj\+::callback\+\_\+t Struct Reference}
+\hypertarget{structtinyobj_1_1callback__t}{}\label{structtinyobj_1_1callback__t}\index{tinyobj::callback\_t@{tinyobj::callback\_t}}
+
+
+{\ttfamily \#include $<$tiny\+\_\+obj\+\_\+loader.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structtinyobj_1_1callback__t_a41323a8cf55d4ad9f8e5bd77e57e9b2d}{callback\+\_\+t}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structtinyobj_1_1callback__t_a56770b4d8c2e91a1ebfacb19d78cd6b4}{vertex\+\_\+cb}} )(void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} x, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} y, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} z, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} w)
+\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structtinyobj_1_1callback__t_a21569f82a795d801531b657410ed9abb}{vertex\+\_\+color\+\_\+cb}} )(void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} x, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} y, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} z, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} r, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} g, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} b, bool has\+\_\+color)
+\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structtinyobj_1_1callback__t_aec89406f0dce3b2c27436808d3176c7c}{normal\+\_\+cb}} )(void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} x, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} y, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} z)
+\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structtinyobj_1_1callback__t_ad3771d01fb52729cda7a6e956902f28e}{texcoord\+\_\+cb}} )(void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} x, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} y, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} z)
+\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structtinyobj_1_1callback__t_a3e1516ee5130eced6d08e2d8a623a148}{index\+\_\+cb}} )(void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{structtinyobj_1_1index__t}{index\+\_\+t}} \texorpdfstring{$\ast$}{*}indices, int num\+\_\+indices)
+\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structtinyobj_1_1callback__t_af328b54be3e8cecd0e3d04ba302a0ca1}{usemtl\+\_\+cb}} )(void \texorpdfstring{$\ast$}{*}user\+\_\+data, const char \texorpdfstring{$\ast$}{*}name, int material\+\_\+id)
+\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structtinyobj_1_1callback__t_a19238ff49af5974b2e4ebe23e065b192}{mtllib\+\_\+cb}} )(void \texorpdfstring{$\ast$}{*}user\+\_\+data, const \mbox{\hyperlink{structtinyobj_1_1material__t}{material\+\_\+t}} \texorpdfstring{$\ast$}{*}materials, int num\+\_\+materials)
+\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structtinyobj_1_1callback__t_acfd64aafe46d7f7601f652838426d219}{group\+\_\+cb}} )(void \texorpdfstring{$\ast$}{*}user\+\_\+data, const char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}names, int num\+\_\+names)
+\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{structtinyobj_1_1callback__t_a905e0452b155afa871b8ed4bfd45d51f}{object\+\_\+cb}} )(void \texorpdfstring{$\ast$}{*}user\+\_\+data, const char \texorpdfstring{$\ast$}{*}name)
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{structtinyobj_1_1callback__t_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structtinyobj_1_1callback__t_a41323a8cf55d4ad9f8e5bd77e57e9b2d}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!callback\_t@{callback\_t}}
+\index{callback\_t@{callback\_t}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{callback\_t()}{callback\_t()}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_a41323a8cf55d4ad9f8e5bd77e57e9b2d} 
+tinyobj\+::callback\+\_\+t\+::callback\+\_\+t (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-variable-members}
+\Hypertarget{structtinyobj_1_1callback__t_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structtinyobj_1_1callback__t_acfd64aafe46d7f7601f652838426d219}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!group\_cb@{group\_cb}}
+\index{group\_cb@{group\_cb}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{group\_cb}{group\_cb}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_acfd64aafe46d7f7601f652838426d219} 
+void(\texorpdfstring{$\ast$}{*} tinyobj\+::callback\+\_\+t\+::group\+\_\+cb) (void \texorpdfstring{$\ast$}{*}user\+\_\+data, const char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}names, int num\+\_\+names)}
+
+\Hypertarget{structtinyobj_1_1callback__t_a3e1516ee5130eced6d08e2d8a623a148}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!index\_cb@{index\_cb}}
+\index{index\_cb@{index\_cb}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{index\_cb}{index\_cb}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_a3e1516ee5130eced6d08e2d8a623a148} 
+void(\texorpdfstring{$\ast$}{*} tinyobj\+::callback\+\_\+t\+::index\+\_\+cb) (void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{structtinyobj_1_1index__t}{index\+\_\+t}} \texorpdfstring{$\ast$}{*}indices, int num\+\_\+indices)}
+
+\Hypertarget{structtinyobj_1_1callback__t_a19238ff49af5974b2e4ebe23e065b192}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!mtllib\_cb@{mtllib\_cb}}
+\index{mtllib\_cb@{mtllib\_cb}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{mtllib\_cb}{mtllib\_cb}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_a19238ff49af5974b2e4ebe23e065b192} 
+void(\texorpdfstring{$\ast$}{*} tinyobj\+::callback\+\_\+t\+::mtllib\+\_\+cb) (void \texorpdfstring{$\ast$}{*}user\+\_\+data, const \mbox{\hyperlink{structtinyobj_1_1material__t}{material\+\_\+t}} \texorpdfstring{$\ast$}{*}materials, int num\+\_\+materials)}
+
+\Hypertarget{structtinyobj_1_1callback__t_aec89406f0dce3b2c27436808d3176c7c}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!normal\_cb@{normal\_cb}}
+\index{normal\_cb@{normal\_cb}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{normal\_cb}{normal\_cb}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_aec89406f0dce3b2c27436808d3176c7c} 
+void(\texorpdfstring{$\ast$}{*} tinyobj\+::callback\+\_\+t\+::normal\+\_\+cb) (void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} x, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} y, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} z)}
+
+\Hypertarget{structtinyobj_1_1callback__t_a905e0452b155afa871b8ed4bfd45d51f}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!object\_cb@{object\_cb}}
+\index{object\_cb@{object\_cb}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{object\_cb}{object\_cb}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_a905e0452b155afa871b8ed4bfd45d51f} 
+void(\texorpdfstring{$\ast$}{*} tinyobj\+::callback\+\_\+t\+::object\+\_\+cb) (void \texorpdfstring{$\ast$}{*}user\+\_\+data, const char \texorpdfstring{$\ast$}{*}name)}
+
+\Hypertarget{structtinyobj_1_1callback__t_ad3771d01fb52729cda7a6e956902f28e}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!texcoord\_cb@{texcoord\_cb}}
+\index{texcoord\_cb@{texcoord\_cb}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{texcoord\_cb}{texcoord\_cb}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_ad3771d01fb52729cda7a6e956902f28e} 
+void(\texorpdfstring{$\ast$}{*} tinyobj\+::callback\+\_\+t\+::texcoord\+\_\+cb) (void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} x, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} y, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} z)}
+
+\Hypertarget{structtinyobj_1_1callback__t_af328b54be3e8cecd0e3d04ba302a0ca1}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!usemtl\_cb@{usemtl\_cb}}
+\index{usemtl\_cb@{usemtl\_cb}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{usemtl\_cb}{usemtl\_cb}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_af328b54be3e8cecd0e3d04ba302a0ca1} 
+void(\texorpdfstring{$\ast$}{*} tinyobj\+::callback\+\_\+t\+::usemtl\+\_\+cb) (void \texorpdfstring{$\ast$}{*}user\+\_\+data, const char \texorpdfstring{$\ast$}{*}name, int material\+\_\+id)}
+
+\Hypertarget{structtinyobj_1_1callback__t_a56770b4d8c2e91a1ebfacb19d78cd6b4}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!vertex\_cb@{vertex\_cb}}
+\index{vertex\_cb@{vertex\_cb}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{vertex\_cb}{vertex\_cb}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_a56770b4d8c2e91a1ebfacb19d78cd6b4} 
+void(\texorpdfstring{$\ast$}{*} tinyobj\+::callback\+\_\+t\+::vertex\+\_\+cb) (void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} x, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} y, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} z, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} w)}
+
+\Hypertarget{structtinyobj_1_1callback__t_a21569f82a795d801531b657410ed9abb}\index{tinyobj::callback\_t@{tinyobj::callback\_t}!vertex\_color\_cb@{vertex\_color\_cb}}
+\index{vertex\_color\_cb@{vertex\_color\_cb}!tinyobj::callback\_t@{tinyobj::callback\_t}}
+\doxysubsubsection{\texorpdfstring{vertex\_color\_cb}{vertex\_color\_cb}}
+{\footnotesize\ttfamily \label{structtinyobj_1_1callback__t_a21569f82a795d801531b657410ed9abb} 
+void(\texorpdfstring{$\ast$}{*} tinyobj\+::callback\+\_\+t\+::vertex\+\_\+color\+\_\+cb) (void \texorpdfstring{$\ast$}{*}user\+\_\+data, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} x, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} y, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} z, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} r, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} g, \mbox{\hyperlink{namespacetinyobj_ad5ca7469ff56bf0d8423120cfd99adce}{real\+\_\+t}} b, bool has\+\_\+color)}
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{tiny__obj__loader_8h}{tiny\+\_\+obj\+\_\+loader.\+h}}\end{DoxyCompactItemize}

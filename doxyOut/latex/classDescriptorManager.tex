@@ -1,0 +1,97 @@
+\doxysection{Descriptor\+Manager Class Reference}
+\hypertarget{classDescriptorManager}{}\label{classDescriptorManager}\index{DescriptorManager@{DescriptorManager}}
+
+
+{\ttfamily \#include $<$Descriptor\+Manager.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classDescriptorManager_acb0c39474078ce6ed03e25cb77dc72da}{Descriptor\+Manager}} (Vk\+Device logical\+Device, Vk\+Physical\+Device physical\+Device, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$ buffer\+Manager, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classCamera}{Camera}} $>$ camera)
+\item 
+void \mbox{\hyperlink{classDescriptorManager_a22b021159396e576e05d1a83932d755c}{create\+Uniform\+Buffers}} ()
+\item 
+void \mbox{\hyperlink{classDescriptorManager_a904cbaff39befae956248144b2bd30cb}{update\+Uniform\+Buffer}} (uint32\+\_\+t current\+Image, Vk\+Extent2D swapchain\+Extent)
+\item 
+void \mbox{\hyperlink{classDescriptorManager_a2f55bda2668a808ae6976139ee639724}{create\+Descriptor\+Pool}} (int mesh\+Count, int material\+Count)
+\item 
+void \mbox{\hyperlink{classDescriptorManager_a0108636388bb306a9ce7f8d27973abee}{create\+Per\+Frame\+Descriptors}} ()
+\item 
+void \mbox{\hyperlink{classDescriptorManager_a8ab31833b16b26fc295aeb8a8ce9d54a}{cleanup}} ()
+\item 
+std\+::vector$<$ Vk\+Descriptor\+Set $>$ \mbox{\hyperlink{classDescriptorManager_aa8b92ce298b695cc0a92ae242493ba08}{get\+Descriptor\+Sets}} () const
+\item 
+Vk\+Descriptor\+Pool \mbox{\hyperlink{classDescriptorManager_ab9420d950f57f87cdef7914e4faad511}{get\+Descriptor\+Pool}} ()
+\item 
+Vk\+Descriptor\+Set\+Layout \mbox{\hyperlink{classDescriptorManager_ada23a58aebd3752c90ba623d5c44bbcf}{get\+Descriptor\+Set\+Layout}} ()
+\end{DoxyCompactItemize}
+
+
+\label{doc-constructors}
+\Hypertarget{classDescriptorManager_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classDescriptorManager_acb0c39474078ce6ed03e25cb77dc72da}\index{DescriptorManager@{DescriptorManager}!DescriptorManager@{DescriptorManager}}
+\index{DescriptorManager@{DescriptorManager}!DescriptorManager@{DescriptorManager}}
+\doxysubsubsection{\texorpdfstring{DescriptorManager()}{DescriptorManager()}}
+{\footnotesize\ttfamily \label{classDescriptorManager_acb0c39474078ce6ed03e25cb77dc72da} 
+Descriptor\+Manager\+::\+Descriptor\+Manager (\begin{DoxyParamCaption}\item[{Vk\+Device}]{logical\+Device}{, }\item[{Vk\+Physical\+Device}]{physical\+Device}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classBufferManager}{Buffer\+Manager}} $>$}]{buffer\+Manager}{, }\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classCamera}{Camera}} $>$}]{camera}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\label{doc-func-members}
+\Hypertarget{classDescriptorManager_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classDescriptorManager_a8ab31833b16b26fc295aeb8a8ce9d54a}\index{DescriptorManager@{DescriptorManager}!cleanup@{cleanup}}
+\index{cleanup@{cleanup}!DescriptorManager@{DescriptorManager}}
+\doxysubsubsection{\texorpdfstring{cleanup()}{cleanup()}}
+{\footnotesize\ttfamily \label{classDescriptorManager_a8ab31833b16b26fc295aeb8a8ce9d54a} 
+void Descriptor\+Manager\+::cleanup (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classDescriptorManager_a2f55bda2668a808ae6976139ee639724}\index{DescriptorManager@{DescriptorManager}!createDescriptorPool@{createDescriptorPool}}
+\index{createDescriptorPool@{createDescriptorPool}!DescriptorManager@{DescriptorManager}}
+\doxysubsubsection{\texorpdfstring{createDescriptorPool()}{createDescriptorPool()}}
+{\footnotesize\ttfamily \label{classDescriptorManager_a2f55bda2668a808ae6976139ee639724} 
+void Descriptor\+Manager\+::create\+Descriptor\+Pool (\begin{DoxyParamCaption}\item[{int}]{mesh\+Count}{, }\item[{int}]{material\+Count}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classDescriptorManager_a0108636388bb306a9ce7f8d27973abee}\index{DescriptorManager@{DescriptorManager}!createPerFrameDescriptors@{createPerFrameDescriptors}}
+\index{createPerFrameDescriptors@{createPerFrameDescriptors}!DescriptorManager@{DescriptorManager}}
+\doxysubsubsection{\texorpdfstring{createPerFrameDescriptors()}{createPerFrameDescriptors()}}
+{\footnotesize\ttfamily \label{classDescriptorManager_a0108636388bb306a9ce7f8d27973abee} 
+void Descriptor\+Manager\+::create\+Per\+Frame\+Descriptors (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classDescriptorManager_a22b021159396e576e05d1a83932d755c}\index{DescriptorManager@{DescriptorManager}!createUniformBuffers@{createUniformBuffers}}
+\index{createUniformBuffers@{createUniformBuffers}!DescriptorManager@{DescriptorManager}}
+\doxysubsubsection{\texorpdfstring{createUniformBuffers()}{createUniformBuffers()}}
+{\footnotesize\ttfamily \label{classDescriptorManager_a22b021159396e576e05d1a83932d755c} 
+void Descriptor\+Manager\+::create\+Uniform\+Buffers (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{classDescriptorManager_ab9420d950f57f87cdef7914e4faad511}\index{DescriptorManager@{DescriptorManager}!getDescriptorPool@{getDescriptorPool}}
+\index{getDescriptorPool@{getDescriptorPool}!DescriptorManager@{DescriptorManager}}
+\doxysubsubsection{\texorpdfstring{getDescriptorPool()}{getDescriptorPool()}}
+{\footnotesize\ttfamily \label{classDescriptorManager_ab9420d950f57f87cdef7914e4faad511} 
+Vk\+Descriptor\+Pool Descriptor\+Manager\+::get\+Descriptor\+Pool (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classDescriptorManager_ada23a58aebd3752c90ba623d5c44bbcf}\index{DescriptorManager@{DescriptorManager}!getDescriptorSetLayout@{getDescriptorSetLayout}}
+\index{getDescriptorSetLayout@{getDescriptorSetLayout}!DescriptorManager@{DescriptorManager}}
+\doxysubsubsection{\texorpdfstring{getDescriptorSetLayout()}{getDescriptorSetLayout()}}
+{\footnotesize\ttfamily \label{classDescriptorManager_ada23a58aebd3752c90ba623d5c44bbcf} 
+Vk\+Descriptor\+Set\+Layout Descriptor\+Manager\+::get\+Descriptor\+Set\+Layout (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classDescriptorManager_aa8b92ce298b695cc0a92ae242493ba08}\index{DescriptorManager@{DescriptorManager}!getDescriptorSets@{getDescriptorSets}}
+\index{getDescriptorSets@{getDescriptorSets}!DescriptorManager@{DescriptorManager}}
+\doxysubsubsection{\texorpdfstring{getDescriptorSets()}{getDescriptorSets()}}
+{\footnotesize\ttfamily \label{classDescriptorManager_aa8b92ce298b695cc0a92ae242493ba08} 
+std\+::vector$<$ Vk\+Descriptor\+Set $>$ Descriptor\+Manager\+::get\+Descriptor\+Sets (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\Hypertarget{classDescriptorManager_a904cbaff39befae956248144b2bd30cb}\index{DescriptorManager@{DescriptorManager}!updateUniformBuffer@{updateUniformBuffer}}
+\index{updateUniformBuffer@{updateUniformBuffer}!DescriptorManager@{DescriptorManager}}
+\doxysubsubsection{\texorpdfstring{updateUniformBuffer()}{updateUniformBuffer()}}
+{\footnotesize\ttfamily \label{classDescriptorManager_a904cbaff39befae956248144b2bd30cb} 
+void Descriptor\+Manager\+::update\+Uniform\+Buffer (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{current\+Image}{, }\item[{Vk\+Extent2D}]{swapchain\+Extent}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{DescriptorManager_8h}{Descriptor\+Manager.\+h}}\item 
+\mbox{\hyperlink{DescriptorManager_8cpp}{Descriptor\+Manager.\+cpp}}\end{DoxyCompactItemize}
