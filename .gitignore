@@ -48,10 +48,10 @@
 
 #Ignore build
 /build/
-/cmake-build-debug/
+cmake-build-debug/
 
 #Ignore Doxygen Output
-/doxyOut/
+doxyOut/
 
 #Ignore Clion Config
-/.idea/
+.idea/
