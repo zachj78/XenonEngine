@@ -1,7 +1,0 @@
-<map id="ImGui_ImplVulkan_WindowRenderBuffers" name="ImGui_ImplVulkan_WindowRenderBuffers">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,241,250,285"/>
-<area shape="rect" id="Node000002" href="$structImVector.html" title=" " alt="" coords="21,123,234,168"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,184,130,240,125,240,125,184"/>
-<area shape="rect" id="Node000003" href="$structImGui__ImplVulkan__FrameRenderBuffers.html" title=" " alt="" coords="11,5,244,50"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,66,130,122,125,122,125,66"/>
-</map>

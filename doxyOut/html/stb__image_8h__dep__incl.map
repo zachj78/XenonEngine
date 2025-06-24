@@ -1,9 +1,0 @@
-<map id="stb_image.h" name="stb_image.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="96,5,197,33"/>
-<area shape="rect" id="Node000002" href="$Image_8h.html" title=" " alt="" coords="109,81,184,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,49,149,81,144,81,144,49"/>
-<area shape="rect" id="Node000003" href="$ImageManager_8h.html" title=" " alt="" coords="5,157,136,184"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,121,86,158,82,154,120,118"/>
-<area shape="rect" id="Node000004" href="$MeshManager_8h.html" title=" " alt="" coords="160,157,285,184"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="173,118,211,154,207,158,169,121"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="DynamicMesh" name="DynamicMesh">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,81,120,109"/>
-<area shape="rect" id="Node000002" href="$classMesh.html" title=" " alt="" coords="34,5,91,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,49,65,81,60,81,60,49"/>
-</map>

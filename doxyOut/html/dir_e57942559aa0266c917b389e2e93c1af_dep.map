@@ -1,9 +1,0 @@
-<map id="Builders" name="Builders">
-<area shape="rect" id="node1" href="dir_e57942559aa0266c917b389e2e93c1af.html" title="Builders" alt="" coords="56,5,130,33"/>
-<area shape="rect" id="node2" href="dir_2bc54b31faa6bb5cc62e3fd84c56bbd9.html" title="Managers" alt="" coords="5,81,91,109"/>
-<area shape="poly" id="edge1" href="dir_000000_000007.html" alt="" coords="87,35,66,69,62,66,83,32"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000000_000007.html" title="1" alt="" coords="69,61,77,78"/>
-<area shape="rect" id="node3" href="dir_2d1d991c66e7a032b2ab80c11328e79c.html" title="Utils" alt="" coords="114,81,166,109"/>
-<area shape="poly" id="edge2" href="dir_000000_000011.html" alt="" coords="104,32,126,67,121,69,99,35"/>
-<area shape="rect" id="edge2-headlabel" href="dir_000000_000011.html" title="1" alt="" coords="125,52,133,69"/>
-</map>

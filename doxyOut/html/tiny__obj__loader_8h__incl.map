@@ -1,9 +1,0 @@
-<map id="tiny_obj_loader.h" name="tiny_obj_loader.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="43,5,175,33"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,56,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="97,36,57,72,54,68,93,32"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="80,81,138,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="112,34,112,65,106,65,106,34"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="162,81,224,109"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="126,32,169,69,165,73,122,36"/>
-</map>

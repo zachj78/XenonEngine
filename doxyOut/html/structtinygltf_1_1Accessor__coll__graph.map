@@ -1,8 +1,0 @@
-<map id="tinygltf::Accessor" name="tinygltf::Accessor">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,224,139,251"/>
-<area shape="rect" id="Node000002" href="$classtinygltf_1_1Value.html" title=" " alt="" coords="16,5,128,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="71,48,66,106,66,151,73,223,68,224,60,151,60,106,66,48"/>
-<area shape="rect" id="Node000003" href="$structtinygltf_1_1Accessor_1_1Sparse.html" title=" " alt="" coords="124,106,257,151"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="99,41,168,103,165,107,96,45"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,163,88,225,85,221,154,159"/>
-</map>

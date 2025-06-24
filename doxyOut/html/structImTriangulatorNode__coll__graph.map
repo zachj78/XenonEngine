@@ -1,6 +1,0 @@
-<map id="ImTriangulatorNode" name="ImTriangulatorNode">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,116,155,144"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="172,120,181,130,173,139,156,143,155,138,171,134,176,130,168,124"/>
-<area shape="rect" id="Node000002" href="$structImVec2.html" title=" " alt="" coords="45,5,115,33"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,48,83,116,77,116,77,48"/>
-</map>
