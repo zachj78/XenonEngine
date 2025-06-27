@@ -65,14 +65,6 @@ public:
 
 	// REFACTOR THIS FUNCTION INTO THE ABOVE FUNCTIONS,
 	// [NOTE]: DRAW OFFSCREEN WILL BE LARGELY INCOMPLETE FOR NOW
-	void drawFrame(GLFWwindow* window, bool framebufferResized,
-		std::shared_ptr<DescriptorManager> descriptorManager,
-		std::shared_ptr<BufferManager> bufferManager,
-		std::shared_ptr<MeshManager> meshManager,
-		std::shared_ptr<SwapchainRecreater> swapchainRecreater, 
-		std::shared_ptr<GUI> gui,
-		std::shared_ptr<RenderTargeter> renderTargeter
-	);
 
 	//Draw with ONLY swapchain
 	void recordFullDraw(
