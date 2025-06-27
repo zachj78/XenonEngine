@@ -15,10 +15,6 @@
 
 class Buffer; 
 
-struct MeshData {
-    glm::mat4 model; 
-};
-
 class Mesh {
 public:
     virtual const std::vector<Vertex>& getVertices() const = 0;
@@ -132,7 +128,7 @@ public:
 
     //Model loading functions
     void loadModel_obj(std::string filepath, std::string name, std::string materialName);
-    void loadModel_gLTF(std::string filepath, std::string name, std::string materialName);
+    void loadModel_gLTF(std::string filepath, std::string name);
 
     //Adds a mesh to be drawn
     void addMesh(std::shared_ptr<Mesh> mesh);

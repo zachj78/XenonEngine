@@ -1,6 +1,9 @@
 #include "../include/Managers/MeshManager.h"
 #include "../include/Managers/Buffer.h"
+
+//3D Model Loader Imports
 #include "../include/External/tiny_obj_loader.h"
+#include "../include/External/tiny_gltf.h"
 
 // == MESH MANAGER == 
 //REFACTOR THIS TO INCLUDE AN ACTUAL INJECTED DEVICES CLASS 
@@ -91,9 +94,72 @@ void MeshManager::loadModel_obj(std::string filepath, std::string name, std::str
     std::cout << "Finished loading model" << std::endl;
 };
 
+//GLTF loading helper function 
+auto getFloats = [&](const tinygltf::Model& model, const tinygltf::Accessor& accessor) {
+    const tinygltf::BufferView& bufferView = model.bufferViews[accessor.bufferView];
+    const tinygltf::Buffer& buffer = model.buffers[bufferView.buffer];
+    const float* data = reinterpret_cast<const float*>(&buffer.data[bufferView.byteOffset + accessor.byteOffset]);
+    return data;
+};
+
 //For loading .gLTF models into a <Mesh> instance
-void MeshManager::loadModel_gLTF(std::string filepath, std::string name, std::string materialName) {
+// NOTE: No material name is provided via params, .glb files provide all related model textures**
+// NOTE: This is solely meant to load one mesh per model, anymore will break this function, to be improved upon
+void MeshManager::loadModel_gLTF(std::string filepath, std::string name) {
     std::cout << "Loading .gLTF model: " << filepath << std::endl;
+
+    // Parse .glb
+    std::string err, warn; 
+    tinygltf::Model model; 
+    tinygltf::TinyGLTF loader;
+
+    //ALL Vertex positions
+    std::vector<Vertex> vertices; // pos, texCoord, color
+    std::vector<uint32_t> indices;
+
+
+    if (!loader.LoadBinaryFromFile(&model, &err, &warn, filepath)) {
+        throw std::runtime_error(warn + err);
+    };
+
+    //  Ensure only 1 mesh is being loaded in
+    if (model.meshes.size() > 1) {
+        std::cerr << "More than 1 mesh in model.meshes, imported models must include 1 mesh only" << "\n" << 
+        "Actual Mesh Count : " << model.meshes.size() << std::endl;
+    } else {
+        const tinygltf::Mesh& mesh = model.meshes[0];
+
+        for (const auto& primitive : mesh.primitives) {
+
+            //Extract vertex positions
+            if (primitive.attributes.find("POSITION") != primitive.attributes.end()) {
+                const auto& accessor = model.accessors[primitive.attributes.at("POSITION")];
+                const float* data = getFloats(model, accessor);
+                for (size_t i = 0; i < accessor.count; ++i) {
+                    vertices[i].pos = glm::vec3(
+                        data[i * 3 + 0],
+                        data[i * 3 + 1],
+                        data[i * 3 + 2]
+                    );
+                }
+            }
+
+            //Extract Tex coords(UV)
+            if (primitive.attributes.find("TEXCOORD_0") != primitive.attributes.end()) {
+                const auto accessor = model.accessors[primitive.attributes.at("TEXCOORD_0")]; 
+                const float* data = getFloats(model, accessor);
+                for (size_t i = 0; i < accessor.count; ++i) {
+                    vertices[i].texCoord = glm::vec2(
+                        data[i * 2 + 0],
+                        data[i * 2 + 1]
+                    );
+                }
+            }
+        }
+
+        //Now parse indices
+
+    }
 }
 
 std::shared_ptr<Material> MeshManager::createMaterial(std::string name,
@@ -276,37 +342,37 @@ void MeshManager::transform(std::string meshName, std::string transformType, uin
     void* rawPtr = mappedStorageBufferPtrs[currentImage];
 
     // Cast to MeshData*
-    MeshData* meshDataArray = static_cast<MeshData*>(rawPtr);
+    glm::mat4* meshDataArray = static_cast<glm::mat4*>(rawPtr);
 
     // == MOVE(translate) ==
     // -> "m{direction}_{axis}"
     // -> example "Move forward Z" = mf_z
     if (transformType == "mf_z") {
-        meshDataArray[meshIndex].model = glm::translate(meshDataArray[meshIndex].model, glm::vec3(0.0f, 0.0f, -0.1f));
+        meshDataArray[meshIndex] = glm::translate(meshDataArray[meshIndex], glm::vec3(0.0f, 0.0f, -0.1f));
     }
 
     if (transformType == "mf_y") {
-        meshDataArray[meshIndex].model = glm::translate(meshDataArray[meshIndex].model, glm::vec3(0.0f, 0.1f, 0.0f));
+        meshDataArray[meshIndex] = glm::translate(meshDataArray[meshIndex], glm::vec3(0.0f, 0.1f, 0.0f));
     }
 
     if (transformType == "mf_x") {
-        meshDataArray[meshIndex].model = glm::translate(meshDataArray[meshIndex].model, glm::vec3(0.1f, 0.0f, 0.0f));
+        meshDataArray[meshIndex] = glm::translate(meshDataArray[meshIndex], glm::vec3(0.1f, 0.0f, 0.0f));
     }
 
     if (transformType == "mb_z") {
-        meshDataArray[meshIndex].model = glm::translate(meshDataArray[meshIndex].model, glm::vec3(0.0f, 0.0f, 0.1f));
+        meshDataArray[meshIndex] = glm::translate(meshDataArray[meshIndex], glm::vec3(0.0f, 0.0f, 0.1f));
     }
 
     if (transformType == "mb_x") {
-        meshDataArray[meshIndex].model = glm::translate(meshDataArray[meshIndex].model, glm::vec3(-0.1f, 0.0f, 0.0f));
+        meshDataArray[meshIndex] = glm::translate(meshDataArray[meshIndex], glm::vec3(-0.1f, 0.0f, 0.0f));
     }
 
     if (transformType == "mb_y") {
-        meshDataArray[meshIndex].model = glm::translate(meshDataArray[meshIndex].model, glm::vec3(0.0f, -0.1f, 0.0f));
+        meshDataArray[meshIndex] = glm::translate(meshDataArray[meshIndex], glm::vec3(0.0f, -0.1f, 0.0f));
     }
 
     // Write new model matrix to the mesh index
-    meshDataArray[meshIndex].model = glm::rotate(meshDataArray[meshIndex].model, 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    meshDataArray[meshIndex] = glm::rotate(meshDataArray[meshIndex], 45.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 // == Getter functions == 
