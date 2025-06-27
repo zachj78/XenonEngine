@@ -84,19 +84,15 @@ void Renderer::draw() {
                 renderTargeter
             );
         } else {
-            graphicsPipeline->drawOffscreen();
+            graphicsPipeline->drawOffscreen(window,
+                instance->framebufferResized,
+                descriptorManager,
+                bufferManager,
+                meshManager,
+                swapchainRecreater,
+                gui,
+                renderTargeter);
         }
-
-        graphicsPipeline->drawFrame(
-            window,
-            instance->framebufferResized,
-            descriptorManager,
-            bufferManager,
-            meshManager,
-            swapchainRecreater,
-            gui,
-            renderTargeter
-        );
     }
 }
 
