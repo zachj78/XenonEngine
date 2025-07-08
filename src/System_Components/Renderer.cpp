@@ -269,7 +269,7 @@ void Renderer::linkImGui() {
 void Renderer::initCommandBuffers() {
     std::cout << "Entering initCommandBuffers" << std::endl;
 
-    meshManager = std::make_shared<MeshManager>(devices->getLogicalDevice(), bufferManager);
+    meshManager = std::make_shared<MeshManager>(devices->getLogicalDevice(), devices->getPhysicalDevice(), bufferManager);
 
     //Creates meshes and materials
     createMeshesAndMaterials();
@@ -310,28 +310,22 @@ void Renderer::createMeshesAndMaterials() {
 
     createMaterial(materialName, "resources/textures/viking_room.png");
     createMesh("plane1", materialName, "pf_Plane");
-    
-    // === COMPONENT CREATION == 
-    //glm::vec3 position, scale, skew;
-    //glm::quat orientation;
-    //glm::vec4 perspective;
 
-    //bool success = glm::decompose(plane->getModelMatrix(), scale, orientation, position, skew, perspective);
-    //glm::vec3 rotation = glm::eulerAngles(orientation);
-
-    //Transform decomposedTransform = { position, rotation, scale };
-
-    //Component planeComponent = {
-    //    plane->getName(), //meshName
-    //    { 0, 0 }, //Velocity
-    //    decomposedTransform
-    //};
+    //[TEST] TRYING OUT GLTF LOADING FUNCTION
+    /*meshManager->loadModel_gLTF(
+        bufferManager,
+        descriptorManager->getDescriptorSetLayout(),
+        graphicsPipeline->getCommandPool(),
+        "resources/models/test.glb",
+        "test"
+    );*/
 
     std::cout << "Properly created Meshes" << std::endl;
 
     //Create storage buffer AFTER materials and meshes have been added
     meshManager->createStorageBuffers();
-}
+};
+
 //Creates a vertex buffer and index buffer for each mesh
 void Renderer::loadMeshesToVertexBufferManager() {
     for (const auto& meshPair : meshManager->getAllMeshes()) {
@@ -503,7 +497,7 @@ void Renderer::createMaterial(std::string materialName, std::string pathToImage)
 
     std::cout << "Properly Created Image for material : [" << materialName << "]" << std::endl;
 
-    std::shared_ptr<Material> mat1 = meshManager->createMaterial(materialName, texImage1);
+    meshManager->createMaterial(materialName, texImage1);
 }
 
 //Prefab objects are passed in with "pf" prefix: ex: "pf_Cube"
