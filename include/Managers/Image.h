@@ -65,7 +65,6 @@ public:
 		stbi_uc* pixels,
 		int texWidth, 
 		int texHeight, 
-		std::string texturePath, 
 		VkCommandPool commandPool, 
 		std::shared_ptr<Buffer> stagingBuf, 
 		std::shared_ptr<BufferManager> bufferManager
