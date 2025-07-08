@@ -40,7 +40,7 @@ void ImageManager::createTextureImage(std::string name, std::string texturePath,
 
 	std::cout << "imageManager::createTextureImage stagingBuffer handle: " << stagingBuf->getHandle() << std::endl;
 
-	image->createTextureImage(pixels, texWidth, texHeight, texturePath, commandPool, stagingBuf, imageManager_bufferManager);
+	image->createTextureImage(pixels, texWidth, texHeight, commandPool, stagingBuf, imageManager_bufferManager);
 	
 	std::cout << "[Created texture image] : " << name << std::endl;
 
