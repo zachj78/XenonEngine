@@ -118,7 +118,11 @@ private:
 
 	// Graphics Pipeline
 	VkPipelineLayout pipelineLayout;
+
 	VkPipeline graphicsPipeline;
+
+	std::unordered_map<PipelineKey, VkPipeline> pipelineByKey; 
+
 	std::shared_ptr<ShaderLoader> shaderLoader;
 	std::vector<VkDynamicState> dynamicStates = {
 		VK_DYNAMIC_STATE_VIEWPORT,

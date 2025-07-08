@@ -1,21 +1,27 @@
 #include "../include/Managers/MeshManager.h"
 #include "../include/Managers/Buffer.h"
+#include "../include/Managers/ImageManager.h"
 
 //3D Model Loader Imports
 #include "../include/External/tiny_obj_loader.h"
 #include "../include/External/tiny_gltf.h"
 
+//GLTF loading helper function 
+auto getFloats = [&](const tinygltf::Model& model, const tinygltf::Accessor& accessor) {
+    const tinygltf::BufferView& bufferView = model.bufferViews[accessor.bufferView];
+    const tinygltf::Buffer& buffer = model.buffers[bufferView.buffer];
+    const float* data = reinterpret_cast<const float*>(&buffer.data[bufferView.byteOffset + accessor.byteOffset]);
+    return data;
+};
+
 // == MESH MANAGER == 
-//REFACTOR THIS TO INCLUDE AN ACTUAL INJECTED DEVICES CLASS 
-// -> THEN GET THE PHYSICAL DEVICE CAPABILITIES AND SET THE deviceSupportBindless FLAG, THEN REFACTOR YOUR MATERIAL DESCRIPTORS TO INCLUDE A FALLBACK FOR IF BINDLESS IS NOT SUPPORTED
-MeshManager::MeshManager(VkDevice logicalDevice, std::shared_ptr<BufferManager> bufferManager)
-    : meshManager_logicalDevice(logicalDevice), meshManager_bufferManager(bufferManager), meshCount(0) {
+MeshManager::MeshManager(VkDevice logicalDevice, VkPhysicalDevice physicalDevice, std::shared_ptr<BufferManager> bufferManager)
+    : meshManager_logicalDevice(logicalDevice), meshManager_physicalDevice(physicalDevice), meshManager_bufferManager(bufferManager), meshCount(0) {
 }
 
-// == INITIALIZATION == 
-
 //This  function is for creating your own mesh, requires you make a mesh before and pass as param
-void MeshManager::addMesh(std::shared_ptr<Mesh> mesh) {
+void MeshManager::addMesh(std::shared_ptr<Mesh> mesh) 
+{
     std::cout << "Adding mesh: " << mesh->getName() << std::endl;
 
     modelMatrices.push_back(mesh->getModelMatrix());
@@ -47,8 +53,10 @@ void MeshManager::addMesh(std::shared_ptr<Mesh> mesh) {
     std::cout << "   new mesh count: [" << meshCount << "]" << std::endl;
 }
 
+// == MODEL LOADING FUNCTIONS == 
 //For loading .obj models into a <Mesh> instance
-void MeshManager::loadModel_obj(std::string filepath, std::string name, std::string materialName) {
+void MeshManager::loadModel_obj(std::string filepath, std::string name, std::string materialName) 
+{
     std::cout << "Loading .obj model" << filepath << std::endl;
 
     std::shared_ptr<Material> material = getMaterial(materialName);
@@ -88,35 +96,38 @@ void MeshManager::loadModel_obj(std::string filepath, std::string name, std::str
         }
     }
 
-    auto mesh = std::make_shared<DynamicMesh>(name, vertices, indices, material);
+    auto mesh = std::make_shared<DynamicMesh>(
+        name, 
+        vertices, 
+        indices, 
+        material, 
+        0 //assume triangle primitive
+    ); 
     meshes[name] = std::move(mesh);
 
     std::cout << "Finished loading model" << std::endl;
 };
 
-//GLTF loading helper function 
-auto getFloats = [&](const tinygltf::Model& model, const tinygltf::Accessor& accessor) {
-    const tinygltf::BufferView& bufferView = model.bufferViews[accessor.bufferView];
-    const tinygltf::Buffer& buffer = model.buffers[bufferView.buffer];
-    const float* data = reinterpret_cast<const float*>(&buffer.data[bufferView.byteOffset + accessor.byteOffset]);
-    return data;
-};
-
 //For loading .gLTF models into a <Mesh> instance
-// NOTE: No material name is provided via params, .glb files provide all related model textures**
-// NOTE: This is solely meant to load one mesh per model, anymore will break this function, to be improved upon
-void MeshManager::loadModel_gLTF(std::string filepath, std::string name) {
+void MeshManager::loadModel_gLTF(
+    std::shared_ptr<BufferManager> bufferManager,
+    VkDescriptorSetLayout descriptorSetLayout,
+    VkCommandPool commandPool,
+    std::string filepath, std::string name) 
+{
     std::cout << "Loading .gLTF model: " << filepath << std::endl;
 
     // Parse .glb
-    std::string err, warn; 
-    tinygltf::Model model; 
+    std::string err, warn;
+    tinygltf::Model model;
     tinygltf::TinyGLTF loader;
 
     //ALL Vertex positions
     std::vector<Vertex> vertices; // pos, texCoord, color
     std::vector<uint32_t> indices;
+    size_t vertexOffset = 0;
 
+    std::vector<std::shared_ptr<Material>> extractedMaterials;
 
     if (!loader.LoadBinaryFromFile(&model, &err, &warn, filepath)) {
         throw std::runtime_error(warn + err);
@@ -124,57 +135,165 @@ void MeshManager::loadModel_gLTF(std::string filepath, std::string name) {
 
     //  Ensure only 1 mesh is being loaded in
     if (model.meshes.size() > 1) {
-        std::cerr << "More than 1 mesh in model.meshes, imported models must include 1 mesh only" << "\n" << 
-        "Actual Mesh Count : " << model.meshes.size() << std::endl;
-    } else {
+        std::cerr << "More than 1 mesh in model.meshes, imported models must include 1 mesh only" << "\n" <<
+            "Actual Mesh Count : " << model.meshes.size() << std::endl;
+    }
+    else {
         const tinygltf::Mesh& mesh = model.meshes[0];
 
+        // Extract Primitives
         for (const auto& primitive : mesh.primitives) {
+            //Extract material (consider removing this for a test run of topology)
+            int materialIndex = primitive.material;
+            const auto& material = model.materials[materialIndex];
+
+            // Albedo/Color
+            if (material.values.find("baseColorTexture") != material.values.end()) {
+                int textureIndex = material.values.at("baseColorTexture").TextureIndex();
+                const auto& texture = model.textures[textureIndex];
+                auto& image = model.images[texture.source];
+
+                //Now create a mesh manager material with image.image (std::vector<unsigned char>)
+                std::shared_ptr<Image> albedoImage = std::make_shared<Image>(meshManager_logicalDevice, meshManager_physicalDevice);
+
+                //Create a staging buffer for the texture image
+                VkDeviceSize albedoImageSize = image.width * image.height * image.component;
+
+                bufferManager->createBuffer(
+                    BufferType::GENERIC_STAGING,
+                    "albedo_staging",
+                    albedoImageSize,
+                    VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+                    VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
+                );
+
+                std::shared_ptr<Buffer> albedoStagingBuffer = bufferManager->getBuffer("albedo_staging");
+
+                albedoImage->createTextureImage(
+                    image.image.data(),
+                    image.width,
+                    image.height,
+                    commandPool,
+                    albedoStagingBuffer,
+                    bufferManager
+                );
+
+                //Clean up staging buffer
+                bufferManager->removeBufferByName("albedo_staging");
+
+                //Now a material can be created from the texture image
+                std::string albedoName = name + "_albedo";
+
+                ShaderSet shaders{};
+                shaders.frag = "main_frag";
+                shaders.vert = "main_vert";
+
+                std::shared_ptr<Material> albedoMaterial = std::make_shared<Material>(
+                    albedoName, 
+                    albedoImage, 
+                    descriptorSetLayout, 
+                    shaders,
+                    meshManager_logicalDevice
+                );
+
+                extractedMaterials.push_back(albedoMaterial);
+            }
+
+            std::vector<Vertex> primitiveVertices;
 
             //Extract vertex positions
             if (primitive.attributes.find("POSITION") != primitive.attributes.end()) {
                 const auto& accessor = model.accessors[primitive.attributes.at("POSITION")];
                 const float* data = getFloats(model, accessor);
+
+                primitiveVertices.resize(accessor.count);
+
                 for (size_t i = 0; i < accessor.count; ++i) {
-                    vertices[i].pos = glm::vec3(
+
+                    primitiveVertices[i].pos = glm::vec3(
                         data[i * 3 + 0],
                         data[i * 3 + 1],
                         data[i * 3 + 2]
                     );
+
+                    //Default white color for now
+                    primitiveVertices[i].color = { 1.0f, 1.0f, 1.0f };
+
                 }
             }
 
             //Extract Tex coords(UV)
             if (primitive.attributes.find("TEXCOORD_0") != primitive.attributes.end()) {
-                const auto accessor = model.accessors[primitive.attributes.at("TEXCOORD_0")]; 
+                const auto& accessor = model.accessors[primitive.attributes.at("TEXCOORD_0")];
                 const float* data = getFloats(model, accessor);
-                for (size_t i = 0; i < accessor.count; ++i) {
-                    vertices[i].texCoord = glm::vec2(
+                for (size_t i = 0; i < accessor.count && i < primitiveVertices.size(); ++i) {
+                    primitiveVertices[i].texCoord = glm::vec2(
                         data[i * 2 + 0],
                         data[i * 2 + 1]
                     );
                 }
             }
+
+            //Store vertex offset before adding primitive vertices
+            vertexOffset = vertices.size();
+
+            //Store primitive vertices
+            vertices.insert(vertices.end(), primitiveVertices.begin(), primitiveVertices.end());
+
+            size_t initialIndexCount = indices.size();
+
+            //Extract indices
+            if (primitive.indices >= 0) {
+                const auto& indexAccessor = model.accessors[primitive.indices];
+                const auto& bufferView = model.bufferViews[indexAccessor.bufferView];
+                const auto& buffer = model.buffers[bufferView.buffer];
+
+                const unsigned char* data = buffer.data.data() + bufferView.byteOffset + indexAccessor.byteOffset;
+
+                for (size_t i = 0; i < indexAccessor.count; ++i) {
+                    uint32_t index;
+
+                    switch (indexAccessor.componentType) {
+                    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE:
+                        index = static_cast<uint32_t>(*(reinterpret_cast<const uint8_t*>(data + i)));
+                        break;
+                    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
+                        index = static_cast<uint32_t>(*(reinterpret_cast<const uint16_t*>(data + i * 2)));
+                        break;
+                    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
+                        index = *(reinterpret_cast<const uint32_t*>(data + i * 4));
+                        break;
+                    default:
+                        throw std::runtime_error("Unsupported index component type");
+                    }
+
+                    indices.push_back(index + vertexOffset);
+                }
+
+                size_t added = indices.size() - initialIndexCount;
+                std::cout << "Parsed " << added << " indices for primitive." << std::endl;
+            }
         }
-
-        //Now parse indices
-
     }
 }
 
-std::shared_ptr<Material> MeshManager::createMaterial(std::string name,
+// == MESH AND MATERIAL CREATION == 
+void MeshManager::createMaterial(std::string name,
     std::shared_ptr<Image> textureImage) {
     std::cout << "Creating material : [" << name << "] with image: [" << textureImage->getImage() << "]" << std::endl;
+
+    ShaderSet shaders{};
+    shaders.frag = "main_frag";
+    shaders.vert = "main_vert";
 
     std::shared_ptr<Material> mat = std::make_shared<Material>(name,
         textureImage,
         materialDescriptorSetLayout,
+        shaders,
         meshManager_logicalDevice
     );
 
     materials[name] = std::move(mat);
-
-    return mat;
 }
 
 std::shared_ptr<Mesh> MeshManager::createMesh(std::string meshName, std::string matName) {
@@ -187,7 +306,7 @@ std::shared_ptr<Mesh> MeshManager::createMesh(std::string meshName, std::string 
 
     std::shared_ptr<Material> mat = it->second;
 
-    //PLUG MATERIAL IN -> DO NEXT
+    //PLUG MATERIAL IN -> [TODO]
     std::shared_ptr<Mesh> plane = std::make_shared<Plane>(mat);
     return plane;
 }
