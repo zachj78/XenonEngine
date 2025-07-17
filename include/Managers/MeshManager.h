@@ -20,7 +20,7 @@ union PipelineKey {
     struct {
         uint32_t shaderID       : 10; // support up to 1024 shaders
         uint32_t blendMode      : 3;  // additive, alpha, opaque, etc.
-        uint32_t cullMode       : 2;  // none, front, back
+        uint32_t cullMode       : 2;  // none, back, front
         uint32_t depthTest      : 1;  // on/off
         uint32_t depthWrite     : 1;
         uint32_t topology       : 3;  // triangle, line, etc.
