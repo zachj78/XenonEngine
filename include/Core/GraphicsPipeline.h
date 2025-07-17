@@ -34,6 +34,14 @@ public:
 	bool framebufferResized = false;
 
 	// Pipeline setup
+
+	void createGraphicsPipelines(
+		std::shared_ptr<RenderTargeter> renderTargeter, 
+		std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts, 
+		std::vector<std::shared_ptr<PipelineKey>> pipelineKeys //all unique pipeline keys aquired from loaded models
+	);
+
+	//this function is being replaced with the one above. this is a WIP
 	void createGraphicsPipeline(std::shared_ptr<RenderTargeter> renderTargeter, std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts);
 	void createCommandPool();
 	void createCommandBuffer();
