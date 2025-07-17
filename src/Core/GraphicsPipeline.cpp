@@ -22,6 +22,11 @@ void GraphicsPipeline::cleanup() {
 	vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
 };
 
+//[PLAN] -> MODIFY THIS CLASS TO CHECK THE LOADED PRIMITIVES PIPELINE KEYS
+// IT SHOULD THEN CREATE THE MATCHING PIPELINES AS WELL AS A PIPELINE FOR 
+//  1 - ImGui Render(figure that out later)
+//  2 - infinite Grid shader
+// Get normal pipeline working first - remember to keep comitting to git so if you fuck something up you can go back to the last working version
 void GraphicsPipeline::createGraphicsPipeline(
 	std::shared_ptr<RenderTargeter> renderTargeter,
 	std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts
