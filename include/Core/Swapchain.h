@@ -136,6 +136,7 @@ public:
 			throw std::runtime_error("Failed to create render pass");
 		};
 	};
+
 	void createOffscreenRenderpass() {
 		VkAttachmentDescription colorAttachment{};
 		colorAttachment.format = renderTarget.format;

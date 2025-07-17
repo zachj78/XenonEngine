@@ -14,6 +14,7 @@ ImageManager::ImageManager(
 	std::cout << "     and bufferManager : " << bufferManager << std::endl;
 }
 
+//Load a texture image from a relative path
 void ImageManager::createTextureImage(std::string name, std::string texturePath, VkCommandPool commandPool) {
 	std::cout << "ImageManager::createTextureImage entered" << std::endl;
 
@@ -23,9 +24,11 @@ void ImageManager::createTextureImage(std::string name, std::string texturePath,
 	std::string texImageStagingName = "texImage_staging";
 
 	int texWidth, texHeight, texChannels;
+
 	stbi_uc* pixels = stbi_load(texturePath.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
 	VkDeviceSize imageSize = texWidth * texHeight * 4;
 
+	std::cout << "Image color channels : " << texChannels << std::endl;
 	std::cout << "imageManager::createTextureImage imageSize: " << imageSize << std::endl;
 
 	imageManager_bufferManager->createBuffer(
@@ -45,6 +48,47 @@ void ImageManager::createTextureImage(std::string name, std::string texturePath,
 	std::cout << "[Created texture image] : " << name << std::endl;
 
 	stbi_image_free(pixels);
+
+	images[name] = std::move(image);
+}
+
+void ImageManager::createTextureImage(
+	std::string name, 
+	std::vector<unsigned char>& pixels, 
+	int texWidth, 
+	int texHeight,
+	VkCommandPool commandPool
+	) {
+	std::cout << "ImageManager::createTextureImage entered" << std::endl;
+
+	std::shared_ptr<Image> image = std::make_shared<Image>(imageManager_logicalDevice, imageManager_physicalDevice);
+
+	//Create a staging buffer for the new image: 
+	std::string texImageStagingName = "texImage_staging";
+
+	VkDeviceSize imageSize = texWidth * texHeight * 4;
+
+	std::cout << "imageManager::createTextureImage imageSize: " << imageSize << std::endl;
+
+	imageManager_bufferManager->createBuffer(
+		BufferType::GENERIC_STAGING,
+		texImageStagingName,
+		imageSize,
+		VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
+	);
+
+	std::shared_ptr<Buffer> stagingBuf = imageManager_bufferManager->getBuffer("texImage_staging");
+
+	std::cout << " ---------- imageManager::createTextureImage stagingBuffer handle: " << stagingBuf->getHandle() << std::endl;
+
+	if (pixels.size() != texWidth * texHeight * 4) {
+		throw std::runtime_error("Mismatch in pixel data size and expected dimensions");
+	}
+
+	image->createTextureImage(pixels.data(), texWidth, texHeight, commandPool, stagingBuf, imageManager_bufferManager);
+
+	std::cout << "[Created texture image] : " << name << std::endl;
 
 	images[name] = std::move(image);
 }

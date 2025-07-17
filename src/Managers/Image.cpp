@@ -56,15 +56,6 @@ void Image::createTextureImage(
 	copyBufferToImage(stagingBuf->getHandle(), commandPool, bufferManager);
 	transitionImageLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, commandPool, bufferManager);
 
-	//Destroy staging buffer
-	stagingBuf->cleanup();
-	if (stagingBuf->getHandle() == VK_NULL_HANDLE) {
-		bufferManager->removeBufferByName("texImage_staging");
-		std::cout << "Successfully cleaned up texture image staging buffer" << std::endl;
-	} else {
-		std::cout << "Failed to remvoe texture image staging buffer -> pointer could not be reset" << std::endl;
-	}
-
 	createImageView();
 	createTextureSampler();
 };

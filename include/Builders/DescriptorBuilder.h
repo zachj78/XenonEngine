@@ -34,8 +34,8 @@ public:
 
 	DescriptorBuilder& setLayoutFlags(VkDescriptorSetLayoutCreateFlags flags = 0);
 
-	bool buildLayout(VkDescriptorSetLayout& layout);
-	bool buildSet(VkDescriptorSetLayout& layout, VkDescriptorSet& set, VkDescriptorPool pool);
+	bool buildLayout(VkDescriptorSetLayout& layout, bool isImageArrayLayout);
+	bool buildSet(VkDescriptorSetLayout& layout, VkDescriptorSet& set, VkDescriptorPool pool, bool isImageArrayLayout);
 
 private: 
 	DescriptorBuilder() = default;
@@ -45,6 +45,7 @@ private:
 	std::vector<VkWriteDescriptorSet> writes;
 	std::vector<VkDescriptorBufferInfo> bufferInfos;
 	std::vector<std::vector<VkDescriptorImageInfo>> imageInfos;
+	std::vector<VkDescriptorBindingFlags> bindingFlags;
 
 	//FOR PER-MATERIAL BINDING
 	std::vector<VkDescriptorImageInfo> traditionalImageInfos;

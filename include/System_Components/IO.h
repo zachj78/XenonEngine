@@ -28,7 +28,7 @@ public:
 
 	//Sets up standard movement binds
 	void setStandardBinds() {
-		float moveSpeed = 0.01f; 
+		float moveSpeed = 0.05f; 
 
 		//Set WASD binds 
 		keyBindings[GLFW_KEY_W] = [this, moveSpeed, key = GLFW_KEY_W]() {

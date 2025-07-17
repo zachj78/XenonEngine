@@ -23,7 +23,6 @@ struct Capabilities {
 
 class Devices {
 public: 
-	//TODO: UPDATE SHADER USAGE, FOR "TRADITIONAL BINDING" USE A DIFFERENT SHADER THAN IF USING BINDLESS
 	Devices(std::shared_ptr<VulkanInstance> instance, std::shared_ptr<DebugManager> debugManager)
 		: dev_instance(instance), dev_debugManager(debugManager) {
 		std::cout << "Constructed `Devices`" << std::endl;

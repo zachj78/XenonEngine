@@ -7,6 +7,7 @@
 #include "Core/VulkanDevices.h"
 
 #include "Managers/BufferManager.h"
+#include "Managers/ImageManager.h"
 #include "Managers/Image.h"
 #include "Managers/Vertex.h"
 #include "Managers/Material.h"
@@ -45,168 +46,83 @@ namespace std {
     };
 }
 
-//Generate pipeline key per mesh, the pipeline key determines the pipeline bound at draw time
-// Figure out how many different pipelines you should make, how to efficiently tag pipelines with keys
-
-class Mesh {
-public:
-    virtual const std::vector<Vertex>& getVertices() const = 0;
-    virtual const std::vector<uint32_t>& getIndices() const = 0;
-    virtual glm::mat4 getModelMatrix() const = 0;
-    virtual int getMeshIndex() const = 0;
-    virtual void setMeshIndex(int index) = 0;
-    virtual std::string getName() const = 0;
-    virtual std::shared_ptr<Material> getMaterial() const = 0;
-    virtual void registerPipelineKey(uint16_t topologyTypeID) = 0; 
-    virtual const PipelineKey& getPipelineKey() const = 0; 
-
-    virtual ~Mesh() = default;
-};
-
-class Plane : public Mesh {
-public:
-    Plane(std::shared_ptr<Material> material) 
-        : material(material), model(glm::mat4(1.0f)), meshIndex(-1) {
-        registerPipelineKey(0); // pass in default topology, 0 = TRIANGLE
-    }
-
-    const std::vector<Vertex>& getVertices() const override {
-        return vertices;
-    }
-
-    const std::vector<uint32_t>& getIndices() const override {
-        return indices;
-    }
-
-    glm::mat4 getModelMatrix() const override {
-        return model;
-    }
-
-    int getMeshIndex() const override {
-        return meshIndex;
-    }
-
-    void setMeshIndex(int index) override {
-        meshIndex = index;
-        std::cout << "New mesh index: " << meshIndex << std::endl;
-    }
-
-    std::string getName() const override {
-        return "Plane";
-    }
-
-    std::shared_ptr<Material> getMaterial() const override {
-        return material;
-    }
-
-    void registerPipelineKey(uint16_t topologyTypeID) override {
-        PipelineKey key{};
-
-        ShaderSet materialShaderSet = material->getShaderSet();
-
-        //get an id based off this shader(idk how this will work to be 100%)
-        key.shaderID = 0;
-
-        // Shader pair of material, can be set to default for now
-        key.blendMode = 0; // Disabled
-        key.cullMode = 2; // Back cull
-        key.depthTest = 1; // On
-        key.depthWrite = 1;
-        key.topology = 0; // Triangle(default)
-        key.vertexLayoutID = 2; // pos, color, texcoord
-
-        meshPipelineKey = key;
-    }
-
-    const PipelineKey& getPipelineKey() const {
-        return meshPipelineKey; 
-    }
-
-private:
-    glm::mat4 model;
-    int meshIndex;
-    std::shared_ptr<Material> material;
-
-    const std::vector<Vertex> vertices = {
-        {{-0.5f,  0.0f,  0.5f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}}, 
-        {{ 0.5f,  0.0f,  0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f}}, 
-        {{ 0.5f,  0.0f, -0.5f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}}, 
-        {{-0.5f,  0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 0.0f}} 
-    };
-
-    const std::vector<uint32_t> indices = {
-        0, 1, 2, 2, 3, 0
-    };
-
-    PipelineKey meshPipelineKey;
-};
-
-class DynamicMesh : public Mesh {
+class Primitive {
 public:
 
-    //Each mesh needs to allow a parameter for topology
-    // (and maybe later vertex attribute count or something to determine id?)
-    // for now add topology
-    DynamicMesh(
-        std::string name, 
-        std::vector<Vertex> vertices, 
-        std::vector<uint32_t> indices, 
-        std::shared_ptr<Material> material, 
-        uint16_t topologyTypeID
-    )
-        : name(std::move(name)), 
-        vertices(std::move(vertices)), 
-        indices(std::move(indices)), 
-        material(material), 
-        meshIndex(-1) 
+    Primitive(
+        std::vector<Vertex> vertices,
+        std::vector<uint32_t> indices,
+        std::shared_ptr<Material> material,
+        uint16_t blendModeID,
+        uint16_t cullModeID,
+        uint16_t depthTestID,
+        uint16_t depthWriteID,
+        uint16_t topologyTypeID,
+        int primitiveIndex
+    ) : vertices(std::move(vertices)),
+        indices(std::move(indices)),
+        material(material),
+        primitiveIndex(primitiveIndex)
     {
-        registerPipelineKey(topologyTypeID);
+        registerPipelineKey(
+            blendModeID,
+            cullModeID,
+            depthTestID,
+            depthWriteID,
+            topologyTypeID
+        );
     }
 
-    const std::vector<Vertex>& getVertices() const override {
+    //Getters
+    const std::vector<Vertex>& getVertices() const {
         return vertices;
     }
 
-    const std::vector<uint32_t>& getIndices() const override {
+    const std::vector<uint32_t>& getIndices() const {
         return indices;
     }
 
-    glm::mat4 getModelMatrix() const override {
-        return model;
-    }
-
-    int getMeshIndex() const override {
-        return meshIndex;
-    }
-
-    void setMeshIndex(int index) override {
-        meshIndex = index;
-    }
-
-    std::string getName() const override {
-        return name;
-    }
-
-    std::shared_ptr<Material> getMaterial() const override {
+    std::shared_ptr<Material> getMaterial() const {
         return material;
     }
 
-    void registerPipelineKey(uint16_t topologyTypeID) override {
+    const int getPrimitiveIndex() const { return primitiveIndex; };
+
+    const int getParentMeshIndex() const { return parentMeshIndex; };
+
+    const std::string getParentMeshName() const { return parentMeshName; };
+
+    // Setters/Registry
+    void registerPipelineKey(
+        uint16_t blendModeID,
+        uint16_t cullModeID, 
+        uint16_t depthTestID, 
+        uint16_t depthWriteID, 
+        uint16_t topologyTypeID
+    ) {
         PipelineKey key{};
 
-        ShaderSet materialShaderSet = material->getShaderSet();
+        std::shared_ptr<ShaderSet> materialShaderSet = material->getShaderSet();
 
-        key.shaderID = 0; //Default unlit textured
+        key.shaderID = 0; //Default
 
         // Shader pair of material, can be set to default for now
-        key.blendMode = 0; // Disabled
-        key.cullMode = 2; // Back cull
-        key.depthTest = 1; // On
-        key.depthWrite = 1;
+        key.blendMode = blendModeID; // Disabled
+        key.cullMode = cullModeID; // Back cull
+        key.depthTest = depthTestID; // On
+        key.depthWrite = depthWriteID;
         key.topology = topologyTypeID; // Triangle(default)
-        key.vertexLayoutID = 2; // pos, color, texcoord
+        key.vertexLayoutID = 0; // default (pos, color, texcoord, tangent, normal)
 
         meshPipelineKey = key;
+    }
+
+    void setParentMeshIndex(int meshIndex) {
+        parentMeshIndex = meshIndex; 
+    }
+
+    void setParentMeshName(std::string name) {
+        parentMeshName = name;
     }
 
     const PipelineKey& getPipelineKey() const {
@@ -217,45 +133,127 @@ private:
     std::string name;
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
-
-    glm::mat4 model = glm::mat4(1.0f);
-    int meshIndex;
     
     std::shared_ptr<Material> material;
 
-    PipelineKey meshPipelineKey; 
+    PipelineKey meshPipelineKey;
+
+    int parentMeshIndex; 
+    std::string parentMeshName; // used to access mesh transform and index from draw loop
+
+    int primitiveIndex; // used to name v + i buffers and access them from the draw loop
+};
+
+class Mesh {
+public:
+    Mesh(
+        std::string name, 
+        std::vector<std::shared_ptr<Primitive>> primitives
+    ) : name(name), primitives(primitives) {
+        std::cout << "Creating Mesh " << name << std::endl;
+        for (auto& primitive : primitives) {
+            primitive->setParentMeshName(name);
+        }
+    }
+
+    // Getters
+    glm::mat4 getModelMatrix() const {
+        return model;
+    }
+
+    int getMeshIndex() const {
+        return meshIndex;
+    }
+
+    void setMeshIndex(int index) {
+        meshIndex = index;
+
+        for (const auto& primitive : primitives) {
+            primitive->setParentMeshIndex(this->meshIndex);
+        }
+    }
+
+    void setModelMatrix(glm::mat4 newMatrix) {
+        model = newMatrix; 
+    }
+
+    std::string getName() const {
+        return name;
+    }
+
+    std::string name; 
+    std::vector<std::shared_ptr<Primitive>> getPrimitives() { return primitives; };
+
+private: 
+    std::vector<std::shared_ptr<Primitive>> primitives;
+
+    glm::mat4 model = glm::mat4(1.0f);
+    int meshIndex;
 };
 
 class MeshManager {
 public:
-    MeshManager(VkDevice logicalDevice, VkPhysicalDevice physicalDevice, std::shared_ptr<BufferManager> bufferManager);
+    MeshManager(
+        VkDevice logicalDevice, 
+        VkPhysicalDevice physicalDevice, 
+        std::shared_ptr<BufferManager> bufferManager
+    );
 
     //Model loading functions
-    void loadModel_obj(std::string filepath, std::string name, std::string materialName);
-    void loadModel_gLTF(std::shared_ptr<BufferManager> bufferManager, VkDescriptorSetLayout descriptorSetLayout, VkCommandPool commandPool, std::string filepath, std::string name);
-
-    //Gets or creates a shaderID for a given shader set
-    int getOrCreateShaderID(const ShaderSet) {}
-
-    //Adds a mesh to be drawn
-    void addMesh(std::shared_ptr<Mesh> mesh);
+    void loadModel_obj(
+        std::string filepath, 
+        std::string name, 
+        std::string materialName
+    );
+    
+    void loadModel_gLTF(
+        std::shared_ptr<BufferManager> bufferManager, 
+        std::shared_ptr<ImageManager> imageManager, 
+        VkDescriptorSetLayout descriptorSetLayout, 
+        VkCommandPool commandPool, 
+        std::string filepath, 
+        std::string name
+    );
 
     //Creates a material -> needed to bind to mesh
-    void createMaterial(std::string name,
-        std::shared_ptr<Image> textureImage);
+    void createMaterial(
+        std::string name,
+        std::shared_ptr<Image> textureImage
+    );
+
+    std::shared_ptr<Primitive> createPrimitive(
+        std::vector<Vertex> vertices,
+        std::vector<uint32_t> indices,
+        std::shared_ptr<Material> material,
+        uint16_t blendModeID,
+        uint16_t cullModeID,
+        uint16_t depthTestID,
+        uint16_t depthWriteID,
+        uint16_t topologyTypeID
+    );
 
     //Creates a mesh -> material is needed
-    std::shared_ptr<Mesh> createMesh(std::string meshName, std::string matName);
+    std::shared_ptr<Mesh> createMesh(
+        std::string meshName, 
+        std::vector<std::shared_ptr<Primitive>> primitives
+    );
 
     //Model matrix transform method
-    void transform(std::string meshName, std::string transformType, uint32_t currentImage);
+    void transform(
+        std::string meshName, 
+        std::string transformType, 
+        uint32_t currentImage
+    );
 
     //SSBO Descriptor Set up
     void createStorageBuffers();
     void createSSBODescriptors(VkDescriptorPool descriptorPool);
 
     //Material Descriptor Set up
-    void createMaterialDescriptors(VkDescriptorPool descriptorPool, Capabilities deviceCaps);
+    void createMaterialDescriptors(
+        VkDescriptorPool descriptorPool, 
+        Capabilities &deviceCaps
+    );
 
     //For loading meshes during rendering
     void queueMeshLoad(std::shared_ptr<Mesh> mesh) {
@@ -267,6 +265,10 @@ public:
     //Storage buffer set
     const std::unordered_map<std::string, std::shared_ptr<Mesh>>& getAllMeshes() const;
     const std::unordered_map<std::string, std::shared_ptr<Material>>& getAllMaterials() const { return materials; };
+    const std::vector<std::shared_ptr<Primitive>> getAllPrimitives() const { return primitives; };
+    //[THIS GETTER IS FOR DEBUGGING, NORMALLY ACCESS MATRICES THROUGH MESH POINTER]
+    const std::vector<glm::mat4> getAllModelMatrices() const { return modelMatrices; };
+    
     const std::shared_ptr<Material> getMaterial(std::string materialName) {
         auto it= materials.find(materialName);
 
@@ -276,7 +278,9 @@ public:
             std::cerr << "Failed to find material by name : [" << materialName << "]" << std::endl;
         }
     }
-    
+    const std::unordered_map<PipelineKey, std::vector<std::shared_ptr<Primitive>>> getPrimitiveByPipelineKey() const { return primitivesByPipelineKey; };
+
+
     //Sets 
     std::vector<VkDescriptorSet> getSSBODescriptorSets() { return meshDescriptorSets; };
 
@@ -310,10 +314,18 @@ private:
 
     //Stores all meshes by name
     std::unordered_map<std::string, std::shared_ptr<Mesh>> meshes;
+
+    //Stores all primitives by load order index - used to create indexed v+i buffers
+    std::vector<std::shared_ptr<Primitive>> primitives;
+
     //Stores all materials by name
     std::unordered_map<std::string, std::shared_ptr<Material>> materials;
-    //Stores <name, meshIndex>
+
+    //Stores <name, meshIndex> -> meshIndex is index of particular mesh in 'meshes' map
     std::unordered_map<std::string, int> meshIndices;
+
+    //Stores primitives by pipeline key for batched rendering
+    std::unordered_map<PipelineKey, std::vector<std::shared_ptr<Primitive>>> primitivesByPipelineKey; 
 
     //SSBO Management
     std::shared_ptr<BufferManager> meshManager_bufferManager;
@@ -329,13 +341,6 @@ private:
     VkDescriptorSetLayout meshDescriptorSetLayout;
     std::vector<VkDescriptorSet> meshDescriptorSets;
     std::vector<VkDescriptorSet> materialDescriptorSets;
-
-    //Shader ID map
-    std::unordered_map<ShaderSet, uint16_t> shaderIDs;
-    int nextShaderID = 0; 
-
-    //Pipeline keys
-    std::vector<std::shared_ptr<PipelineKey>> pipelineKeys; 
 };
 
 #endif

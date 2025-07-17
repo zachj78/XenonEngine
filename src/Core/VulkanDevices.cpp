@@ -15,11 +15,14 @@ void Capabilities::query(VkPhysicalDevice potentialDevice) {
 	descriptorBindingPartiallyBound = indexingFeatures.descriptorBindingPartiallyBound;
 	descriptorBindingVariableDescriptorCount = indexingFeatures.descriptorBindingVariableDescriptorCount;
 
-	supportsBindless =
+	supportsDescriptorIndexing =
 		runtimeDescriptorArray &&
-		shaderSampledImageArrayNonUniformIndexing &&
-		descriptorBindingPartiallyBound &&
-		descriptorBindingVariableDescriptorCount;
+		shaderSampledImageArrayNonUniformIndexing && 
+		descriptorBindingPartiallyBound && 
+		descriptorBindingVariableDescriptorCount; 
+
+	//[FOR TESTING]
+	supportsDescriptorIndexing = false; // [LEAVE OFF POINT, FIGURE OUT WHY MATERIALS DONT WORK WHEN USING DESCRIPTOR INDEXING]
 
 	// Optionally query limits
 	VkPhysicalDeviceDescriptorIndexingProperties indexingProps{};
@@ -96,15 +99,6 @@ void Devices::createLogicalDevice() {
 		queueCreateInfos.push_back(queueCreateInfo);
 	}
 
-	VkDeviceQueueCreateInfo queueCreateInfo{};
-	queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-	// we are only using graphics queue family currently
-	queueCreateInfo.queueFamilyIndex = queueFamilies.graphicsFamily.value();
-	queueCreateInfo.queueCount = 1; 
-
-	//This effects the scheduling of command buffer execution if you have multiple queueFamilies
-	queueCreateInfo.pQueuePriorities = &queuePriority;
-	
 	//Specifies device features we will be using, 
 	// -> not used now 
 	VkPhysicalDeviceFeatures deviceFeatures{};
@@ -113,12 +107,17 @@ void Devices::createLogicalDevice() {
 	VkDeviceCreateInfo createInfo{};
 	VkPhysicalDeviceFeatures2 deviceFeatures2{};
 
-	if (deviceCaps.supportsBindless) {
+	if (deviceCaps.supportsDescriptorIndexing) {
+		std::cout << " -- logical device is being created with descriptor indexing extensions" << std::endl;
+
 		//VULKAN 1.2 FEATURES
 		VkPhysicalDeviceVulkan12Features vulkan12Features{};
 		vulkan12Features.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES;
+		vulkan12Features.descriptorIndexing = VK_TRUE;
 		vulkan12Features.runtimeDescriptorArray = VK_TRUE;
 		vulkan12Features.shaderSampledImageArrayNonUniformIndexing = VK_TRUE;
+		vulkan12Features.descriptorBindingPartiallyBound = VK_TRUE;
+		vulkan12Features.descriptorBindingVariableDescriptorCount = VK_TRUE;
 
 		deviceFeatures2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2;
 		deviceFeatures2.features = deviceFeatures; 
@@ -214,17 +213,17 @@ const bool Devices::rateDeviceSuitability(VkPhysicalDevice potentialDevice, int 
 	score += 1;
 
 	if (caps.supportsDescriptorIndexing) {
-		std::cout << "Device supports descriptor indexing features" << std::endl;
+		std::cout << "Device supports ALL descriptor indexing features" << std::endl;
 		requiredExtensions.push_back(VK_EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME);
 		requiredExtensions.push_back(VK_KHR_MAINTENANCE3_EXTENSION_NAME);
-	}
-	else {
+	} else {
 		std::cout << "Device does NOT support descriptor indexing features" << std::endl;
 	}
 
 	deviceExtensions = requiredExtensions;
 	if (!checkDeviceExtensionSupport(potentialDevice)) {
-		std::cout << "Device missing required extensions for indexing" << std::endl;
+		std::cout << "Device missing required extensions for indexing\n"
+			<< "VK_EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME and VK_KHR_MAINTENANCE3_EXTENSION_NAME" << std::endl;
 		return false;
 	}
 

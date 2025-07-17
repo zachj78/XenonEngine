@@ -49,7 +49,6 @@ void Renderer::createRenderer() {
     //Command buffers and sync primitives 
     initCommandBuffers();
     initSyncObjects();
-    
 };
 
 //Runs the draw loop
@@ -100,7 +99,8 @@ void Renderer::draw() {
 //    INITIALIZATION FUNCTIONS
 // ================================
 void Renderer::initCamera() {
-    camera = std::make_shared<Camera>(glm::vec3(0, 2, 2), glm::vec3(0, 0.0f, -1.0f), -90.0f, -89.99f);
+    //default start pos is (0, 2, 2)
+    camera = std::make_shared<Camera>(glm::vec3(0, 10, 10), glm::vec3(0, 0.0f, -1.0f), -90.0f, -89.99f);
 }
 
 void Renderer::initInstance() {
@@ -295,30 +295,33 @@ void Renderer::initCommandBuffers() {
 };
 
 void Renderer::initSyncObjects() {
-    graphicsPipeline->createSyncObjects();
+    graphicsPipeline->createSyncObjects(renderTargeter->getRenderTarget().images.size());
 }
 
 // =======================================
 //  CALLED FROM W/IN initCommandBuffers()
 // =======================================
 
-// later going to be used to read meshes and materials from save files and load on first render
+// Used to load or meshes on first render
+// Must use either a MeshManager load function or manually create a material/mesh
 void Renderer::createMeshesAndMaterials() {
     std::cout << "Entering createMeshesAndMaterials" << std::endl;
 
     std::string materialName = "mat1";
 
     createMaterial(materialName, "resources/textures/viking_room.png");
-    createMesh("plane1", materialName, "pf_Plane");
+    createMaterial("mat2", "resources/textures/linux.png");
+    createMesh("plane1", "mat1", "pf_Plane");
+    createMesh("plane2", "mat2", "pf_Plane_Flat");
 
-    //[TEST] TRYING OUT GLTF LOADING FUNCTION
-    /*meshManager->loadModel_gLTF(
-        bufferManager,
-        descriptorManager->getDescriptorSetLayout(),
-        graphicsPipeline->getCommandPool(),
-        "resources/models/test.glb",
-        "test"
-    );*/
+    //meshManager->loadModel_gLTF(
+    //    bufferManager,
+    //    imageManager,
+    //    descriptorManager->getDescriptorSetLayout(),
+    //    graphicsPipeline->getCommandPool(),
+    //    "resources/models/basic.glb",
+    //    "basic"
+    //);
 
     std::cout << "Properly created Meshes" << std::endl;
 
@@ -328,127 +331,135 @@ void Renderer::createMeshesAndMaterials() {
 
 //Creates a vertex buffer and index buffer for each mesh
 void Renderer::loadMeshesToVertexBufferManager() {
-    for (const auto& meshPair : meshManager->getAllMeshes()) {
-        const auto& name = meshPair.first;
-        std::cout << "Loading mesh: " << static_cast <std::string> (name) << " to buffer manager : " << std::endl;
+    std::cout << "Entered [loadMeshesToVertexBufferManager]" << std::endl;
+    
+    for (const auto& [pipelineKey, primitives] : meshManager->getPrimitiveByPipelineKey()) {
+        std::cout << "Load a total of " << meshManager->getAllMeshes().size() << "meshes" << std::endl;
 
-        const auto& meshPtr = meshPair.second;
-        std::vector < Vertex > vertices = meshPtr->getVertices();
-        std::vector < uint32_t > indices = meshPtr->getIndices();
-        VkDeviceSize verticesSize = sizeof(vertices[0]) * vertices.size();
-        VkDeviceSize indicesSize = sizeof(indices[0]) * indices.size();
+        for (const auto& primitive : primitives) {
+            const int primitiveIndex = primitive->getPrimitiveIndex();
 
-        //Create host visible staging buffer 
-        bufferManager->createBuffer(
-            BufferType::VERTEX_STAGING,
-            "v_staging_" + name,
-            verticesSize,
-            VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-            vertices
-        );
 
-        std::shared_ptr<Buffer> vertexStagingBuffer = bufferManager->getBuffer("v_staging_" + name);
+            std::vector<Vertex> vertices = primitive->getVertices();
+            std::vector<uint32_t> indices = primitive->getIndices();
+            VkDeviceSize verticesSize = sizeof(vertices[0]) * vertices.size();
+            VkDeviceSize indicesSize = sizeof(indices[0]) * indices.size();
 
-        if (!vertexStagingBuffer) {
-            std::cerr << "Error: Staging buffer creation failed for mesh: " << name << std::endl;
-            continue; // Skip this mesh if the staging buffer creation failed
+            //Create staging buffer for vertex buffer
+            bufferManager->createBuffer(
+                BufferType::VERTEX_STAGING,
+                "v_staging_prim" + std::to_string(primitiveIndex),
+                verticesSize,
+                VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                vertices
+            );
+
+            std::shared_ptr<Buffer> vertexStagingBuffer = bufferManager->getBuffer("v_staging_prim" + std::to_string(primitiveIndex));
+
+            if (!vertexStagingBuffer) {
+                std::cerr << "Error: Staging buffer creation failed for primitive : " << std::to_string(primitiveIndex);
+                continue; //Skip if staging buffer creation failed
+            }
+
+            //Create actual vbuf
+            bufferManager->createBuffer(
+                BufferType::VERTEX,
+                "vbuf" + std::to_string(primitiveIndex),
+                verticesSize,
+                VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+                VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+                vertices
+            );
+
+            std::shared_ptr<Buffer> vertexBuffer = bufferManager->getBuffer("vbuf" + std::to_string(primitiveIndex));
+
+            if (!vertexBuffer) {
+                std::cerr << "Error: Vertex buffer creation failed for mesh: " << "vbuf" + std::to_string(primitiveIndex) << std::endl;
+                continue; // Skip this mesh if the vertex buffer creation failed
+            }
+
+            //Check for errors
+            if (vertexStagingBuffer && vertexStagingBuffer->hasErrors()) {
+                vertexStagingBuffer->printErrors();
+            }
+
+            if (vertexBuffer && vertexBuffer->hasErrors()) {
+                vertexBuffer->printErrors();
+            }
+
+            //Copy data from staging buffer to vertex buffer
+            if (vertexStagingBuffer && vertexBuffer) {
+                bufferManager->copyBuffer(vertexStagingBuffer, vertexBuffer, verticesSize, graphicsPipeline->getCommandPool());
+            };
+
+            //Now we delete the staging buffer
+            vertexStagingBuffer->cleanup();
+            if (vertexStagingBuffer->getHandle() == VK_NULL_HANDLE) {
+                bufferManager->removeBufferByName("v_staging_prim" + std::to_string(primitiveIndex));
+            }
+            else {
+                std::cout << "**UNABLE TO RESET VERTEX STAGING BUFFER POINTER" << std::endl;
+            };
+
+            // Now repeat for ibuf
+            bufferManager->createBuffer(
+                BufferType::INDEX_STAGING,
+                "i_staging_prim" + std::to_string(primitiveIndex),
+                indicesSize,
+                VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                std::nullopt,
+                indices
+            );
+
+            std::shared_ptr<Buffer> indexStagingBuffer = bufferManager->getBuffer("i_staging_prim" + std::to_string(primitiveIndex));
+
+            bufferManager->createBuffer(
+                BufferType::INDEX,
+                "ibuf" + std::to_string(primitiveIndex),
+                indicesSize,
+                VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
+                VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+                std::nullopt,
+                indices
+            );
+
+            std::shared_ptr<Buffer> indexBuffer = bufferManager->getBuffer("ibuf" + std::to_string(primitiveIndex));
+
+            //Check for errors
+            if (indexStagingBuffer && indexStagingBuffer->hasErrors()) {
+                indexStagingBuffer->printErrors();
+            }
+
+            if (indexBuffer && indexBuffer->hasErrors()) {
+                indexBuffer->printErrors();
+            }
+
+            //Copy data from staging buffer to vertex buffer
+            if (indexStagingBuffer && indexBuffer) {
+                bufferManager->copyBuffer(indexStagingBuffer, indexBuffer, indicesSize, graphicsPipeline->getCommandPool());
+            };
+
+            //Delete index staging buffer
+            indexStagingBuffer->cleanup();
+            if (indexStagingBuffer->getHandle() == VK_NULL_HANDLE) {
+                bufferManager->removeBufferByName("i_staging_prim" + std::to_string(primitiveIndex));
+            }
+            else {
+                std::cout << "**UNABLE TO RESET INDEX STAGING BUFFER TO NULLPTR" << std::endl;
+            };
         }
-
-        //Create actual vertex buffer -> runs on GPU
-        bufferManager->createBuffer(
-            BufferType::VERTEX,
-            name,
-            verticesSize,
-            VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
-            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-            vertices
-        );
-
-        std::shared_ptr<Buffer> vertexBuffer = bufferManager->getBuffer(name);
-
-        if (!vertexBuffer) {
-            std::cerr << "Error: Vertex buffer creation failed for mesh: " << name << std::endl;
-            continue; // Skip this mesh if the vertex buffer creation failed
-        }
-
-        //Check for errors
-        if (vertexStagingBuffer && vertexStagingBuffer->hasErrors()) {
-            vertexStagingBuffer->printErrors();
-        }
-
-        if (vertexBuffer && vertexBuffer->hasErrors()) {
-            vertexBuffer->printErrors();
-        }
-
-        //Copy data from staging buffer to vertex buffer
-        if (vertexStagingBuffer && vertexBuffer) {
-            bufferManager->copyBuffer(vertexStagingBuffer, vertexBuffer, verticesSize, graphicsPipeline->getCommandPool());
-        };
-
-        //Now we delete the staging buffer
-        vertexStagingBuffer->cleanup();
-        if (vertexStagingBuffer->getHandle() == VK_NULL_HANDLE) {
-            bufferManager->removeBufferByName("v_staging_" + name);
-        } else {
-            std::cout << "**UNABLE TO RESET VERTEX STAGING BUFFER POINTER" << std::endl;
-        };
-
-        //Now we repeat the process to load mesh index data to a index buffer
-        bufferManager->createBuffer(
-            BufferType::INDEX_STAGING,
-            "i_staging_" + name,
-            indicesSize,
-            VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-            std::nullopt,
-            indices
-        );
-
-        std::shared_ptr<Buffer> indexStagingBuffer = bufferManager->getBuffer("i_staging_" + name);
-
-        bufferManager->createBuffer(
-            BufferType::INDEX,
-            "index_" + name,
-            indicesSize,
-            VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
-            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
-            std::nullopt,
-            indices
-        );
-
-        std::shared_ptr<Buffer> indexBuffer = bufferManager->getBuffer("index_" + name);
-
-        //Check for errors
-        if (indexStagingBuffer && indexStagingBuffer->hasErrors()) {
-            indexStagingBuffer->printErrors();
-        }
-
-        if (indexBuffer && indexBuffer->hasErrors()) {
-            indexBuffer->printErrors();
-        }
-
-        //Copy data from staging buffer to vertex buffer
-        if (indexStagingBuffer && indexBuffer) {
-            bufferManager->copyBuffer(indexStagingBuffer, indexBuffer, indicesSize, graphicsPipeline->getCommandPool());
-        };
-
-        //Delete index staging buffer
-        indexStagingBuffer->cleanup();
-        if (indexStagingBuffer->getHandle() == VK_NULL_HANDLE) {
-            bufferManager->removeBufferByName("i_staging_" + name);
-        } else {
-            std::cout << "**UNABLE TO RESET INDEX STAGING BUFFER TO NULLPTR" << std::endl;
-        };
     }
 };
 
 void Renderer::createDescriptorResources() {
-    //DESCRIPTOR CREATION AND BINDING DEPENDS HEAVILY ON DEVICE COMPATABILITY
-    Capabilities deviceCaps; 
-
     //Get mesh and material count
     int materialCount = meshManager->getAllMaterials().size();
+
+    //[ DEBUG ]
+    std::cout << "Material count : " << materialCount << std::endl;
+
     int meshCount = meshManager->getAllMeshes().size();
 
     //Create global descriptors
@@ -457,7 +468,7 @@ void Renderer::createDescriptorResources() {
     descriptorManager->createPerFrameDescriptors();
 
     meshManager->createSSBODescriptors(descriptorManager->getDescriptorPool());
-    meshManager->createMaterialDescriptors(descriptorManager->getDescriptorPool(), deviceCaps);
+    meshManager->createMaterialDescriptors(descriptorManager->getDescriptorPool(), devices->getDeviceCaps());
 }
 
 void Renderer::cleanup() {
@@ -482,9 +493,6 @@ void Renderer::cleanup() {
     instance.reset();
 }
 
-// ====================================
-// IN-FLIGHT MATERIAL/MESH QUEUE HANDLING
-// ====================================
 void Renderer::createMaterial(std::string materialName, std::string pathToImage) {
     std::string imageName = materialName + "_image";
 
@@ -504,13 +512,69 @@ void Renderer::createMaterial(std::string materialName, std::string pathToImage)
 void Renderer::createMesh(std::string meshName, std::string materialName, std::string filePath) {
     std::shared_ptr<Material> mat = meshManager->getMaterial(materialName);
 
+    const glm::vec3 normal = { 0.0f, 1.0f, 0.0f };
+    const glm::vec4 tangent = { 1.0f, 0.0f, 0.0f, 1.0f };
+
     if (filePath == "pf_Plane") {
-        std::shared_ptr<Mesh> plane = std::make_shared<Plane>(mat);
-        meshManager->addMesh(plane);
+        std::cout << "[Creating plane]" << std::endl;
+
+        std::vector<std::shared_ptr<Primitive>> planePrimitives; 
+
+        // Only one primitve for a plane
+        std::shared_ptr<Primitive> planePrim = meshManager->createPrimitive(
+            {
+                {{-0.5f,  0.0f,  0.5f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}, tangent, normal},
+                {{ 0.5f,  0.0f,  0.5f}, {0.0f, 0.0f, 1.0f, 1.0f}, {0.0f, 1.0f}, tangent, normal},
+                {{ 0.5f,  0.0f, -0.5f}, {0.0f, 1.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, tangent, normal},
+                {{-0.5f,  0.0f, -0.5f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, tangent, normal}
+            },
+            { 0, 1, 2, 2, 3, 0 },
+            mat,
+            0, // blendModeID
+            1, // cullModeID
+            1, // depthTestID
+            1, // depthWriteID
+            4  // topologyTypeID (Triangle)
+        );
+
+        planePrimitives.push_back(planePrim);
+
+        std::shared_ptr<Mesh> plane = meshManager->createMesh(meshName, planePrimitives);
+        glm::mat4 rotatedPlane = glm::scale(glm::mat4(1.0), glm::vec3(0.5f));
+        plane->setModelMatrix(rotatedPlane);
+    } else if (filePath == "pf_Plane_Flat") {
+        std::cout << "[Creating plane flat]" << std::endl;
+
+        std::vector<std::shared_ptr<Primitive>> planePrimitives;
+
+        // Only one primitve for a plane
+        std::shared_ptr<Primitive> planePrim2 = meshManager->createPrimitive(
+            {
+                {{-10.0f,  50.0f,  6.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}, tangent, normal},
+                {{ 10.0f,  50.0f,  6.0f}, {0.0f, 0.0f, 1.0f, 1.0f}, {0.0f, 1.0f}, tangent, normal},
+                {{ 10.0f,  -50.0f,  6.0f}, {0.0f, 1.0f, 0.0f, 1.0f}, {0.0f, 0.0f}, tangent, normal},
+                {{-10.0f,  -50.0f,  6.0f}, {1.0f, 0.0f, 0.0f, 1.0f}, {1.0f, 0.0f}, tangent, normal}
+            },
+            { 0, 1, 2, 2, 3, 0 },
+            mat,
+            0,
+            1,
+            1,
+            1,
+            4
+        );
+
+        planePrimitives.push_back(planePrim2);
+
+        std::shared_ptr<Mesh> plane = meshManager->createMesh(meshName, planePrimitives);
     } else {
         std::cout << "Loading model ::" << std::endl;
     }
 }
+
+// ======================================
+// IN-FLIGHT MATERIAL/MESH QUEUE HANDLING
+// ====================================== 
 
 void Renderer::submitMeshRequest(const MeshRequest& request) {
     std::lock_guard<std::mutex> lock(queueMutex);

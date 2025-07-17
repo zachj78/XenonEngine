@@ -46,26 +46,15 @@ void BufferManager::createBuffer(
 };
 
 VkCommandBuffer BufferManager::beginOneTimeCommands(VkCommandPool commandPool) {
-	std::cout << "Beginning one time commands" << std::endl;
-
-	// Log the Vulkan handles involved
-	std::cout << "[beginOneTimeCommands] bufferManager_logicalDevice: " << bufferManager_logicalDevice << std::endl;
-	std::cout << "[beginOneTimeCommands] commandPool: " << commandPool << std::endl;
-
 	VkCommandBufferAllocateInfo allocInfo{};
 	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 	allocInfo.commandPool = commandPool;
 	allocInfo.commandBufferCount = 1;
 
-	// Log the allocation info structure contents
-	std::cout << "[beginOneTimeCommands] allocInfo.level: " << allocInfo.level << std::endl;
-	std::cout << "[beginOneTimeCommands] allocInfo.commandBufferCount: " << allocInfo.commandBufferCount << std::endl;
-
 	VkCommandBuffer commandBuffer{};
 	try {
 		VkResult result = vkAllocateCommandBuffers(bufferManager_logicalDevice, &allocInfo, &commandBuffer);
-		std::cout << "vkAllocateCommandBuffers returned " << result << std::endl;
 		if (result != VK_SUCCESS) {
 			std::cerr << "[BufferManager] vkAllocateCommandBuffers failed: " << result << std::endl;
 			throw std::runtime_error("Failed to allocate command buffer");
@@ -80,18 +69,14 @@ VkCommandBuffer BufferManager::beginOneTimeCommands(VkCommandPool commandPool) {
 	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 	beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 
-	std::cout << "[beginOneTimeCommands] beginInfo.flags: " << beginInfo.flags << std::endl;
-
 	VkResult result = vkBeginCommandBuffer(commandBuffer, &beginInfo);
 	if (result != VK_SUCCESS) {
 		std::cerr << "[BufferManager] vkBeginCommandBuffer failed: " << result << std::endl;
 		throw std::runtime_error("Failed to begin command buffer");
-	}
-	else {
+	} else {
 		std::cout << "[BufferManager] vkBeginCommandBuffer succeeded." << std::endl;
 	}
 
-	std::cout << "[BufferManager::beginOneTimeCommands] finished" << std::endl;
 	return commandBuffer;
 }
 
@@ -157,8 +142,7 @@ void BufferManager::removeBufferByName(const std::string name) {
 	if (it != buffers.end()) {
 		std::cout << "Removing buffer : [" << name << "]" << std::endl;
 		buffers.erase(it);
-	}
-	else {
+	} else {
 		std::cout << "Buffer [" << name << "] not found" << std::endl;
 	};
 };

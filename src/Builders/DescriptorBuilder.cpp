@@ -71,6 +71,10 @@ DescriptorBuilder& DescriptorBuilder::bindImage(uint32_t binding,
 
     writes.push_back(write);
 
+    //[DEBUG]
+    std::cout << "[DescriptorBuilder] bindImage for binding " << binding
+        << " imageView: " << imageView << ", sampler: " << sampler << std::endl;
+
     return *this;
 }
 
@@ -94,6 +98,7 @@ DescriptorBuilder& DescriptorBuilder::bindImageArray(
     layoutBinding.pImmutableSamplers = nullptr; 
 
     bindings.push_back(layoutBinding);
+    bindingFlags.push_back(flags);
 
     std::vector<VkDescriptorImageInfo> infos{};
     infos.reserve(imageViews.size());
@@ -121,12 +126,21 @@ DescriptorBuilder& DescriptorBuilder::bindImageArray(
 };
 
 //Creates a descriptor set layout
-bool DescriptorBuilder::buildLayout(VkDescriptorSetLayout& layout) {
+bool DescriptorBuilder::buildLayout(VkDescriptorSetLayout& layout, bool isImageArrayLayout = false) {
     // Create Layout
     VkDescriptorSetLayoutCreateInfo layoutInfo{};
     layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
     layoutInfo.bindingCount = static_cast<uint32_t>(bindings.size());
     layoutInfo.pBindings = bindings.data();
+
+    if (isImageArrayLayout) {
+        VkDescriptorSetLayoutBindingFlagsCreateInfoEXT extendedInfo{};
+        extendedInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_BINDING_FLAGS_CREATE_INFO_EXT;
+        extendedInfo.bindingCount = static_cast<uint32_t>(bindingFlags.size());
+        extendedInfo.pBindingFlags = bindingFlags.data();
+
+        layoutInfo.pNext = &extendedInfo;
+    }
 
     if (vkCreateDescriptorSetLayout(device, &layoutInfo, nullptr, &layout) != VK_SUCCESS) {
         return false;
@@ -135,15 +149,37 @@ bool DescriptorBuilder::buildLayout(VkDescriptorSetLayout& layout) {
     return true; 
 }
 
-bool DescriptorBuilder::buildSet(VkDescriptorSetLayout& layout, VkDescriptorSet& set, VkDescriptorPool pool) {
+bool DescriptorBuilder::buildSet(VkDescriptorSetLayout& layout, VkDescriptorSet& set, VkDescriptorPool pool, bool isImageArraySet = false) {
     // Allocate Set
     VkDescriptorSetAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
     allocInfo.descriptorPool = pool;
     allocInfo.descriptorSetCount = 1;
     allocInfo.pSetLayouts = &layout;
+    
+    //Image array binding flag management
+    bool hasVariableDescriptor = false;
+    uint32_t variableCount = 0;
+    VkDescriptorSetVariableDescriptorCountAllocateInfo variableCountAllocInfo{};
 
-    if (vkAllocateDescriptorSets(device, &allocInfo, &set) != VK_SUCCESS) {
+    if (isImageArraySet) {
+        if (!bindingFlags.empty()) {
+            const auto& lastFlag = bindingFlags.back();
+            if (lastFlag & VK_DESCRIPTOR_BINDING_VARIABLE_DESCRIPTOR_COUNT_BIT_EXT) {
+                variableCount = bindings.back().descriptorCount;
+                variableCountAllocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_VARIABLE_DESCRIPTOR_COUNT_ALLOCATE_INFO;
+                variableCountAllocInfo.descriptorSetCount = 1;
+                variableCountAllocInfo.pDescriptorCounts = &variableCount;
+
+                allocInfo.pNext = &variableCountAllocInfo;
+            }
+        }
+    }
+
+    VkResult result = vkAllocateDescriptorSets(device, &allocInfo, &set);
+    if (result != VK_SUCCESS) {
+        std::cerr << "[ERROR] vkAllocateDescriptorSets failed with error code: " << result << std::endl;
+        set = VK_NULL_HANDLE;
         return false;
     }
 

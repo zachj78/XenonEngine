@@ -12,7 +12,7 @@ layout(std430, set = 1, binding = 0) readonly buffer MeshStorage {
     mat4 modelMatrices[];
 };
 
-layout(push_constant, std430) uniform PushConstants {
+layout(std430, push_constant) uniform PushConstants {
     int meshIndex;
 } pc;
 
@@ -29,10 +29,8 @@ layout(location = 3) out vec3 fragTangent;
 layout(location = 4) out vec3 fragBitangent;
 
 void main() {
-    uint safeIndex = min(pc.meshIndex, modelMatrices.length() - 1);
-    mat4 model = modelMatrices[safeIndex];
+    mat4 model = modelMatrices[pc.meshIndex];
 
-    // mat4 model = modelMatrices[pc.meshIndex];
     mat3 normalMatrix = transpose(inverse(mat3(model)));
 
     vec3 normal = normalize(normalMatrix * inNormal);

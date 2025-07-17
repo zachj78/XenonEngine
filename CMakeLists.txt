@@ -15,6 +15,8 @@ add_executable(MyVulkanEngine ${SOURCES} ${HEADERS})
 # Include directories
 target_include_directories(MyVulkanEngine PRIVATE src include)
 
+target_compile_options(MyVulkanEngine PRIVATE /FS)
+
 if(WIN32)
     # TODO FIX STATIC LINKING, SHITS STUPID
     #GLM

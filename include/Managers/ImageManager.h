@@ -14,7 +14,17 @@ class ImageManager {
 	public: 
 		ImageManager(VkDevice logicalDevice, VkPhysicalDevice physicalDevice, std::shared_ptr<BufferManager>);
 
+		//From relative file path
 		void createTextureImage(std::string name, std::string texturePath, VkCommandPool commandPool);
+
+		// From raw image data
+		void createTextureImage(
+			std::string name,
+			std::vector<unsigned char>& pixels,
+			int texWidth,
+			int texHeight,
+			VkCommandPool commandPool
+		);
 
 		// == Deletion function == 
 		void removeImage(std::string name);

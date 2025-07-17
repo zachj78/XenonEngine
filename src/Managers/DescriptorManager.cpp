@@ -40,22 +40,28 @@ void DescriptorManager::createUniformBuffers() {
 
 void DescriptorManager::createDescriptorPool(int meshCount, int materialCount) {
 	std::cout << "Creating descriptor pool" << std::endl;
+	std::cout << " with " << meshCount << " meshes and " << materialCount << " materials" << std::endl;
 
-	//2 sets for each descriptor resource
-	uint32_t totalSets = MAX_FRAMES_IN_FLIGHT + MAX_FRAMES_IN_FLIGHT + MAX_FRAMES_IN_FLIGHT;
+	uint32_t totalMaterials = materialCount;
+
+	uint32_t ssboSpace = 10; 
+	uint32_t materialDescriptorCount = totalMaterials * MAX_FRAMES_IN_FLIGHT;
 
 	std::vector<VkDescriptorPoolSize> poolSizes = {
-		{VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT)},
-		{VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT)},
-		//MaterialTypes * MAX_FRAMES_IN_FLIGHT -> for now just albedo texture
-		{VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, static_cast<uint32_t>(1 * MAX_FRAMES_IN_FLIGHT)}
+		{ VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,        static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT) },
+		{ VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,        static_cast<uint32_t>(ssboSpace) },
+		{ VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, materialDescriptorCount }
 	};
 
 	VkDescriptorPoolCreateInfo poolInfo{};
 	poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	poolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
 	poolInfo.pPoolSizes = poolSizes.data();
-	poolInfo.maxSets = totalSets;
+	poolInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+	poolInfo.maxSets = static_cast<uint32_t>(
+		MAX_FRAMES_IN_FLIGHT * (1 + ssboSpace + totalMaterials)
+		);
+
 
 	if (vkCreateDescriptorPool(descManager_logicalDevice, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to create descriptor pool");
@@ -87,11 +93,11 @@ void DescriptorManager::createPerFrameDescriptors() {
 		builder.bindBuffer(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT, ubufHandle, sizeof(UBO));
 
 		if (!layoutBuilt) {
-			builder.buildLayout(descriptorSetLayout);
+			builder.buildLayout(descriptorSetLayout, false);
 			layoutBuilt = true;
 		};
 
-		builder.buildSet(descriptorSetLayout, descriptorSets[i], descriptorPool);
+		builder.buildSet(descriptorSetLayout, descriptorSets[i], descriptorPool, false);
 	};
 };
 

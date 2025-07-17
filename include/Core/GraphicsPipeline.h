@@ -12,10 +12,10 @@
 //These are utility classes used within this class
 #include "Managers/ShaderLoader.h"
 #include "Managers/SwapchainRecreater.h"
+#include "Managers/MeshManager.h"
 
 //Forward declarations
 class DescriptorManager; 
-class MeshManager; 
 class DescriptorManaager; 
 class BufferManager; 
 class Buffer;
@@ -37,7 +37,7 @@ public:
 	void createGraphicsPipeline(std::shared_ptr<RenderTargeter> renderTargeter, std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts);
 	void createCommandPool();
 	void createCommandBuffer();
-	void createSyncObjects();
+	void createSyncObjects(uint32_t imagesPerFrame);
 
 	// === Main frame draw functions ===
 	//Drawing w/ Swapchain
@@ -86,13 +86,12 @@ public:
 		std::shared_ptr<GUI> gui,
 		std::shared_ptr<RenderTargeter> renderTargeter);
 
-	void drawMesh(
+	void drawPrimitive(
 		VkCommandBuffer commandBuffer,
 		const std::shared_ptr<BufferManager>& bufferManager,
-		const std::string& meshName,
-		const std::shared_ptr<Mesh>& meshPtr,
-		bool usePushConstant
-	);
+		const std::shared_ptr<Primitive> primitivePtr,
+		bool usePushConstant); 
+
 
 	// Cleanup
 	void cleanup();
