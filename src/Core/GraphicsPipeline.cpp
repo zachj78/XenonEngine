@@ -29,6 +29,11 @@ void GraphicsPipeline::cleanup() {
 // Get normal pipeline working first - remember to keep comitting to git so if you fuck something up you can go back to the last working version
 
 //updated createGraphicsPipeline(s)
+//create multiple layouts then for each layout make a pipeline, allocate these in a vector
+// replace layout, pipeline -> and their getter functions; change references to this function appropropriately - mark so you can find the refactors later
+// std::vector<VkPipelineLayout> layouts; 
+// std::vector<VkPipeline> pipelines; //pipelines bound to specific primitives, to be bound and rebound based on primitive at draw
+// VkPipeline gridPipeline; //pipelien for infinite grid shader, can be bound before primnitive pipeline
 void GraphicsPipeline::createGraphicsPipelines(
 	std::shared_ptr<RenderTargeter> renderTargeter,
 	std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts, 
@@ -40,7 +45,7 @@ void GraphicsPipeline::createGraphicsPipelines(
 	int testCounter = 0;
 
 	for (const auto& pipelineID : pipelineKeys) {
-		//[DEBUG - log]
+		//[DEBUG - log] 
 		std::cout << "Loading key << " << testCounter << " of " << pipelineKeys.size() << std::endl;
 
 		//for now load the standard shaders

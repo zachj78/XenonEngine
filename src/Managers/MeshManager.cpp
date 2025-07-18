@@ -343,7 +343,7 @@ void MeshManager::loadModel_gLTF(
     }
 }
 
-// == MESH, PRIMITIVE AND MATERIAL CREATION == 
+// == MESH, PRIMITIVE AND MATERIAL INIT AND CREATION == 
 void MeshManager::createMaterial(std::string name,
     std::shared_ptr<Image> textureImage) {
     std::cout << "Creating material : [" << name << "] with image: [" << textureImage->getImage() << "]" << std::endl;
