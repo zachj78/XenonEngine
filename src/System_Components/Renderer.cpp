@@ -289,7 +289,7 @@ void Renderer::initCommandBuffers() {
         meshManager->getMaterialDescriptorSetLayout()
     };
 
-    graphicsPipeline->createGraphicsPipeline(renderTargeter, setLayouts);
+    graphicsPipeline->createGraphicsPipelines(renderTargeter, setLayouts, meshManager->getPipelineKeys()); //add a getter function for the set of all unique pipeline keys [LEAVE OFF POINT]
 
     graphicsPipeline->createCommandBuffer();
 };

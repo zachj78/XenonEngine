@@ -12,7 +12,7 @@ auto getFloats = [&](const tinygltf::Model& model, const tinygltf::Accessor& acc
     const tinygltf::Buffer& buffer = model.buffers[bufferView.buffer];
     const float* data = reinterpret_cast<const float*>(&buffer.data[bufferView.byteOffset + accessor.byteOffset]);
     return data;
-};
+    };
 
 // == MESH MANAGER == 
 MeshManager::MeshManager(VkDevice logicalDevice, VkPhysicalDevice physicalDevice, std::shared_ptr<BufferManager> bufferManager)
@@ -21,7 +21,7 @@ MeshManager::MeshManager(VkDevice logicalDevice, VkPhysicalDevice physicalDevice
 
 // == MODEL LOADING FUNCTIONS == 
 //For loading .obj models into a <Mesh> instance
-void MeshManager::loadModel_obj(std::string filepath, std::string name, std::string materialName) 
+void MeshManager::loadModel_obj(std::string filepath, std::string name, std::string materialName)
 {
     std::cout << "Loading .obj model" << filepath << std::endl;
 
@@ -62,7 +62,7 @@ void MeshManager::loadModel_obj(std::string filepath, std::string name, std::str
         }
     }
 
-    std::vector<std::shared_ptr<Primitive>> meshPrimitives; 
+    std::vector<std::shared_ptr<Primitive>> meshPrimitives;
 
     auto primitive = createPrimitive(vertices,
         indices,
@@ -89,7 +89,7 @@ void MeshManager::loadModel_gLTF(
     std::shared_ptr<ImageManager> imageManager,
     VkDescriptorSetLayout descriptorSetLayout,
     VkCommandPool commandPool,
-    std::string filepath, 
+    std::string filepath,
     std::string name
 )
 {
@@ -119,225 +119,229 @@ void MeshManager::loadModel_gLTF(
 
         // Extract Primitives
         for (size_t j = 0; j < meshes[i].primitives.size(); ++j) {
-                std::cout << "\n -> Loading primitive " << j << " --- ";
+            std::cout << "\n -> Loading primitive " << j << " --- ";
 
-                std::shared_ptr<Material> albedo;
-                std::shared_ptr<Primitive> prim;
+            std::shared_ptr<Material> albedo;
+            std::shared_ptr<Primitive> prim;
 
-                const auto& primitive = meshes[i].primitives[j];
+            const auto& primitive = meshes[i].primitives[j];
 
-                // == GET PIPELINE KEY PER MESH PRIMITIVE ==
+            // == GET PIPELINE KEY PER MESH PRIMITIVE ==
 
-                //Pipeline key variables
-                uint16_t alphaMode = 0;
-                uint16_t cullMode = 0;
-                uint16_t depthTest = 1;
-                uint16_t depthWrite = 1;
-                uint16_t topology = 4; 
+            //Pipeline key variables
+            uint16_t alphaMode = 0;
+            uint16_t cullMode = 0;
+            uint16_t depthTest = 1;
+            uint16_t depthWrite = 1;
+            uint16_t topology = 4;
 
-                int materialIndex = primitive.material;
-                const auto& material = model.materials[materialIndex];
+            int materialIndex = primitive.material;
+            const auto& material = model.materials[materialIndex];
 
-                if (primitive.mode >= 0 && primitive.mode <= 6) {
-                    topology = primitive.mode;
-                }
-
-                //blendModeID
-                if (material.alphaMode == "OPAQUE") {
-                    alphaMode = 0;
-                } else if (material.alphaMode == "MASK") {
-                    alphaMode = 1; 
-                } else if (material.alphaMode == "BLEND") {
-                    alphaMode = 2;
-                    depthWrite = 0; 
-                }
-
-                //cullModeID
-                cullMode = material.doubleSided ? 0 : 1; 
-
-                // == EXTRACT MATERIALS == 
-
-                // Albedo/Color
-                if (material.values.find("baseColorTexture") != material.values.end()) {
-                    std::cout << "Albedo material exists for primitive " << j << std::endl; 
-
-                    int textureIndex = material.values.at("baseColorTexture").TextureIndex();
-                    const auto& texture = model.textures[textureIndex];
-                    auto& image = model.images[texture.source];
-
-                    //[DEBUG]
-                    std::cout << "Image name: " << image.name << std::endl;
-                    std::cout << "URI: " << image.uri << std::endl;
-                    std::cout << "Has image.image data? " << (!image.image.empty() ? "yes" : "no") << std::endl;
-                    std::cout << "Width: " << image.width << ", Height: " << image.height << std::endl;
-                    std::cout << "image.image.size(): " << image.image.size() << std::endl;
-
-                    //check where is image is located at
-                    if (!image.uri.empty()) {
-                        std::cout << "Image @ " << image.uri << std::endl;
-                    } else if (!image.image.empty()) {
-                        std::cout << "Image is an embedded texture" << std::endl;
-
-                        // Get image color format
-                        std::string mime = image.mimeType;
-                        std::string albedoName = name + "_albedo";
-
-                        std::vector<unsigned char> imageSource;
-                        int w = image.width;
-                        int h = image.height;
-                        int dummyChannels = 0;
-
-                        bool isEncoded = stbi_info_from_memory(image.image.data(), image.image.size(), &w, &h, &dummyChannels);
-
-                        if (isEncoded) {
-                            std::cout << "Image is encoded (PNG/JPEG). Decoding..." << std::endl;
-                            int channels;
-                            unsigned char* decoded = stbi_load_from_memory(image.image.data(), image.image.size(), &w, &h, &channels, 4);
-                            if (!decoded) throw std::runtime_error("Failed to decode embedded image");
-                            imageSource.assign(decoded, decoded + w * h * 4);
-                            stbi_image_free(decoded);
-                        }
-                        else {
-                            std::cout << "Image is already raw pixel data. Using directly." << std::endl;
-                            // Assume TinyGLTF already decoded it to RGBA8 (this is what it does by default)
-                            imageSource = image.image;
-                            if (imageSource.size() != w * h * 4) {
-                                throw std::runtime_error("Image size does not match expected RGBA format");
-                            }
-                        }
-
-                        imageManager->createTextureImage(albedoName, imageSource, w, h, commandPool);
-                    
-                        std::shared_ptr<Image> albedoImage = imageManager->getImage(albedoName);
-
-                        createMaterial(albedoName, albedoImage);
-
-                        albedo = getMaterial(albedoName);                    
-                    }
-                } else {
-                    albedo = getMaterial("mat1");
-                }
-
-                // == EXTRACT VERTEX ATTRIBUTES 
-
-                std::vector<Vertex> primitiveVertices;
-                std::vector<uint32_t> primitiveIndices; 
-
-                //Extract vertex positions
-                if (primitive.attributes.find("POSITION") != primitive.attributes.end()) {
-                    const auto& accessor = model.accessors[primitive.attributes.at("POSITION")];
-                    const float* data = getFloats(model, accessor);
-
-                    primitiveVertices.resize(accessor.count);
-
-                    for (size_t i = 0; i < accessor.count; ++i) {
-
-                        primitiveVertices[i].pos = glm::vec3(
-                            data[i * 3 + 0],
-                            data[i * 3 + 1],
-                            data[i * 3 + 2]
-                        );
-
-                        //Default white color for now
-                        primitiveVertices[i].color = { 1.0f, 1.0f, 1.0f, 1.0f };
-                    }
-                }
-
-                //Extract Tex coords(UV)
-                if (primitive.attributes.find("TEXCOORD_0") != primitive.attributes.end()) {
-                    const auto& accessor = model.accessors[primitive.attributes.at("TEXCOORD_0")];
-                    const float* data = getFloats(model, accessor);
-                    for (size_t i = 0; i < accessor.count && i < primitiveVertices.size(); ++i) {
-                        primitiveVertices[i].texCoord = glm::vec2(
-                            data[i * 2 + 0],
-                            data[i * 2 + 1]
-                        );
-                    }
-                }
-
-                //Extract normals
-                if (primitive.attributes.find("NORMAL") != primitive.attributes.end()) {
-                    const auto& accessor = model.accessors[primitive.attributes.at("NORMAL")];
-                    const float* data = getFloats(model, accessor);
-
-                    for (size_t i = 0; i < accessor.count; ++i) {
-                        primitiveVertices[i].normal = glm::vec3(
-                            data[i * 3 + 0],
-                            data[i * 3 + 1],
-                            data[i * 3 + 2]
-                        );
-                    }
-                }
-
-                //Extract tangents
-                if (primitive.attributes.find("TANGENT") != primitive.attributes.end()) {
-                    const auto& accessor = model.accessors[primitive.attributes.at("TANGENT")];
-                    const float* data = getFloats(model, accessor);
-
-                    for (size_t i = 0; i < accessor.count && i < primitiveVertices.size(); ++i) {
-                        primitiveVertices[i].tangent = glm::vec4(
-                            data[i * 4 + 0],
-                            data[i * 4 + 1],
-                            data[i * 4 + 2],
-                            data[i * 4 + 3]
-                        );
-                    }
-                }
-
-                size_t initialIndexCount = indices.size();
-
-                //Extract indices
-                if (primitive.indices >= 0) {
-                    const auto& indexAccessor = model.accessors[primitive.indices];
-                    const auto& bufferView = model.bufferViews[indexAccessor.bufferView];
-                    const auto& buffer = model.buffers[bufferView.buffer];
-
-                    const unsigned char* data = buffer.data.data() + bufferView.byteOffset + indexAccessor.byteOffset;
-
-                    for (size_t i = 0; i < indexAccessor.count; ++i) {
-                        uint32_t index;
-
-                        switch (indexAccessor.componentType) {
-                        case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE:
-                            index = static_cast<uint32_t>(*(reinterpret_cast<const uint8_t*>(data + i)));
-                            break;
-                        case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
-                            index = static_cast<uint32_t>(*(reinterpret_cast<const uint16_t*>(data + i * 2)));
-                            break;
-                        case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
-                            index = *(reinterpret_cast<const uint32_t*>(data + i * 4));
-                            break;
-                        default:
-                            throw std::runtime_error("Unsupported index component type");
-                        }
-
-                        primitiveIndices.push_back(index);
-                        indices.push_back(index + vertexOffset);
-                    }
-
-                    size_t added = indices.size() - initialIndexCount;
-                    std::cout << "Parsed " << added << " indices for primitive." << std::endl;
-                }
-
-                std::cout << "Alpha mode (OPAQUE, MASK, BLENDED): " << alphaMode << "\n"
-                    << "Cull Mode (none, back, front)" << cullMode << "\n"
-                    << "Depth Test (t/f)" << depthTest << "\n"
-                    << "Depth Write (t/f)" << depthWrite << "\n"
-                    << "Topology (points, line, line loop, line strip, triangles, triangle strip, triangle fan)" << topology << std::endl;
-
-                prim = createPrimitive(
-                    primitiveVertices,
-                    primitiveIndices,
-                    albedo,
-                    alphaMode, //Pipeline key variables
-                    cullMode,
-                    depthTest,
-                    depthWrite,
-                    topology
-                );
-
-                meshPrimitives.push_back(prim);
+            if (primitive.mode >= 0 && primitive.mode <= 6) {
+                topology = primitive.mode;
             }
+
+            //blendModeID
+            if (material.alphaMode == "OPAQUE") {
+                alphaMode = 0;
+            }
+            else if (material.alphaMode == "MASK") {
+                alphaMode = 1;
+            }
+            else if (material.alphaMode == "BLEND") {
+                alphaMode = 2;
+                depthWrite = 0;
+            }
+
+            //cullModeID
+            cullMode = material.doubleSided ? 0 : 1;
+
+            // == EXTRACT MATERIALS == 
+
+            // Albedo/Color
+            if (material.values.find("baseColorTexture") != material.values.end()) {
+                std::cout << "Albedo material exists for primitive " << j << std::endl;
+
+                int textureIndex = material.values.at("baseColorTexture").TextureIndex();
+                const auto& texture = model.textures[textureIndex];
+                auto& image = model.images[texture.source];
+
+                //[DEBUG]
+                std::cout << "Image name: " << image.name << std::endl;
+                std::cout << "URI: " << image.uri << std::endl;
+                std::cout << "Has image.image data? " << (!image.image.empty() ? "yes" : "no") << std::endl;
+                std::cout << "Width: " << image.width << ", Height: " << image.height << std::endl;
+                std::cout << "image.image.size(): " << image.image.size() << std::endl;
+
+                //check where is image is located at
+                if (!image.uri.empty()) {
+                    std::cout << "Image @ " << image.uri << std::endl;
+                }
+                else if (!image.image.empty()) {
+                    std::cout << "Image is an embedded texture" << std::endl;
+
+                    // Get image color format
+                    std::string mime = image.mimeType;
+                    std::string albedoName = name + "_albedo";
+
+                    std::vector<unsigned char> imageSource;
+                    int w = image.width;
+                    int h = image.height;
+                    int dummyChannels = 0;
+
+                    bool isEncoded = stbi_info_from_memory(image.image.data(), image.image.size(), &w, &h, &dummyChannels);
+
+                    if (isEncoded) {
+                        std::cout << "Image is encoded (PNG/JPEG). Decoding..." << std::endl;
+                        int channels;
+                        unsigned char* decoded = stbi_load_from_memory(image.image.data(), image.image.size(), &w, &h, &channels, 4);
+                        if (!decoded) throw std::runtime_error("Failed to decode embedded image");
+                        imageSource.assign(decoded, decoded + w * h * 4);
+                        stbi_image_free(decoded);
+                    }
+                    else {
+                        std::cout << "Image is already raw pixel data. Using directly." << std::endl;
+                        // Assume TinyGLTF already decoded it to RGBA8 (this is what it does by default)
+                        imageSource = image.image;
+                        if (imageSource.size() != w * h * 4) {
+                            throw std::runtime_error("Image size does not match expected RGBA format");
+                        }
+                    }
+
+                    imageManager->createTextureImage(albedoName, imageSource, w, h, commandPool);
+
+                    std::shared_ptr<Image> albedoImage = imageManager->getImage(albedoName);
+
+                    createMaterial(albedoName, albedoImage);
+
+                    albedo = getMaterial(albedoName);
+                }
+            }
+            else {
+                albedo = getMaterial("mat1");
+            }
+
+            // == EXTRACT VERTEX ATTRIBUTES 
+
+            std::vector<Vertex> primitiveVertices;
+            std::vector<uint32_t> primitiveIndices;
+
+            //Extract vertex positions
+            if (primitive.attributes.find("POSITION") != primitive.attributes.end()) {
+                const auto& accessor = model.accessors[primitive.attributes.at("POSITION")];
+                const float* data = getFloats(model, accessor);
+
+                primitiveVertices.resize(accessor.count);
+
+                for (size_t i = 0; i < accessor.count; ++i) {
+
+                    primitiveVertices[i].pos = glm::vec3(
+                        data[i * 3 + 0],
+                        data[i * 3 + 1],
+                        data[i * 3 + 2]
+                    );
+
+                    //Default white color for now
+                    primitiveVertices[i].color = { 1.0f, 1.0f, 1.0f, 1.0f };
+                }
+            }
+
+            //Extract Tex coords(UV)
+            if (primitive.attributes.find("TEXCOORD_0") != primitive.attributes.end()) {
+                const auto& accessor = model.accessors[primitive.attributes.at("TEXCOORD_0")];
+                const float* data = getFloats(model, accessor);
+                for (size_t i = 0; i < accessor.count && i < primitiveVertices.size(); ++i) {
+                    primitiveVertices[i].texCoord = glm::vec2(
+                        data[i * 2 + 0],
+                        data[i * 2 + 1]
+                    );
+                }
+            }
+
+            //Extract normals
+            if (primitive.attributes.find("NORMAL") != primitive.attributes.end()) {
+                const auto& accessor = model.accessors[primitive.attributes.at("NORMAL")];
+                const float* data = getFloats(model, accessor);
+
+                for (size_t i = 0; i < accessor.count; ++i) {
+                    primitiveVertices[i].normal = glm::vec3(
+                        data[i * 3 + 0],
+                        data[i * 3 + 1],
+                        data[i * 3 + 2]
+                    );
+                }
+            }
+
+            //Extract tangents
+            if (primitive.attributes.find("TANGENT") != primitive.attributes.end()) {
+                const auto& accessor = model.accessors[primitive.attributes.at("TANGENT")];
+                const float* data = getFloats(model, accessor);
+
+                for (size_t i = 0; i < accessor.count && i < primitiveVertices.size(); ++i) {
+                    primitiveVertices[i].tangent = glm::vec4(
+                        data[i * 4 + 0],
+                        data[i * 4 + 1],
+                        data[i * 4 + 2],
+                        data[i * 4 + 3]
+                    );
+                }
+            }
+
+            size_t initialIndexCount = indices.size();
+
+            //Extract indices
+            if (primitive.indices >= 0) {
+                const auto& indexAccessor = model.accessors[primitive.indices];
+                const auto& bufferView = model.bufferViews[indexAccessor.bufferView];
+                const auto& buffer = model.buffers[bufferView.buffer];
+
+                const unsigned char* data = buffer.data.data() + bufferView.byteOffset + indexAccessor.byteOffset;
+
+                for (size_t i = 0; i < indexAccessor.count; ++i) {
+                    uint32_t index;
+
+                    switch (indexAccessor.componentType) {
+                    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_BYTE:
+                        index = static_cast<uint32_t>(*(reinterpret_cast<const uint8_t*>(data + i)));
+                        break;
+                    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_SHORT:
+                        index = static_cast<uint32_t>(*(reinterpret_cast<const uint16_t*>(data + i * 2)));
+                        break;
+                    case TINYGLTF_COMPONENT_TYPE_UNSIGNED_INT:
+                        index = *(reinterpret_cast<const uint32_t*>(data + i * 4));
+                        break;
+                    default:
+                        throw std::runtime_error("Unsupported index component type");
+                    }
+
+                    primitiveIndices.push_back(index);
+                    indices.push_back(index + vertexOffset);
+                }
+
+                size_t added = indices.size() - initialIndexCount;
+                std::cout << "Parsed " << added << " indices for primitive." << std::endl;
+            }
+
+            std::cout << "Alpha mode (OPAQUE, MASK, BLENDED): " << alphaMode << "\n"
+                << "Cull Mode (none, back, front)" << cullMode << "\n"
+                << "Depth Test (t/f)" << depthTest << "\n"
+                << "Depth Write (t/f)" << depthWrite << "\n"
+                << "Topology (points, line, line loop, line strip, triangles, triangle strip, triangle fan)" << topology << std::endl;
+
+            prim = createPrimitive(
+                primitiveVertices,
+                primitiveIndices,
+                albedo,
+                alphaMode, //Pipeline key variables
+                cullMode,
+                depthTest,
+                depthWrite,
+                topology
+            );
+
+            meshPrimitives.push_back(prim);
+        }
 
         std::shared_ptr<Mesh> mesh = createMesh(name + std::to_string(i), meshPrimitives);
     }
@@ -371,34 +375,37 @@ std::shared_ptr<Primitive> MeshManager::createPrimitive(
     uint16_t depthTestID,
     uint16_t depthWriteID,
     uint16_t topologyTypeID
-) 
+)
 {
     int primitiveIndex = primitives.size();
 
-    std::cout << "CREATING PRIMATIVE AT INDEX " << primitiveIndex << std::endl; 
+    std::cout << "CREATING PRIMATIVE AT INDEX " << primitiveIndex << std::endl;
 
     std::shared_ptr<Primitive> primitive = std::make_shared<Primitive>(
-        vertices, 
-        indices, 
-        material, 
-        blendModeID, 
-        cullModeID, 
-        depthTestID, 
-        depthWriteID, 
+        vertices,
+        indices,
+        material,
+        blendModeID,
+        cullModeID,
+        depthTestID,
+        depthWriteID,
         topologyTypeID,
         primitiveIndex
     );
 
-    primitivesByPipelineKey[primitive->getPipelineKey()].push_back(primitive);
-    
+    //Get pipeline keys in the right places
+    PipelineKey key = primitive->getPipelineKey();
+
+    primitivesByPipelineKey[key].push_back(primitive);
+
     primitives.push_back(primitive);
-    
+
     return primitive;
 }
 
 std::shared_ptr<Mesh> MeshManager::createMesh(std::string meshName, std::vector<std::shared_ptr<Primitive>> primitives) {
     std::cout << "Creating mesh : [" << meshName << "]" << std::endl;
-    
+
     std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(meshName, primitives);
 
     std::cout << "   matrix: [" << mesh->getModelMatrix()[0][0] << "]" << std::endl;
@@ -422,6 +429,17 @@ std::shared_ptr<Mesh> MeshManager::createMesh(std::string meshName, std::vector<
     meshCount++;
 
     std::cout << "   new mesh count: [" << meshCount << "]" << std::endl;
+    
+    //Add each pipeline key to the unique pipeline key set
+    for (size_t i = 0; i < mesh->getPrimitives().size(); i++) {
+        auto [iter, inserted] = uniquePipelineKeys.insert(mesh->getPrimitives()[i]->getPipelineKey());
+
+        if (inserted) {
+            std::cout << "***Mesh primitive " << i << "'s pipeline key has already been inserted to uniquePipelineKeys\n"; 
+        } else {
+            std::cout << "***Mesh primitive " << i << "'s pipeline key are being inserted to uniquePipelineKeys\n";
+        }
+    }
 
     //[debug]
     std::cout << "added mesh to map :" << meshes[meshName]->getName() << std::endl;
@@ -542,7 +560,7 @@ void MeshManager::createSSBODescriptors(VkDescriptorPool descriptorPool) {
 }
 
 // == MATERIAL DESCRIPTOR SET UP == 
-void MeshManager::createMaterialDescriptors(VkDescriptorPool descriptorPool, Capabilities &deviceCaps) {
+void MeshManager::createMaterialDescriptors(VkDescriptorPool descriptorPool, Capabilities& deviceCaps) {
     std::cout << " ===> Creating material descriptor set layout <=== " << std::endl;
     std::cout << " - with bindless? " << deviceCaps.supportsDescriptorIndexing;
 
@@ -579,12 +597,13 @@ void MeshManager::createMaterialDescriptors(VkDescriptorPool descriptorPool, Cap
 
             if (!layoutBuilt) {
                 builder.buildLayout(materialDescriptorSetLayout, true);
-                layoutBuilt = true; 
+                layoutBuilt = true;
             }
 
             builder.buildSet(materialDescriptorSetLayout, materialDescriptorSets[i], descriptorPool, true);
-        };  
-    } else {
+        };
+    }
+    else {
         std::cout << "    without bindless indexing!" << std::endl;
 
         //ONE LAYOUT PER MATERIAL
@@ -593,7 +612,7 @@ void MeshManager::createMaterialDescriptors(VkDescriptorPool descriptorPool, Cap
         //each material type gets its own descriptor set
         for (const auto& [name, material] : materials) {
             std::shared_ptr<Image> albedo = material->getTextureImage();
-            
+
             //DEBUG
             std::cout << "Creating descriptor set for material : " << material->getName() << std::endl;
 

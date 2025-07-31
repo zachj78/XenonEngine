@@ -18,8 +18,13 @@ void GraphicsPipeline::cleanup() {
 	}
 	vkDestroyCommandPool(logicalDevice, commandPool, nullptr);
 
-	vkDestroyPipeline(logicalDevice, graphicsPipeline, nullptr);
-	vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
+	for (auto& pipelineComponents : pipelinesByKey) {
+		VkPipeline& graphicsPipeline = pipelineComponents.second->graphicsPipeline;
+		VkPipelineLayout& pipelineLayout = pipelineComponents.second->pipelineLayout;
+
+		vkDestroyPipeline(logicalDevice, graphicsPipeline, nullptr);
+		vkDestroyPipelineLayout(logicalDevice, pipelineLayout, nullptr);
+	}
 };
 
 //[PLAN] -> MODIFY THIS CLASS TO CHECK THE LOADED PRIMITIVES PIPELINE KEYS
@@ -36,17 +41,31 @@ void GraphicsPipeline::cleanup() {
 // VkPipeline gridPipeline; //pipelien for infinite grid shader, can be bound before primnitive pipeline
 void GraphicsPipeline::createGraphicsPipelines(
 	std::shared_ptr<RenderTargeter> renderTargeter,
-	std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts, 
-	std::vector<std::shared_ptr<PipelineKey>> pipelineKeys // vector of unique pipeline keys -> aquire from primitives
+	std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts,
+	const std::unordered_set<PipelineKey>& pipelineKeys
 ) {
+	std::cout << "[GraphicsPipeline::createGraphicsPipelines] entereed\n";
+	std::cout << "Creating " << pipelineKeys.size() << " pipelines\n";
+
 	VkDevice logicalDevice = devices->getLogicalDevice();
 
-	//[DEBUG]
-	int testCounter = 0;
+	//Create infinite grid pipeline here 
 
-	for (const auto& pipelineID : pipelineKeys) {
+	for (size_t i = 0; i < pipelineKeys.size(); i++) {
+
+		PipelineComponents pipelineComponent = { VK_NULL_HANDLE, VK_NULL_HANDLE };
+
 		//[DEBUG - log] 
-		std::cout << "Loading key << " << testCounter << " of " << pipelineKeys.size() << std::endl;
+		std::cout << "Creating pipeline with key << " << i << "/" << pipelineKeys.size() << std::endl;
+
+		auto key = std::next(pipelineKeys.begin(), i);
+
+		if (key != pipelineKeys.end()) {
+			std::cout << "key addr : " << key->packed << "\n";
+		}
+		else {
+			std::cerr << "Failed to find pipeline key at index : " << i << "\n";
+		}
 
 		//for now load the standard shaders
 
@@ -107,11 +126,11 @@ void GraphicsPipeline::createGraphicsPipelines(
 		inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
 
 		//add in other primitives based on gLTF topology types
-		switch (pipelineID->topology) {
-			case 4:
-				inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-				inputAssembly.primitiveRestartEnable = VK_FALSE;
-				break;
+		switch (key->topology) {
+		case 4:
+			inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+			inputAssembly.primitiveRestartEnable = VK_FALSE;
+			break;
 		}
 
 		VkPipelineViewportStateCreateInfo viewportState{};
@@ -126,14 +145,16 @@ void GraphicsPipeline::createGraphicsPipelines(
 		rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
 		rasterizer.lineWidth = 1.0f;
 
-		if (pipelineID->cullMode == 1) {
+		if (key->cullMode == 1) {
 			rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-		} else if (pipelineID->cullMode == 2) {
+		}
+		else if (key->cullMode == 2) {
 			rasterizer.cullMode = VK_CULL_MODE_FRONT_BIT;
-		} else {
+		}
+		else {
 			rasterizer.cullMode = VK_CULL_MODE_NONE;
 		}
-		
+
 		rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
 		rasterizer.depthBiasEnable = VK_FALSE;
 
@@ -145,8 +166,8 @@ void GraphicsPipeline::createGraphicsPipelines(
 
 		VkPipelineDepthStencilStateCreateInfo depthStencil{};
 		depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-		depthStencil.depthTestEnable = (pipelineID->depthTest != 0) ? VK_TRUE : VK_FALSE;
-		depthStencil.depthWriteEnable = (pipelineID->depthWrite != 0) ? VK_TRUE : VK_FALSE;
+		depthStencil.depthTestEnable = (key->depthTest != 0) ? VK_TRUE : VK_FALSE;
+		depthStencil.depthWriteEnable = (key->depthWrite != 0) ? VK_TRUE : VK_FALSE;
 		depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
 		depthStencil.depthBoundsTestEnable = VK_FALSE;
 		depthStencil.stencilTestEnable = VK_FALSE;
@@ -182,7 +203,7 @@ void GraphicsPipeline::createGraphicsPipelines(
 		layoutInfo.pushConstantRangeCount = 1;
 		layoutInfo.pPushConstantRanges = &pushConstantRange;
 
-		if (vkCreatePipelineLayout(logicalDevice, &layoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
+		if (vkCreatePipelineLayout(logicalDevice, &layoutInfo, nullptr, &pipelineComponent.pipelineLayout) != VK_SUCCESS) {
 			throw std::runtime_error("Failed to create pipeline layout");
 		};
 
@@ -201,12 +222,12 @@ void GraphicsPipeline::createGraphicsPipelines(
 		pipelineInfo.pColorBlendState = &colorBlending;
 		pipelineInfo.pDepthStencilState = &depthStencil;
 		pipelineInfo.pDynamicState = &dynamicState;
-		pipelineInfo.layout = pipelineLayout;
+		pipelineInfo.layout = pipelineComponent.pipelineLayout;
 		pipelineInfo.renderPass = renderTargeter->getMainPass();
 		pipelineInfo.subpass = 0; //specify subpass index where pipeline will be used
 		pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-		VkResult result = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline);
+		VkResult result = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipelineComponent.graphicsPipeline);
 
 		if (result != VK_SUCCESS) {
 			throw std::runtime_error("Failed to create graphics pipeline: error: " + std::to_string(result));
@@ -214,173 +235,13 @@ void GraphicsPipeline::createGraphicsPipelines(
 
 		std::cout << "Finished creating graphics pipeline -> result : " << result << std::endl;
 
+		pipelinesByKey[*key] = std::make_unique<PipelineComponents>(pipelineComponent);
+
 		//Delete shader modules
 		vkDestroyShaderModule(logicalDevice, fragShaderModule, nullptr);
 		vkDestroyShaderModule(logicalDevice, vertShaderModule, nullptr);
-
-		testCounter++; 
 	}
 }
-
-void GraphicsPipeline::createGraphicsPipeline(
-	std::shared_ptr<RenderTargeter> renderTargeter,
-	std::array<VkDescriptorSetLayout, 3> descriptorSetLayouts
-) {
-	VkDevice logicalDevice = devices->getLogicalDevice();
-
-	//Create a shader loader class to load vert and frag shader
-	shaderLoader = std::make_shared<ShaderLoader>();
-
-	auto vertShaderCode = shaderLoader->readShaderFile("resources/shaders/vert.spv");
-	std::vector<char, std::allocator<char>> fragShaderCode;
-
-	if (devices->getDeviceCaps().supportsBindless) {
-		fragShaderCode = shaderLoader->readShaderFile("resources/shaders/frag.spv");
-	} else {
-		fragShaderCode = shaderLoader->readShaderFile("resources/shaders/frag_traditional.spv");
-	}
-
-	std::cout << "Loaded vertex shader, size: " << vertShaderCode.size() << std::endl;
-	std::cout << "Loaded fragment shader, size: " << fragShaderCode.size() << std::endl;
-
-	VkShaderModule vertShaderModule = shaderLoader->createShaderModule(logicalDevice, vertShaderCode);
-	VkShaderModule fragShaderModule = shaderLoader->createShaderModule(logicalDevice, fragShaderCode);
-
-	//Now we assign the shaders to the pipeline using PipelineShaderStageCreateInfo
-	VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
-	vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-	vertShaderStageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
-	vertShaderStageInfo.module = vertShaderModule;
-	vertShaderStageInfo.pName = "main";
-
-	VkPipelineShaderStageCreateInfo fragShaderStageInfo{};
-	fragShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
-	fragShaderStageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-	fragShaderStageInfo.module = fragShaderModule;
-	fragShaderStageInfo.pName = "main";
-
-	VkPipelineShaderStageCreateInfo shaderStages[] = { vertShaderStageInfo, fragShaderStageInfo };
-
-	//Create dynamic state create info struct 
-	VkPipelineDynamicStateCreateInfo dynamicState{};
-	dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
-	dynamicState.dynamicStateCount = static_cast<uint32_t>(dynamicStates.size());
-	dynamicState.pDynamicStates = dynamicStates.data();
-
-	//Get per-vertex binding and attribute descriptions
-	auto bindingDescription = Vertex::getBindingDescription();
-	auto attributeDescription = Vertex::getAttributeDescriptions();
-
-	//Specifies vertex data to be drawn
-	VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
-	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-	vertexInputInfo.vertexBindingDescriptionCount = 1;
-	vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
-	vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescription.size());
-	vertexInputInfo.pVertexAttributeDescriptions = attributeDescription.data();
-
-	//Specifies how input vertices should be assembled
-	VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
-	inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-	inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
-	inputAssembly.primitiveRestartEnable = VK_FALSE;
-
-	VkPipelineViewportStateCreateInfo viewportState{};
-	viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-	viewportState.viewportCount = 1;
-	viewportState.scissorCount = 1;
-
-	//Specifies how rasterization will work
-	VkPipelineRasterizationStateCreateInfo rasterizer{};
-	rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
-	rasterizer.rasterizerDiscardEnable = VK_FALSE;
-	rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
-	rasterizer.lineWidth = 1.0f;
-	rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-	rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
-	rasterizer.depthBiasEnable = VK_FALSE;
-
-	//configues multi-sampling -> kept disabled for now
-	VkPipelineMultisampleStateCreateInfo multisampling{};
-	multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
-	multisampling.sampleShadingEnable = VK_FALSE;
-	multisampling.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
-
-	VkPipelineDepthStencilStateCreateInfo depthStencil{};
-	depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
-	depthStencil.depthTestEnable = VK_TRUE;
-	depthStencil.depthWriteEnable = VK_TRUE;
-	depthStencil.depthCompareOp = VK_COMPARE_OP_LESS;
-	depthStencil.depthBoundsTestEnable = VK_FALSE;
-	depthStencil.stencilTestEnable = VK_FALSE;
-
-	//specifies how color blending will work
-	VkPipelineColorBlendAttachmentState colorBlendAttachment{};
-	colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
-	colorBlendAttachment.blendEnable = VK_FALSE;
-
-	VkPipelineColorBlendStateCreateInfo colorBlending{};
-	colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
-	colorBlending.logicOpEnable = VK_FALSE;
-	colorBlending.logicOp = VK_LOGIC_OP_COPY;
-	colorBlending.attachmentCount = 1;
-	colorBlending.pAttachments = &colorBlendAttachment;
-	colorBlending.blendConstants[0] = 0.0f;
-	colorBlending.blendConstants[1] = 0.0f;
-	colorBlending.blendConstants[2] = 0.0f;
-	colorBlending.blendConstants[3] = 0.0f;
-
-	//Specify per-mesh index passed as push constant
-	VkPushConstantRange pushConstantRange{};
-	pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
-	pushConstantRange.offset = 0;
-	pushConstantRange.size = sizeof(int);
-
-	//finally create the pipeline layout 
-	VkPipelineLayoutCreateInfo layoutInfo{};
-	layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	layoutInfo.setLayoutCount = static_cast<uint32_t>(descriptorSetLayouts.size());
-	layoutInfo.pSetLayouts = descriptorSetLayouts.data(); 
-
-	layoutInfo.pushConstantRangeCount = 1;
-	layoutInfo.pPushConstantRanges = &pushConstantRange;
-
-	if (vkCreatePipelineLayout(logicalDevice, &layoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
-		throw std::runtime_error("Failed to create pipeline layout");
-	};
-
-	std::cout << "[DEBUG] : RENDER PASS HANDLE: " << renderTargeter->getMainPass();
-
-	VkGraphicsPipelineCreateInfo pipelineInfo{};
-	pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
-	pipelineInfo.stageCount = 2; 
-	pipelineInfo.pStages = shaderStages;
-	//reference all the stages of the pipeline
-	pipelineInfo.pVertexInputState = &vertexInputInfo; 
-	pipelineInfo.pInputAssemblyState = &inputAssembly;
-	pipelineInfo.pViewportState = &viewportState;
-	pipelineInfo.pRasterizationState = &rasterizer;
-	pipelineInfo.pMultisampleState = &multisampling;
-	pipelineInfo.pColorBlendState = &colorBlending; 
-	pipelineInfo.pDepthStencilState = &depthStencil; 
-	pipelineInfo.pDynamicState = &dynamicState;
-	pipelineInfo.layout = pipelineLayout; 
-	pipelineInfo.renderPass = renderTargeter->getMainPass();
-	pipelineInfo.subpass = 0; //specify subpass index where pipeline will be used
-	pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
-
-	VkResult result = vkCreateGraphicsPipelines(logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline);
-
-	if (result != VK_SUCCESS) {
-		throw std::runtime_error("Failed to create graphics pipeline: error: " + std::to_string(result));
-	};
-
-	std::cout << "Finished creating graphics pipeline -> result : " << result << std::endl;
-
-	//Delete shader modules
-	vkDestroyShaderModule(logicalDevice, fragShaderModule, nullptr);
-	vkDestroyShaderModule(logicalDevice, vertShaderModule, nullptr);
-};
 
 void GraphicsPipeline::createCommandPool() {
 	//Define variables used to create command pool
@@ -404,15 +265,15 @@ void GraphicsPipeline::createCommandBuffer() {
 	std::cout << "creating command buffers" << std::endl;
 
 	VkDevice logicalDevice = devices->getLogicalDevice();
-	
+
 	//create a command buffer for each frame
 	commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
 
 	VkCommandBufferAllocateInfo allocInfo{};
 	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-	allocInfo.commandPool = commandPool; 
+	allocInfo.commandPool = commandPool;
 	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-	allocInfo.commandBufferCount = (uint32_t) commandBuffers.size();
+	allocInfo.commandBufferCount = (uint32_t)commandBuffers.size();
 
 	if (vkAllocateCommandBuffers(logicalDevice, &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
 		throw std::runtime_error("Failed to allocate command buffers");
@@ -441,7 +302,7 @@ void GraphicsPipeline::createSyncObjects(uint32_t imagesPerFrame) {
 	}
 
 	for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-		if (vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS || 
+		if (vkCreateSemaphore(logicalDevice, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
 			vkCreateFence(logicalDevice, &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS) {
 			throw std::runtime_error("Failed to create fence/image available semaphore");
 		}
@@ -550,7 +411,7 @@ void GraphicsPipeline::drawSwapchain(GLFWwindow* window,
 	VkExtent2D extent = renderTarget.extent;
 
 	// Wait for frame fence
-	std::cout << "[GraphicsPipeline::drawSwapchain] -fr{"<<  currentFrame << "} Waiting on in-flight fence" << std::endl;
+	std::cout << "[GraphicsPipeline::drawSwapchain] -fr{" << currentFrame << "} Waiting on in-flight fence" << std::endl;
 	vkWaitForFences(logicalDevice, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
 
 	//Aquire next image
@@ -568,7 +429,8 @@ void GraphicsPipeline::drawSwapchain(GLFWwindow* window,
 	if (result == VK_ERROR_OUT_OF_DATE_KHR) {
 		swapchainRecreater->recreateSwapchain(logicalDevice, window);
 		return;
-	} else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
+	}
+	else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
 		throw std::runtime_error("Failed to acquire swap chain image");
 	}
 
@@ -667,63 +529,68 @@ void GraphicsPipeline::recordFullDraw(
 		renderPassBeginInfo.pClearValues = clearValues.data();
 
 		vkCmdBeginRenderPass(commandBuffer, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
-		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
-		VkViewport viewport{};
-		viewport.width = static_cast<float>(extent.width);
-		viewport.height = static_cast<float>(extent.height);
-		viewport.minDepth = 0.0f;
-		viewport.maxDepth = 1.0f;
-		viewport.x = 0.0f;
-		viewport.y = 0.0f;
-		vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
+		//Run infinite grid shader pipeline here
 
-		VkRect2D scissor{ {0, 0}, extent };
-		vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
+		//Bind pipeline based on pipeline key
+		for (auto& pipelineKey : meshManager->getPipelineKeys()) {
+			VkPipelineLayout& pipelineLayout = pipelinesByKey[pipelineKey]->pipelineLayout; 
+			VkPipeline &graphicsPipeline = pipelinesByKey[pipelineKey]->graphicsPipeline;
 
-		// === Descriptor Sets Binding ===
-		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1,
-			&descriptorManager->getDescriptorSets()[currentFrame], 0, nullptr);
+			vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
+		
+			VkViewport viewport{};
+			viewport.width = static_cast<float>(extent.width);
+			viewport.height = static_cast<float>(extent.height);
+			viewport.minDepth = 0.0f;
+			viewport.maxDepth = 1.0f;
+			viewport.x = 0.0f;
+			viewport.y = 0.0f;
+			vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
 
-		//Update camera per-frame
-		descriptorManager->updateUniformBuffer(currentFrame, renderTargeter->getRenderTarget().extent); 
+			VkRect2D scissor{ {0, 0}, extent };
+			vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
-		//Bind mesh transform descriptor sets
-		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 1, 1,
-			&meshManager->getSSBODescriptorSets()[currentFrame], 0, nullptr);
+			// === Descriptor Sets Binding ===
+			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1,
+				&descriptorManager->getDescriptorSets()[currentFrame], 0, nullptr);
 
-		// == Draw Primitives == 
-		const auto& primitives = meshManager->getPrimitiveByPipelineKey(); 
+			//Update camera per-frame
+			descriptorManager->updateUniformBuffer(currentFrame, renderTargeter->getRenderTarget().extent);
 
-		// === Draw Meshes ===
-		if (devices->getDeviceCaps().supportsDescriptorIndexing) {
-			std::cout << "USING INDEXING\n" 
-				<< "material sets: " << meshManager->getMaterialDescriptorSets().size() << std::endl;
-			VkDescriptorSet bindlessMatSet = meshManager->getMaterialDescriptorSets()[currentFrame];
+			//Bind mesh transform descriptor sets
+			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 1, 1,
+				&meshManager->getSSBODescriptorSets()[currentFrame], 0, nullptr);
 
-			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 2, 1,
-				&bindlessMatSet, 0, nullptr);
+			// == Draw Primitives == 
+			const auto& primitives = meshManager->getPrimitiveByPipelineKey();
+			const std::vector<std::shared_ptr<Primitive>>& primsPerPipeline = primitives.at(pipelineKey);
 
-			// Draws all primitives within the same pipeline key
-			for (const auto& [pipelineKey, primitivesVector] : primitives) {
-				for (const auto& primitive : primitivesVector) {
-					drawPrimitive(commandBuffer, bufferManager, primitive, true);
+			// === Draw Meshes ===
+			if (devices->getDeviceCaps().supportsDescriptorIndexing) {
+				std::cout << "USING INDEXING\n"
+					<< "material sets: " << meshManager->getMaterialDescriptorSets().size() << "\n";
+				VkDescriptorSet bindlessMatSet = meshManager->getMaterialDescriptorSets()[currentFrame];
+
+				vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 2, 1,
+					&bindlessMatSet, 0, nullptr);
+
+				// Draws all primitives within the same pipeline key
+				for (const auto& primitive : primsPerPipeline) {
+					drawPrimitive(commandBuffer, bufferManager, primitive, pipelineLayout, true);
 				};
-			};
-		} else {
-			std::cout << "NO INDEXING" << std::endl;
-			std::cout << "model matrices count before draw: " << meshManager->getAllModelMatrices().size() << std::endl;
+			} else {
+				std::cout << "NO INDEXING\n";
+				std::cout << "model matrices count before draw: " << meshManager->getAllModelMatrices().size() << "\n";
 
-
-			for (const auto& [pipelineKey, primitivesVector] : primitives) {
-				for (const auto& primitive : primitivesVector) {
+				for (const auto& primitive : primsPerPipeline) {
 					VkDescriptorSet materialSet = primitive->getMaterial()->getDescriptorSets()[currentFrame];
 
 					vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 2, 1,
 						&materialSet, 0, nullptr);
 
-					drawPrimitive(commandBuffer, bufferManager, primitive, true);
-				}
+					drawPrimitive(commandBuffer, bufferManager, primitive, pipelineLayout, true);
+				};
 			}
 		}
 
@@ -740,180 +607,178 @@ void GraphicsPipeline::recordFullDraw(
 ////For offscreen editor view
 void GraphicsPipeline::recordOffscreenDraw(VkCommandBuffer commandBuffer,
 	uint32_t imageIndex,
-	std::shared_ptr<DescriptorManager> descriptorManager,
-	std::shared_ptr<BufferManager> bufferManager,
-	std::shared_ptr<MeshManager> meshManager,
-	std::shared_ptr<GUI> gui,
-	std::shared_ptr<RenderTargeter> renderTargeter) {
-//
-//	RenderTarget& renderTarget = renderTargeter->getRenderTarget();
-//	VkExtent2D extent = renderTarget.extent;
-//
-//	std::cout << "[CmdBuf] Recording 'offscreen-draw' commandBuffer for imageIndex: \n" << imageIndex << std::endl;
-//	std::cout << "[Offscreen] Current layout at frame start: " << renderTarget.currentLayouts[imageIndex] << "\n" << std::endl;
-//
-//	VkCommandBufferBeginInfo beginInfo{};
-//	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-//
-//	gui->beginFrame(currentFrame);
-//	gui->endFrame();
-//
-//	if (vkBeginCommandBuffer(commandBuffer, &beginInfo) != VK_SUCCESS) {
-//		throw std::runtime_error("Failed to begin recording command buffer");
-//	}
-//
-//	std::cout << "LAYOUT BEFORE GUI PASS: " << renderTarget.currentLayouts[imageIndex];
-//
-//	// === GUI Render Pass ===
-//	{
-//		VkRenderPassBeginInfo guiRenderBeginInfo{};
-//		guiRenderBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-//		guiRenderBeginInfo.renderPass = renderTargeter->getOffscreenPass();
-//		guiRenderBeginInfo.framebuffer = renderTarget.offscreenFramebuffers[imageIndex];
-//		guiRenderBeginInfo.renderArea = { {0, 0}, extent };
-//
-//		std::array<VkClearValue, 2> guiClearValues{};
-//		guiClearValues[0].color = { {0.0f, 0.0f, 0.0f, 1.0f} };
-//		guiClearValues[1].depthStencil = { 1.0f, 0 };
-//
-//		guiRenderBeginInfo.clearValueCount = static_cast<uint32_t>(guiClearValues.size());
-//		guiRenderBeginInfo.pClearValues = guiClearValues.data();
-//
-//		vkCmdBeginRenderPass(commandBuffer, &guiRenderBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
-//
-//		vkCmdEndRenderPass(commandBuffer);
-//		
-//		//SET NEW IMAGE LAYOUT
-//		renderTarget.currentLayouts[imageIndex] = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-//	}
-//	
-//	// === Layout Transition for GUI Input ===
-//	//if (renderTarget.currentLayouts[imageIndex] != VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL) {
-//	//	std::cout << "[Transition] Layout[" << imageIndex << "] = "
-//	//		<< renderTarget.currentLayouts[imageIndex]
-//	//		<< " => VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL" << std::endl;
-//
-//	//	renderTargeter->transitionTargetImageLayout(
-//	//		commandBuffer,
-//	//		renderTarget.images[imageIndex],
-//	//		renderTarget.format,
-//	//		renderTarget.currentLayouts[imageIndex],
-//	//		VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-//	//		VK_IMAGE_ASPECT_COLOR_BIT
-//	//	);
-//	//	renderTarget.currentLayouts[imageIndex] = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-//	//}
-//	//else {
-//	//	std::cout << "First frame, image is already in COLOR_ATTACHMENT_OPTIMAL" << std::endl;
-//	//}
-//
-//	// === Layout Transition for GUI Output ===
-//	//if (renderTarget.currentLayouts[imageIndex] != VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
-//	//	std::cout << "[Transition] Layout[" << imageIndex << "] = "
-//	//		<< renderTarget.currentLayouts[imageIndex]
-//	//		<< " => VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL" << std::endl;
-//
-//	//	renderTargeter->transitionTargetImageLayout(
-//	//		commandBuffer,
-//	//		renderTarget.images[imageIndex],
-//	//		renderTarget.format,
-//	//		renderTarget.currentLayouts[imageIndex],
-//	//		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-//	//		VK_IMAGE_ASPECT_COLOR_BIT
-//	//	);
-//	//	renderTarget.currentLayouts[imageIndex] = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-//	//}
-//	//else {
-//	//	std::cout << "ALREADY SET TO LAYOUT :: SHADER_READ_ONLY_OPTIMAL" << std::endl;
-//	//}
-//
-//
-//	// === Main Render Pass ===
-//	{
-//		VkRenderPassBeginInfo renderPassBeginInfo{};
-//		renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-//		renderPassBeginInfo.renderPass = renderTargeter->getMainPass();
-//		renderPassBeginInfo.framebuffer = renderTarget.mainFramebuffers[imageIndex];
-//		renderPassBeginInfo.renderArea = { {0, 0}, extent };
-//
-//		std::array<VkClearValue, 2> clearValues{};
-//		clearValues[0].color = { {0.0f, 0.0f, 0.0f, 1.0f} };
-//		clearValues[1].depthStencil = { 1.0f, 0 };
-//		renderPassBeginInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
-//		renderPassBeginInfo.pClearValues = clearValues.data();
-//
-//		vkCmdBeginRenderPass(commandBuffer, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
-//		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
-//
-//		VkViewport viewport{};
-//		viewport.width = static_cast<float>(extent.width);
-//		viewport.height = static_cast<float>(extent.height);
-//		viewport.minDepth = 0.0f;
-//		viewport.maxDepth = 1.0f;
-//		vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
-//
-//		VkRect2D scissor{ {0, 0}, extent };
-//		vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
-//
-//		// === Descriptor Sets Binding ===
-//
-//		// CAMERA UBO BINDING
-//		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1,
-//			&descriptorManager->getDescriptorSets()[currentFrame], 0, nullptr);
-//
-//		// == Draw Primitives ==
-//		meshManager->getPrimitiveByPipelineKey(); 
-//
-//		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 1, 1,
-//			&meshManager->getSSBODescriptorSets()[currentFrame], 0, nullptr);
-//
-//		// === Draw Meshes ===
-//		const auto& meshes = meshManager->getAllMeshes();
-//
-//		if (devices->getDeviceCaps().supportsDescriptorIndexing) {
-//			VkDescriptorSet bindlessMatSet = meshManager->getMaterialDescriptorSets()[currentFrame];
-//
-//			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 2, 1,
-//				&bindlessMatSet, 0, nullptr);
-//
-//			for (const auto& [meshName, meshPtr] : meshes) {
-//				drawMesh(commandBuffer, bufferManager, meshName, meshPtr, true);
-//			}
-//		}
-//		else {
-//			for (const auto& [meshName, meshPtr] : meshes) {
-//				VkDescriptorSet materialSet = meshPtr->getMaterial()->getDescriptorSets()[currentFrame];
-//
-//				vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 2, 1,
-//					&materialSet, 0, nullptr);
-//
-//				drawMesh(commandBuffer, bufferManager, meshName, meshPtr, true);
-//			}
-//		}
-//
-//		vkCmdEndRenderPass(commandBuffer);
-//	}
-//
-//	if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS) {
-//		throw std::runtime_error("Failed to record command buffer");
-//	}
-//	else {
-//		std::cout << "[CmdBuf] Finished recording command buffer!" << std::endl;
-//	}
+	const std::shared_ptr<DescriptorManager>& descriptorManager,
+	const std::shared_ptr<BufferManager>& bufferManager,
+	const std::shared_ptr<MeshManager>& meshManager,
+	const std::shared_ptr<GUI>& gui,
+	const std::shared_ptr<RenderTargeter>& renderTargeter
+) {
+	//
+	//	RenderTarget& renderTarget = renderTargeter->getRenderTarget();
+	//	VkExtent2D extent = renderTarget.extent;
+	//
+	//	std::cout << "[CmdBuf] Recording 'offscreen-draw' commandBuffer for imageIndex: \n" << imageIndex << std::endl;
+	//	std::cout << "[Offscreen] Current layout at frame start: " << renderTarget.currentLayouts[imageIndex] << "\n" << std::endl;
+	//
+	//	VkCommandBufferBeginInfo beginInfo{};
+	//	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	//
+	//	gui->beginFrame(currentFrame);
+	//	gui->endFrame();
+	//
+	//	if (vkBeginCommandBuffer(commandBuffer, &beginInfo) != VK_SUCCESS) {
+	//		throw std::runtime_error("Failed to begin recording command buffer");
+	//	}
+	//
+	//	std::cout << "LAYOUT BEFORE GUI PASS: " << renderTarget.currentLayouts[imageIndex];
+	//
+	//	// === GUI Render Pass ===
+	//	{
+	//		VkRenderPassBeginInfo guiRenderBeginInfo{};
+	//		guiRenderBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	//		guiRenderBeginInfo.renderPass = renderTargeter->getOffscreenPass();
+	//		guiRenderBeginInfo.framebuffer = renderTarget.offscreenFramebuffers[imageIndex];
+	//		guiRenderBeginInfo.renderArea = { {0, 0}, extent };
+	//
+	//		std::array<VkClearValue, 2> guiClearValues{};
+	//		guiClearValues[0].color = { {0.0f, 0.0f, 0.0f, 1.0f} };
+	//		guiClearValues[1].depthStencil = { 1.0f, 0 };
+	//
+	//		guiRenderBeginInfo.clearValueCount = static_cast<uint32_t>(guiClearValues.size());
+	//		guiRenderBeginInfo.pClearValues = guiClearValues.data();
+	//
+	//		vkCmdBeginRenderPass(commandBuffer, &guiRenderBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+	//
+	//		vkCmdEndRenderPass(commandBuffer);
+	//		
+	//		//SET NEW IMAGE LAYOUT
+	//		renderTarget.currentLayouts[imageIndex] = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+	//	}
+	//	
+	//	// === Layout Transition for GUI Input ===
+	//	//if (renderTarget.currentLayouts[imageIndex] != VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL) {
+	//	//	std::cout << "[Transition] Layout[" << imageIndex << "] = "
+	//	//		<< renderTarget.currentLayouts[imageIndex]
+	//	//		<< " => VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL" << std::endl;
+	//
+	//	//	renderTargeter->transitionTargetImageLayout(
+	//	//		commandBuffer,
+	//	//		renderTarget.images[imageIndex],
+	//	//		renderTarget.format,
+	//	//		renderTarget.currentLayouts[imageIndex],
+	//	//		VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+	//	//		VK_IMAGE_ASPECT_COLOR_BIT
+	//	//	);
+	//	//	renderTarget.currentLayouts[imageIndex] = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+	//	//}
+	//	//else {
+	//	//	std::cout << "First frame, image is already in COLOR_ATTACHMENT_OPTIMAL" << std::endl;
+	//	//}
+	//
+	//	// === Layout Transition for GUI Output ===
+	//	//if (renderTarget.currentLayouts[imageIndex] != VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+	//	//	std::cout << "[Transition] Layout[" << imageIndex << "] = "
+	//	//		<< renderTarget.currentLayouts[imageIndex]
+	//	//		<< " => VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL" << std::endl;
+	//
+	//	//	renderTargeter->transitionTargetImageLayout(
+	//	//		commandBuffer,
+	//	//		renderTarget.images[imageIndex],
+	//	//		renderTarget.format,
+	//	//		renderTarget.currentLayouts[imageIndex],
+	//	//		VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+	//	//		VK_IMAGE_ASPECT_COLOR_BIT
+	//	//	);
+	//	//	renderTarget.currentLayouts[imageIndex] = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+	//	//}
+	//	//else {
+	//	//	std::cout << "ALREADY SET TO LAYOUT :: SHADER_READ_ONLY_OPTIMAL" << std::endl;
+	//	//}
+	//
+	//
+	//	// === Main Render Pass ===
+	//	{
+	//		VkRenderPassBeginInfo renderPassBeginInfo{};
+	//		renderPassBeginInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	//		renderPassBeginInfo.renderPass = renderTargeter->getMainPass();
+	//		renderPassBeginInfo.framebuffer = renderTarget.mainFramebuffers[imageIndex];
+	//		renderPassBeginInfo.renderArea = { {0, 0}, extent };
+	//
+	//		std::array<VkClearValue, 2> clearValues{};
+	//		clearValues[0].color = { {0.0f, 0.0f, 0.0f, 1.0f} };
+	//		clearValues[1].depthStencil = { 1.0f, 0 };
+	//		renderPassBeginInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
+	//		renderPassBeginInfo.pClearValues = clearValues.data();
+	//
+	//		vkCmdBeginRenderPass(commandBuffer, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
+	//		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
+	//
+	//		VkViewport viewport{};
+	//		viewport.width = static_cast<float>(extent.width);
+	//		viewport.height = static_cast<float>(extent.height);
+	//		viewport.minDepth = 0.0f;
+	//		viewport.maxDepth = 1.0f;
+	//		vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
+	//
+	//		VkRect2D scissor{ {0, 0}, extent };
+	//		vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
+	//
+	//		// === Descriptor Sets Binding ===
+	//
+	//		// CAMERA UBO BINDING
+	//		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1,
+	//			&descriptorManager->getDescriptorSets()[currentFrame], 0, nullptr);
+	//
+	//		// == Draw Primitives ==
+	//		meshManager->getPrimitiveByPipelineKey(); 
+	//
+	//		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 1, 1,
+	//			&meshManager->getSSBODescriptorSets()[currentFrame], 0, nullptr);
+	//
+	//		// === Draw Meshes ===
+	//		const auto& meshes = meshManager->getAllMeshes();
+	//
+	//		if (devices->getDeviceCaps().supportsDescriptorIndexing) {
+	//			VkDescriptorSet bindlessMatSet = meshManager->getMaterialDescriptorSets()[currentFrame];
+	//
+	//			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 2, 1,
+	//				&bindlessMatSet, 0, nullptr);
+	//
+	//			for (const auto& [meshName, meshPtr] : meshes) {
+	//				drawMesh(commandBuffer, bufferManager, meshName, meshPtr, true);
+	//			}
+	//		}
+	//		else {
+	//			for (const auto& [meshName, meshPtr] : meshes) {
+	//				VkDescriptorSet materialSet = meshPtr->getMaterial()->getDescriptorSets()[currentFrame];
+	//
+	//				vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 2, 1,
+	//					&materialSet, 0, nullptr);
+	//
+	//				drawMesh(commandBuffer, bufferManager, meshName, meshPtr, true);
+	//			}
+	//		}
+	//
+	//		vkCmdEndRenderPass(commandBuffer);
+	//	}
+	//
+	//	if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS) {
+	//		throw std::runtime_error("Failed to record command buffer");
+	//	}
+	//	else {
+	//		std::cout << "[CmdBuf] Finished recording command buffer!" << std::endl;
+	//	}
 }
 
 void GraphicsPipeline::drawPrimitive(
 	VkCommandBuffer commandBuffer,
-	const std::shared_ptr<BufferManager>& bufferManager, 
-	const std::shared_ptr<Primitive> primitivePtr, 
-	bool usePushConstant // pass in the parentMeshIndex -> NOT THE ACTUAL PRIMTIVE INDEX
+	const std::shared_ptr<BufferManager>& bufferManager,
+	const std::shared_ptr<Primitive>& primitivePtr,
+	const VkPipelineLayout& pipelineLayout, 
+	bool usePushConstant
 ) {
 	int primitiveIndex = primitivePtr->getPrimitiveIndex();
 	int meshIndex = primitivePtr->getParentMeshIndex();
-
-	//[debug]
-	int safeIndex = 0;
-	int testIndex = 1; 
 
 	std::cout << "Drawing primitive : prim" << primitiveIndex << "\n with mesh index " << meshIndex << std::endl;
 
@@ -923,7 +788,8 @@ void GraphicsPipeline::drawPrimitive(
 	if (!vbuf || !ibuf) {
 		std::cerr << "Missing buffers for prim: " << primitiveIndex << std::endl;
 		return;
-	} else {
+	}
+	else {
 		std::cout << "vbuf addr: " << vbuf->getHandle() << "\n"
 			<< "ibuf addr: " << ibuf->getHandle() << std::endl;
 	}

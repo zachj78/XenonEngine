@@ -82,7 +82,7 @@ public:
         return indices;
     }
 
-    std::shared_ptr<Material> getMaterial() const {
+    const std::shared_ptr<Material>& getMaterial() const {
         return material;
     }
 
@@ -90,7 +90,7 @@ public:
 
     const int getParentMeshIndex() const { return parentMeshIndex; };
 
-    const std::string getParentMeshName() const { return parentMeshName; };
+    const std::string& getParentMeshName() const { return parentMeshName; };
 
     // Setters/Registry
     void registerPipelineKey(
@@ -265,29 +265,19 @@ public:
     //Storage buffer set
     const std::unordered_map<std::string, std::shared_ptr<Mesh>>& getAllMeshes() const;
     const std::unordered_map<std::string, std::shared_ptr<Material>>& getAllMaterials() const { return materials; };
-    const std::vector<std::shared_ptr<Primitive>> getAllPrimitives() const { return primitives; };
+    const std::vector<std::shared_ptr<Primitive>>& getAllPrimitives() const { return primitives; };
     //[THIS GETTER IS FOR DEBUGGING, NORMALLY ACCESS MATRICES THROUGH MESH POINTER]
-    const std::vector<glm::mat4> getAllModelMatrices() const { return modelMatrices; };
-    
-    const std::shared_ptr<Material> getMaterial(std::string materialName) {
-        auto it= materials.find(materialName);
-
-        if (it != materials.end()) {
-            return it->second;
-        } else {
-            std::cerr << "Failed to find material by name : [" << materialName << "]" << std::endl;
-        }
-    }
-    const std::unordered_map<PipelineKey, std::vector<std::shared_ptr<Primitive>>> getPrimitiveByPipelineKey() const { return primitivesByPipelineKey; };
-
+    const std::vector<glm::mat4>& getAllModelMatrices() const { return modelMatrices; };
+    const std::unordered_map<PipelineKey, std::vector<std::shared_ptr<Primitive>>>& getPrimitiveByPipelineKey() const { return primitivesByPipelineKey; };
+    const std::unordered_set<PipelineKey>& getPipelineKeys() const { return uniquePipelineKeys; }
 
     //Sets 
-    std::vector<VkDescriptorSet> getSSBODescriptorSets() { return meshDescriptorSets; };
+    const std::vector<VkDescriptorSet>& getSSBODescriptorSets() const { return meshDescriptorSets; };
 
     //Set layouts
-    VkDescriptorSetLayout getMeshDescriptorSetLayout() { return meshDescriptorSetLayout; };
-    VkDescriptorSetLayout getMaterialDescriptorSetLayout() { return materialDescriptorSetLayout; };
-    std::vector<VkDescriptorSet> getMaterialDescriptorSets() { return materialDescriptorSets; };
+    const VkDescriptorSetLayout& getMeshDescriptorSetLayout() const { return meshDescriptorSetLayout; };
+    const VkDescriptorSetLayout& getMaterialDescriptorSetLayout() const { return materialDescriptorSetLayout; };
+    const std::vector<VkDescriptorSet>& getMaterialDescriptorSets() const { return materialDescriptorSets; };
 
     std::shared_ptr<Mesh> getMesh(const std::string& name) const {
         auto it = meshes.find(name);
@@ -295,11 +285,13 @@ public:
         return nullptr;
     };
 
-    std::shared_ptr<Material> getMaterial(const std::string& name) const {
+    const std::shared_ptr<Material> getMaterial(const std::string& name) const {
         auto it = materials.find(name);
+        
         if (it != materials.end()) {
             return it->second;
         };
+
         return nullptr;
     }
 
@@ -325,7 +317,9 @@ private:
     std::unordered_map<std::string, int> meshIndices;
 
     //Stores primitives by pipeline key for batched rendering
-    std::unordered_map<PipelineKey, std::vector<std::shared_ptr<Primitive>>> primitivesByPipelineKey; 
+    std::unordered_map<PipelineKey, std::vector<std::shared_ptr<Primitive>>> primitivesByPipelineKey;
+    //Stores all unqiue pipeline keys, required to pass to graphicsPipeline module
+    std::unordered_set<PipelineKey> uniquePipelineKeys;
 
     //SSBO Management
     std::shared_ptr<BufferManager> meshManager_bufferManager;

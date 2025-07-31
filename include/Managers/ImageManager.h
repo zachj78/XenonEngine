@@ -38,7 +38,7 @@ class ImageManager {
 		void cleanup();
 
 	private: 
-		std::unordered_map<std::string, std::shared_ptr<Image>> images; 
+		std::unordered_map<std::string, std::shared_ptr<Image>> images; // [TODO] : what the hell is this class even for anymore, figure that out maybe. probably dont need to store individual images like this; most are stored by context(example material images, render targeter images)
 
 		VkDevice imageManager_logicalDevice;
 		VkPhysicalDevice imageManager_physicalDevice;

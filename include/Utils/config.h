@@ -60,6 +60,7 @@
 #include <string>
 #include <functional>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <chrono>
 #include <fstream>
